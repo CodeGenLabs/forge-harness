@@ -2277,196 +2277,201 @@
           },
           {
             "covers": [],
-            "line": 157,
+            "line": 163,
             "name": "test_the_default_table_matches_the_architecture_document"
           },
           {
             "covers": [],
-            "line": 175,
+            "line": 181,
             "name": "test_the_claim_touch_check_is_advisory_early_and_blocking_late"
           },
           {
             "covers": [],
-            "line": 183,
+            "line": 189,
             "name": "test_a_project_can_replace_the_table"
           },
           {
             "covers": [],
-            "line": 192,
+            "line": 198,
             "name": "test_an_unimplemented_check_never_passes_silently"
           },
           {
             "covers": [],
-            "line": 207,
+            "line": 213,
             "name": "test_an_unimplemented_check_does_not_block_either"
           },
           {
             "covers": [],
-            "line": 213,
+            "line": 219,
             "name": "test_a_non_blocking_gate_still_reports_what_it_found"
           },
           {
             "covers": [],
-            "line": 222,
+            "line": 228,
             "name": "test_the_same_check_at_a_later_point_does_block"
           },
           {
             "covers": [],
-            "line": 231,
+            "line": 237,
             "name": "test_an_unknown_point_is_a_usage_error"
           },
           {
             "covers": [],
-            "line": 237,
+            "line": 243,
             "name": "test_a_change_scoped_check_without_a_change_says_so"
           },
           {
             "covers": [],
-            "line": 247,
+            "line": 253,
             "name": "test_spec_post_blocks_until_a_delta_exists"
           },
           {
             "covers": [],
-            "line": 252,
+            "line": 258,
             "name": "test_spec_post_accepts_a_named_skip"
           },
           {
             "covers": [],
-            "line": 264,
+            "line": 270,
             "name": "test_sync_pre_blocks_until_every_claim_is_accounted_for"
           },
           {
             "covers": [],
-            "line": 274,
+            "line": 280,
             "name": "test_impact_post_reports_the_same_finding_without_blocking"
           },
           {
             "covers": [],
-            "line": 283,
+            "line": 289,
             "name": "test_analyze_post_blocks_until_tasks_discharge_the_requirements"
           },
           {
             "covers": [],
-            "line": 292,
+            "line": 298,
             "name": "test_a_task_naming_no_requirement_blocks"
           },
           {
             "covers": [],
-            "line": 301,
+            "line": 307,
             "name": "test_a_chore_task_needs_no_requirement"
           },
           {
             "covers": [],
-            "line": 307,
+            "line": 313,
             "name": "test_converge_post_blocks_on_a_dirty_tree"
           },
           {
             "covers": [],
-            "line": 313,
+            "line": 319,
             "name": "test_converge_post_passes_on_a_clean_tree"
           },
           {
             "covers": [],
-            "line": 322,
+            "line": 328,
             "name": "test_verify_records_every_condition_not_just_the_tests"
           },
           {
             "covers": [],
-            "line": 327,
+            "line": 333,
             "name": "test_an_undeclared_command_is_unavailable_and_blocks_the_verdict"
           },
           {
             "covers": [],
-            "line": 336,
+            "line": 342,
+            "name": "test_ui_is_a_condition_of_its_own"
+          },
+          {
+            "covers": [],
+            "line": 369,
             "name": "test_a_kernel_owed_condition_is_pending_and_does_not_block"
           },
           {
             "covers": [],
-            "line": 348,
+            "line": 381,
             "name": "test_a_clean_ledger_passes_the_drift_condition"
           },
           {
             "covers": [],
-            "line": 356,
+            "line": 389,
             "name": "test_an_undischarged_requirement_fails_verification"
           },
           {
             "covers": [],
-            "line": 363,
+            "line": 396,
             "name": "test_a_tagged_test_discharges_it"
           },
           {
             "covers": [],
-            "line": 373,
+            "line": 406,
             "name": "test_a_failing_command_fails_the_verdict_and_keeps_its_output"
           },
           {
             "covers": [],
-            "line": 384,
+            "line": 417,
             "name": "test_an_unaccounted_claim_fails_verification"
           },
           {
             "covers": [],
-            "line": 398,
+            "line": 431,
             "name": "test_no_run_records_the_commands_as_unproven"
           },
           {
             "covers": [],
-            "line": 404,
+            "line": 437,
             "name": "test_a_waiver_is_recorded_in_the_report"
           },
           {
             "covers": [],
-            "line": 410,
+            "line": 443,
             "name": "test_verify_writes_the_report"
           },
           {
             "covers": [],
-            "line": 418,
+            "line": 451,
             "name": "test_verify_post_reads_the_report"
           },
           {
             "covers": [],
-            "line": 433,
+            "line": 466,
             "name": "test_archive_refuses_without_a_passing_verification"
           },
           {
             "covers": [],
-            "line": 440,
+            "line": 473,
             "name": "test_archive_folds_then_moves"
           },
           {
             "covers": [],
-            "line": 451,
+            "line": 484,
             "name": "test_archive_dry_run_changes_nothing"
           },
           {
             "covers": [],
-            "line": 460,
+            "line": 493,
             "name": "test_force_records_which_blockers_were_overridden"
           },
           {
             "covers": [],
-            "line": 470,
+            "line": 503,
             "name": "test_an_archived_number_is_never_reused"
           },
           {
             "covers": [],
-            "line": 477,
+            "line": 510,
             "name": "test_the_archive_is_not_a_citation"
           },
           {
             "covers": [],
-            "line": 506,
+            "line": 539,
             "name": "test_the_acceptance_case"
           },
           {
             "covers": [],
-            "line": 553,
+            "line": 586,
             "name": "test_a_folded_requirement_is_not_a_dangling_reference"
           }
         ],
-        "untagged": 39
+        "untagged": 40
       },
       "tests/test_lifecycle_repairs.py": {
         "language": "python",
@@ -2958,97 +2963,97 @@
           },
           {
             "covers": [],
-            "line": 47,
+            "line": 48,
             "name": "test_the_builtin_bugfix_workflow_is_valid"
           },
           {
             "covers": [],
-            "line": 61,
+            "line": 65,
             "name": "test_the_builtin_workflow_is_valid_yaml_with_a_conditional_track"
           },
           {
             "covers": [],
-            "line": 70,
+            "line": 74,
             "name": "test_the_tracks_match_the_workflow_document"
           },
           {
             "covers": [],
-            "line": 81,
+            "line": 86,
             "name": "test_a_lighter_track_filters_prerequisites_rather_than_blocking_on_them"
           },
           {
             "covers": [],
-            "line": 91,
+            "line": 96,
             "name": "test_load_falls_back_to_the_builtin"
           },
           {
             "covers": [],
-            "line": 96,
+            "line": 101,
             "name": "test_a_project_copy_wins"
           },
           {
             "covers": [],
-            "line": 104,
+            "line": 109,
             "name": "test_an_unknown_workflow_names_what_exists"
           },
           {
             "covers": [],
-            "line": 114,
+            "line": 119,
             "name": "test_a_newer_schema_version_is_refused"
           },
           {
             "covers": [],
-            "line": 119,
+            "line": 124,
             "name": "test_version_is_required"
           },
           {
             "covers": [],
-            "line": 123,
+            "line": 128,
             "name": "test_duplicate_ids_are_refused"
           },
           {
             "covers": [],
-            "line": 127,
+            "line": 132,
             "name": "test_a_requires_target_must_exist"
           },
           {
             "covers": [],
-            "line": 132,
+            "line": 137,
             "name": "test_self_reference_is_refused"
           },
           {
             "covers": [],
-            "line": 137,
+            "line": 142,
             "name": "test_a_cycle_is_reported_with_its_full_path"
           },
           {
             "covers": [],
-            "line": 149,
+            "line": 154,
             "name": "test_generates_may_not_escape_the_change_directory"
           },
           {
             "covers": [],
-            "line": 154,
+            "line": 159,
             "name": "test_an_id_must_be_a_kebab_slug"
           },
           {
             "covers": [],
-            "line": 158,
+            "line": 163,
             "name": "test_an_unknown_track_token_is_refused"
           },
           {
             "covers": [],
-            "line": 165,
+            "line": 170,
             "name": "test_a_conditional_track_needs_a_named_skip_key"
           },
           {
             "covers": [],
-            "line": 171,
+            "line": 176,
             "name": "test_artifacts_must_be_a_non_empty_list"
           },
           {
             "covers": [],
-            "line": 175,
+            "line": 180,
             "name": "test_a_malformed_file_names_itself"
           }
         ],
@@ -3224,32 +3229,32 @@
           },
           {
             "covers": [],
-            "line": 420,
+            "line": 421,
             "name": "test_a_track_b_change_runs_end_to_end_through_the_skills"
           },
           {
             "covers": [],
-            "line": 500,
+            "line": 501,
             "name": "test_a_project_with_no_skills_gets_the_packaged_set"
           },
           {
             "covers": [],
-            "line": 507,
+            "line": 508,
             "name": "test_a_project_copy_wins_whole"
           },
           {
             "covers": [],
-            "line": 514,
+            "line": 515,
             "name": "test_an_unmodified_copy_needs_no_local_scenarios"
           },
           {
             "covers": [],
-            "line": 526,
+            "line": 527,
             "name": "test_an_edited_copy_owes_its_own_scenarios"
           },
           {
             "covers": [],
-            "line": 540,
+            "line": 541,
             "name": "test_this_repository_is_not_exempt_from_testing_its_own_skills"
           }
         ],
@@ -3875,9 +3880,9 @@
       }
     },
     "tagged_tests": 0,
-    "total_tests": 738
+    "total_tests": 739
   },
-  "generated_from_commit": "07814e7b4b6c40ca23f3d1c858c05394ae19b6ee",
+  "generated_from_commit": "77e9f76c782c7f0c8e744a063391aa6ae2dfa7e7",
   "generator": "forge sync derived",
   "tool": "forge"
 }

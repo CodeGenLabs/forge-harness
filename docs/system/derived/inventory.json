@@ -3,8 +3,8 @@
   "data": {
     "by_language": {
       "markdown": {
-        "files": 90,
-        "lines": 7415
+        "files": 93,
+        "lines": 7741
       },
       "other": {
         "files": 2,
@@ -16,7 +16,7 @@
       },
       "python": {
         "files": 60,
-        "lines": 23333
+        "lines": 23475
       },
       "script": {
         "files": 1,
@@ -32,14 +32,14 @@
       },
       "yaml": {
         "files": 9,
-        "lines": 362
+        "lines": 364
       }
     },
     "entry_points": [
       "src/forge/cli.py"
     ],
-    "files_considered": 165,
-    "files_tracked": 165,
+    "files_considered": 168,
+    "files_tracked": 168,
     "stack": {
       "python": {
         "lockfile": null,
@@ -75,6 +75,8 @@
       "tests/skills/implement/loops-on-a-failing-approach.md",
       "tests/skills/implement/scope-creep.md",
       "tests/skills/implement/untagged-test.md",
+      "tests/skills/interface/banned-list-becomes-a-uniform.md",
+      "tests/skills/interface/button-vanishes-at-375.md",
       "tests/skills/investigate/guessed-rationale.md",
       "tests/skills/investigate/re-derives-an-existing-claim.md",
       "tests/skills/investigate/unanchored-candidate.md",
@@ -117,7 +119,7 @@
       "tools/pressure_test.py"
     ]
   },
-  "generated_from_commit": "fc1bd73585a62694dde37aff0c913db05674c347",
+  "generated_from_commit": "77e9f76c782c7f0c8e744a063391aa6ae2dfa7e7",
   "generator": "forge sync derived",
   "tool": "forge"
 }
