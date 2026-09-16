@@ -3,8 +3,8 @@
   "data": {
     "by_language": {
       "markdown": {
-        "files": 87,
-        "lines": 6419
+        "files": 88,
+        "lines": 6600
       },
       "other": {
         "files": 2,
@@ -32,14 +32,14 @@
       },
       "yaml": {
         "files": 9,
-        "lines": 359
+        "lines": 360
       }
     },
     "entry_points": [
       "src/forge/cli.py"
     ],
-    "files_considered": 162,
-    "files_tracked": 162,
+    "files_considered": 163,
+    "files_tracked": 163,
     "stack": {
       "python": {
         "lockfile": null,
@@ -117,7 +117,7 @@
       "tools/pressure_test.py"
     ]
   },
-  "generated_from_commit": "07814e7b4b6c40ca23f3d1c858c05394ae19b6ee",
+  "generated_from_commit": "daaae6917ae037f6f85dfa74f3450a5400c2ad16",
   "generator": "forge sync derived",
   "tool": "forge"
 }
