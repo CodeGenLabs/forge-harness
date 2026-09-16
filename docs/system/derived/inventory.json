@@ -3,20 +3,20 @@
   "data": {
     "by_language": {
       "markdown": {
-        "files": 84,
-        "lines": 5932
+        "files": 87,
+        "lines": 6419
       },
       "other": {
         "files": 2,
-        "lines": 41
+        "lines": 45
       },
       "powershell": {
         "files": 1,
         "lines": 100
       },
       "python": {
-        "files": 59,
-        "lines": 23286
+        "files": 60,
+        "lines": 23333
       },
       "script": {
         "files": 1,
@@ -28,18 +28,18 @@
       },
       "toml": {
         "files": 1,
-        "lines": 50
+        "lines": 51
       },
       "yaml": {
         "files": 9,
-        "lines": 356
+        "lines": 359
       }
     },
     "entry_points": [
       "src/forge/cli.py"
     ],
-    "files_considered": 158,
-    "files_tracked": 158,
+    "files_considered": 162,
+    "files_tracked": 162,
     "stack": {
       "python": {
         "lockfile": null,
@@ -117,7 +117,7 @@
       "tools/pressure_test.py"
     ]
   },
-  "generated_from_commit": "a7702fb192d95f4e75d49c00864daefdeeee4602",
+  "generated_from_commit": "07814e7b4b6c40ca23f3d1c858c05394ae19b6ee",
   "generator": "forge sync derived",
   "tool": "forge"
 }
