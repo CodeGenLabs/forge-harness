@@ -468,35 +468,31 @@ def _comments_by_line(blob: bytes, language: str | None) -> dict[int, list[str]]
     except ImportError:  # pragma: no cover
         return None
     try:
-        parser = Parser(grammar.language)
-        tree = parser.parse(blob)
-        cursor = tree.walk()
-        comments = {}
-        depth = 0
-        visited_children = False
-        while True:
-            if not visited_children:
-                current = cursor.node
-                if "comment" in current.type:
-                    start_row = current.start_point.row
-                    text = current.text.decode("utf-8", "replace")
-                    lines = text.split("\n")
-                    for i, line_text in enumerate(lines):
-                        comments.setdefault(start_row + i, []).append(line_text)
-                    visited_children = True
-                elif cursor.goto_first_child():
-                    depth += 1
-                    continue
-                else:
-                    visited_children = True
-            elif cursor.goto_next_sibling():
-                visited_children = False
-            elif depth == 0:
-                break
-            else:
-                cursor.goto_parent()
-                depth -= 1
-                visited_children = True
+        tree = Parser(grammar.language).parse(blob)
+        comments: dict[int, list[str]] = {}
+        # An explicit stack over `node.children` rather than a `TreeCursor`.
+        # The cursor walk this replaces segfaulted - flakily, three runs in six
+        # on the same input - while parsing a 474-line TypeScript test file in
+        # a real project. Same blob, same process, different outcome, which is
+        # a memory-lifetime fault rather than a logic error, and no `except`
+        # catches it. The children walk survived every attempt and produced
+        # byte-identical results on all 60 parseable files in this repository.
+        #
+        # The environment that produced it was a `tree-sitter` core three
+        # generations ahead of the grammar (0.26 against 0.23), which the
+        # `>=0.23` floor in pyproject.toml permits. Tightening that floor would
+        # narrow the window; not depending on cursor lifetime semantics closes
+        # it, and costs nothing.
+        stack = [tree.root_node]
+        while stack:
+            node = stack.pop()
+            if "comment" in node.type:
+                row = node.start_point[0]
+                text = node.text.decode("utf-8", "replace")
+                for offset, line_text in enumerate(text.split("\n")):
+                    comments.setdefault(row + offset, []).append(line_text)
+                continue
+            stack.extend(reversed(node.children))
         return comments
     except Exception:
         return None

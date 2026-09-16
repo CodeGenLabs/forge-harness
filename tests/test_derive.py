@@ -442,3 +442,40 @@ func TestReal(t *testing.T) {
     assert "REQ-go-fake" not in data["covers_index"]
     assert "REQ-go-fake-inline" not in data["covers_index"]
 
+
+
+def test_comments_survive_depth_and_multibyte_text():
+    """The cursor walk this replaced segfaulted, flakily, on a real 474-line
+    TypeScript test file - three runs in six on identical input, in one
+    process, which no `except` catches because it is a memory-lifetime fault
+    rather than an exception.
+
+    A segfault that appears half the time cannot be asserted on, so what is
+    tested is the property the replacement had to preserve: every comment
+    found, at its own line, through nesting, with multi-byte text intact and
+    string literals that look like comments left alone.
+    """
+    source = (
+        "// dòng đầu, chữ có dấu\n"
+        "describe('outer', () => {\n"
+        "  describe('inner', () => {\n"
+        "    it('deep', () => {\n"
+        "      // ghi chú ở độ sâu bốn\n"
+        "      const s = '// không phải comment'\n"
+        "      /* khối\n"
+        "         nhiều dòng */\n"
+        "    })\n"
+        "  })\n"
+        "})\n"
+    ).encode("utf-8")
+
+    found = derive._comments_by_line(source, "typescript")
+    assert found is not None
+
+    assert found[0] == ["// dòng đầu, chữ có dấu"]
+    assert found[4] == ["// ghi chú ở độ sâu bốn"]
+    # The block comment spans two lines and is indexed on both.
+    assert found[6] == ["/* khối"]
+    assert found[7] == ["         nhiều dòng */"]
+    # The string literal is not a comment, however much it looks like one.
+    assert 5 not in found
