@@ -20,7 +20,7 @@ Scale classification occurs at the `understand` phase:
 | Feature | Track A (Probe) | Track B (Bounded) | Track C (Structural) |
 |---|---|---|---|
 | **Use Case** | Feasibility checks, spikes, throwaway research. | Contained changes within existing flows; no schema or architecture changes. | New modules, API changes, schema migrations, invariant touches. |
-| **Artifacts** | None (chat output). | `proposal.md`, `spec.md` (if logic changes), `tasks.md`. | `proposal.md`, `spec.md`, `impact.md`, `design.md` (ADR), `tasks.md`. |
+| **Artifacts** | None (chat output). | `proposal.md`, `spec.md` (if logic changes), `tasks.md`. | `proposal.md`, `spec.md`, `flow.md` (if a screen changes), `impact.md`, `design.md` (ADR), `tasks.md`. |
 | **Phases** | understand ➔ investigate. | understand ➔ investigate ➔ spec? ➔ tasks ➔ implement ➔ verify ➔ sync ➔ archive. | Full lifecycle DAG from start to finish. |
 | **Human Review** | G1. | G1, G5. | G1, G2, G3, G5. |
 

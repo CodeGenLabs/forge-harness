@@ -87,7 +87,35 @@ Each requirement needs at least one scenario, and the scenarios should cover
 the boundary as well as the happy path. A requirement with one cheerful
 scenario is a requirement nobody has thought about.
 
-## 4. Check it
+## 4. Reference parity, when there is a reference
+
+`docs/system/product.md` names the products this one is measured against. If
+the capability being specified corresponds to something one of them does,
+the delta owes a parity list: **what the reference does, and for every item
+either it is built or it is deferred with a reason.**
+
+```markdown
+## Reference parity - SQL editor (the reference product)
+
+- syntax highlighting - ADDED, REQ-editor-2
+- line numbers - ADDED, REQ-editor-2
+- find and replace - deferred: needs the editor's own selection model, which
+  REQ-editor-4 introduces
+- beautify - deferred: no formatter for this dialect yet
+- autocomplete - deferred: needs schema introspection to be cached first
+```
+
+Silence is the defect this prevents. A feature list with no parity section
+reads six months later as "considered and rejected", when in fact it was
+never considered - and that is how a SQL editor ships as a text area while
+the reference product's manual sat in the repository.
+
+**Deferring is a legitimate answer and is expected to be the common one.**
+The requirement is that the choice was made, not that everything is built. A
+parity list where every line says ADDED is a warning sign, not a good sign:
+either the scope is too large for one change or the list was not read.
+
+## 5. Check it
 
 ```bash
 forge gate spec:post --change <n>
@@ -108,14 +136,14 @@ skip_spec: log format only; no caller can observe the difference
 A bare `skip_spec: true` is rejected. The reason nobody writes is the one
 nobody can argue with later.
 
-## 5. Gate G2 - the spec
+## 6. Gate G2 - the spec
 
 Show the user the delta requirements and scenarios. This is the contract;
 everything downstream argues from it, and a wrong requirement wastes the rest
 of the lifecycle. Track C always; track B when the change introduces a new
 capability.
 
-## 6. Design, on track C
+## 7. Design, on track C
 
 `changes/<n>/design.md` after the spec is agreed:
 

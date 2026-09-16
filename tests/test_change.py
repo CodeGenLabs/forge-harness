@@ -228,7 +228,7 @@ def test_change_new_reports_the_artifacts_the_track_wants(project, capsys):
     assert main(["change", "new", "refund support", "--repo", str(project.root)]) == 0
     out = capsys.readouterr().out
     assert "changes/0001-refund-support/" in out
-    assert "proposal, spec, impact, design, tasks, verification" in out
+    assert "proposal, spec, flow, impact, design, tasks, verification" in out
 
 
 def test_change_new_on_track_a_says_there_is_nothing_to_write(project, capsys):
@@ -270,7 +270,7 @@ def test_change_track_reports_what_is_now_owed(project, capsys):
     assert "track B -> C" in out
     # Only what the upgrade newly owes, not the whole track: the artifacts
     # already on track B were already owed and saying so again is noise.
-    assert "newly required: impact, design" in out
+    assert "newly required: flow, impact, design" in out
 
 
 def test_change_track_refuses_a_downgrade_with_exit_two(project, capsys):

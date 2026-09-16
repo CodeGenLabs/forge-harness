@@ -160,6 +160,26 @@ artifacts:
       at least one `#### Scenario:`. MODIFIED carries full content, never a
       diff fragment; REMOVED carries Reason and Migration.
 
+  - id: flow
+    generates: flow.md
+    template: flow.md
+    requires: [spec]
+    # Conditional on purpose. A change with no user-facing screen has no flow,
+    # and demanding one would be the ceremony this harness is supposed to
+    # prevent. Conditional means the skip is recorded, not that it is free.
+    tracks: ["C?"]
+    skip_key: skip_flow
+    reads:
+      - changes/${change}/spec/**
+      - docs/system/product.md
+    instruction: |
+      How a person gets from where they are to the thing this change adds, and
+      what they see when it fails. Screens in order, what each entry point is,
+      and the state of every screen that can be empty, loading, errored or
+      unsupported. Requirements carry scenarios; nothing else carries the
+      movement between screens, which is how a product ends up as a set of
+      pages with buttons that lead nowhere.
+
   - id: impact
     generates: impact.md
     template: impact.md

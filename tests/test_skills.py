@@ -88,8 +88,8 @@ def test_the_shipped_skills_obey_every_rule():
 
 
 SHIPPED = [
-    "bootstrap", "curate-knowledge", "forge", "implement", "investigate",
-    "plan-tasks", "specify",
+    "bootstrap", "curate-knowledge", "forge", "implement", "interface",
+    "investigate", "plan-tasks", "specify",
 ]
 
 
@@ -416,6 +416,7 @@ commands:
   typecheck: python -c "pass"
   lint: python -c "pass"
   test: python -c "pass"
+  ui: none
 """
 
 

@@ -39,11 +39,11 @@ spec trước có làm giảm rework hay không.
 
 Mọi thứ bên dưới đều phụ thuộc vào mục này.
 
-Forge đã ở 0.1.0, có tài liệu, có installer và ba host. `corvus-db-studio` đã mang sẵn các
-conformance test bàn giao trong W3, nên nó đã đi được nửa đường. Thứ dự án **chưa bao giờ**
-có: **một người dùng nó liên tục trên công việc thật của chính mình.** Mọi con số trên trang
-bằng chứng đều là n=3 đến n=6, do agent tạo ra trên repository đi mượn, và do chính người
-thiết kế bài toán chấm điểm.
+Forge đã ở 0.1.0, có tài liệu, có installer và ba host. Một dự án thật đã mang sẵn các
+conformance test bàn giao trong W3, nên việc áp dụng ở đó đã đi được nửa đường. Thứ dự
+án **chưa bao giờ** có: **một người dùng nó liên tục trên công việc thật của chính mình.**
+Mọi con số trên trang bằng chứng đều là n=3 đến n=6, do agent tạo ra trên repository đi
+mượn, và do chính người thiết kế bài toán chấm điểm.
 
 **Áp dụng Forge lên một dự án thật, cho mười thay đổi thật.** Không cần đo đạc cầu kỳ. Chỉ
 dùng, và ghi lại chỗ nào nó gây vướng — nhật ký ma sát đó là đầu vào cho mọi thứ tiếp theo.
@@ -182,9 +182,10 @@ quả null của R3 chẳng trả lời được gì.
 
 ## R6 — Siết chặt khâu tiếp nhận dự án mới
 
-**Từ thực tế, kèm một chẩn đoán.** `corvus-db-studio` bắt đầu bằng một file manual của
-Navicat và yêu cầu "làm một thứ giống Navicat". Thứ trả về không có flow màn hình, có nút
-bấm nhưng bấm không làm gì, có dummy data nấp sau một giao diện trông như đang chạy thật, và
+**Từ thực tế, kèm một chẩn đoán.** Một dự án thật bắt đầu bằng file manual của một sản
+phẩm trưởng thành và yêu cầu "làm một thứ giống như vậy". Thứ trả về không có flow màn
+hình, có nút bấm nhưng bấm không làm gì, có dummy data nấp sau một giao diện trông như
+đang chạy thật, và
 các tính năng được hiện thực theo cách hiểu đen đủi nhất — SQL editor là một ô text, không
 tô cú pháp, không số dòng, không search/replace, không beautify, trong khi **sản phẩm tham
 khảo có đủ và file manual được cung cấp có mô tả**.
@@ -198,7 +199,7 @@ phải sản phẩm mà câu chữ ngụ ý.** Nó còn tệ hơn khi có sẵn 
 - **Ý đồ sản phẩm, viết một lần, lúc khai sinh.** `docs/system/product.md`: sản phẩm này tồn
   tại để làm gì, cho ai, tham khảo những sản phẩm nào, và — phần thực sự có tác dụng —
   **non-goals cùng danh sách hoãn**. `OVERVIEW.md` mô tả *hệ thống*; không gì mô tả *ý đồ*,
-  và đó là lý do "giống Navicat" chưa bao giờ được chuyển thành một phạm vi.
+  và đó là lý do "giống sản phẩm đó" chưa bao giờ được chuyển thành một phạm vi.
 - **Một artifact flow trước khi có task.** Requirement mang theo scenario; không gì ép mô tả
   **sự di chuyển giữa các màn hình**, mà đó đúng là thứ đã thiếu.
 - **Reference parity (đối chiếu sản phẩm tham khảo).** Khi có sản phẩm tham khảo, spec của

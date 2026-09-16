@@ -535,6 +535,41 @@ forge archive --change 2
 
 ---
 
+## 🗺️ Lộ trình
+
+Toàn bộ lập luận, và điều gì tính là thất bại của từng mục, nằm trong
+**[lộ trình](roadmap.md)**. Mọi mục đều được biện minh dựa trên
+[hồ sơ bằng chứng](evidence.md) chứ không dựa trên danh sách tính năng mong muốn.
+
+**Lập luận từ các đo đạc**
+
+- [ ] **Giai đoạn 0 — Dùng nó.** Mười thay đổi thật trên một dự án thật, kèm nhật ký ma
+      sát. Mọi thứ bên dưới đều phụ thuộc mục này.
+- [ ] **R1 — `forge stats`.** Tỉ lệ rework, số lần verify đỏ, verdict drift, tỉ lệ
+      enforcer. Vô giá trị trước Giai đoạn 0 nên cố ý chưa bắt đầu.
+- [ ] **R2 — Đo vòng đời, không đo store.** Viết spec trước có giảm rework không?
+- [ ] **R3 — Làm claim store thành tùy chọn.** Bị chặn bởi R5 — xem lộ trình.
+- [ ] **R4 — Tỉ lệ enforcer là KPI thật của store.**
+
+**Lập luận từ thực tế sử dụng**
+
+- [ ] **R5 — Tri thức ràng buộc được session sau.** Một bước kết sổ, và heuristic ghi lại
+      tính từ blast radius so với diff.
+- [x] **R6 — Siết chặt khâu tiếp nhận dự án mới.**
+    - [x] `docs/system/product.md` — ý đồ sản phẩm, non-goals, danh sách hoãn. *Được
+          `forge init` tạo ra; cố ý không nằm trong ngân sách always-loaded.*
+    - [x] Một artifact flow trước khi có task. *`flow.md`, có điều kiện trên track C — thay
+          đổi không đụng màn hình nào thì ghi lại việc bỏ qua, không phải trả giá cho nó.*
+    - [x] Reference parity — mọi năng lực của sản phẩm tham khảo đều được xây hoặc hoãn
+          kèm lý do. *Nằm trong skill `specify`; hoãn là câu trả lời được mong đợi.*
+- [x] **R7 — Một điều kiện kiểm tra `ui`.** Chạy bộ Playwright và axe của chính dự án;
+      Forge không render gì cả. *Đã ship: `ui` là một điều kiện; khai `commands.ui`, hoặc
+      `ui: none` nếu dự án không có giao diện trình duyệt.*
+- [x] **R8 — Cấm cái trung bình, không kê đơn gì.** Chỉ hướng dẫn, không bao giờ là gate.
+      *Đã ship dưới dạng skill `interface`.*
+
+---
+
 ## 📚 Cổng tài liệu chuyên sâu
 
 Tra cứu hệ thống tài liệu hướng dẫn và đặc tả chi tiết:

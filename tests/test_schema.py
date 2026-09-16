@@ -43,13 +43,17 @@ def test_the_builtin_feature_workflow_is_valid():
     so this is the only thing standing between a typo and every command."""
     loaded = parse(schema.builtin_schema_text("feature"))
     assert loaded.name == "feature"
-    assert loaded.ids == ["proposal", "spec", "impact", "design", "tasks", "verification"]
+    assert loaded.ids == ["proposal", "spec", "flow", "impact", "design", "tasks",
+                          "verification"]
 
 
 def test_the_builtin_bugfix_workflow_is_valid():
     """`bugfix.yaml` (Roadmap Section 7) adds mandatory reproduce artifact."""
     loaded = parse(schema.builtin_schema_text("bugfix"))
     assert loaded.name == "bugfix"
+    # No `flow`: a fix restores behaviour a flow already specified. A change
+    # that introduces movement between screens is a feature, and needing one
+    # here is a signal the work was filed under the wrong workflow.
     assert loaded.ids == ["reproduce", "proposal", "spec", "impact", "design", "tasks", "verification"]
     on_b = [a.id for a in loaded.for_track("B")]
     assert on_b == ["reproduce", "proposal", "spec", "tasks", "verification"]
@@ -75,7 +79,8 @@ def test_the_tracks_match_the_workflow_document():
     on_c = [a.id for a in loaded.for_track("C")]
     # WORKFLOW.md section 1: B is proposal + spec-if-behaviour-changes + tasks.
     assert on_b == ["proposal", "spec", "tasks", "verification"]
-    assert on_c == ["proposal", "spec", "impact", "design", "tasks", "verification"]
+    assert on_c == ["proposal", "spec", "flow", "impact", "design", "tasks",
+                    "verification"]
     # Track A is a question, not a deliverable.
     assert parse(schema.builtin_schema_text("feature")).for_track("A") == []
 

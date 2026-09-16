@@ -417,6 +417,41 @@ In your project rules (`AGENTS.md` or `CLAUDE.md`), add:
 
 ---
 
+## 🗺️ Roadmap
+
+Full reasoning, and what counts as each item's failure, in
+**[the roadmap](docs/en/roadmap.md)**. Every item is argued against
+[the evidence record](docs/en/evidence.md) rather than a feature wish list.
+
+**Argued from the measurements**
+
+- [ ] **Phase 0 — Use it.** Ten real changes on one real project, with a friction log.
+      Everything below is subordinate to this.
+- [ ] **R1 — `forge stats`.** Rework rate, failed verifications, drift verdicts, enforcer
+      rate. Worthless before Phase 0, so deliberately not started.
+- [ ] **R2 — Measure the lifecycle, not the store.** Does specifying first reduce rework?
+- [ ] **R3 — Make the claim store optional.** Blocked on R5 — see the roadmap.
+- [ ] **R4 — The enforcer rate is the store's real KPI.**
+
+**Argued from use**
+
+- [ ] **R5 — Knowledge that binds the next session.** A close-out step, and a recording
+      heuristic computed from blast radius versus diff.
+- [x] **R6 — A harsher intake for new projects.**
+    - [x] `docs/system/product.md` — product intent, non-goals, deferral list. *Scaffolded
+          by `forge init`; deliberately not in the always-loaded budget.*
+    - [x] A flow artifact before tasks. *`flow.md`, conditional on track C — a change with
+          no screen records the skip rather than paying for one.*
+    - [x] Reference parity — every capability of a reference product built or deferred
+          with a reason. *In the `specify` skill; deferring is the expected answer.*
+- [x] **R7 — A `ui` verification condition.** Runs the project's own Playwright and axe
+      suite; Forge renders nothing. *Shipped: `ui` is a condition; declare `commands.ui`,
+      or `ui: none` if the project has no browser UI.*
+- [x] **R8 — Ban the average, prescribe nothing.** Advisory, never a gate. *Shipped as
+      the `interface` skill.*
+
+---
+
 ## 📚 Deep Dive Documentation
 
 Visit our full documentation online at **[https://codegenlabs.github.io/forge-harness/](https://codegenlabs.github.io/forge-harness/)** or browse locally:
@@ -430,4 +465,6 @@ Visit our full documentation online at **[https://codegenlabs.github.io/forge-ha
 | **Architecture** | Kernel, Tree-sitter AST, hashes | [Read](docs/en/architecture.md) | [Đọc](docs/vi/architecture.md) | [読む](docs/ja/architecture.md) |
 | **Configuration** | Full `.forge/config.yaml` schema | [Read](docs/en/configuration.md) | [Đọc](docs/vi/configuration.md) | [読む](docs/ja/configuration.md) |
 | **Troubleshooting**| PATH setup, Windows console, gates | [Read](docs/en/troubleshooting.md) | [Đọc](docs/vi/troubleshooting.md) | [読む](docs/ja/troubleshooting.md) |
-| **Constitution** | Inviolable engineering principles | [Read](docs/en/CONSTITUTION.md) | [Đọc](docs/vi/CONSTITUTION.md) | [読む](docs/ja/CONSTITUTION.md) |
+| **Constitution** | Inviolable engineering principles | [Read](docs/en/constitution.md) | [Đọc](docs/vi/constitution.md) | [読む](docs/ja/constitution.md) |
+| **Evidence** | What Forge measured about itself, including the null results | [Read](docs/en/evidence.md) | [Đọc](docs/vi/evidence.md) | [読む](docs/ja/evidence.md) |
+| **Roadmap** | What to build next, and what not to | [Read](docs/en/roadmap.md) | [Đọc](docs/vi/roadmap.md) | [読む](docs/ja/roadmap.md) |

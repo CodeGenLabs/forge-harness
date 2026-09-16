@@ -55,7 +55,7 @@ VERIFICATION_FILE = "verification.json"
 WAIVABLE = ("drift", "debt")
 
 CONDITIONS = (
-    "build", "typecheck", "lint", "tests",
+    "build", "typecheck", "lint", "tests", "ui",
     "requirement_cover", "claim_evidence", "claim_touch",
     "drift", "debt", "derived_fresh", "no_new_skips",
 )
@@ -268,8 +268,14 @@ def verify(repo: Path, item: Change, *, waived: tuple[str, ...] = (),
         except (TypeError, ValueError):
             timeout = DEFAULT_TIMEOUT
 
-    # 1. build / typecheck / lint / tests
-    for name in ("build", "typecheck", "lint", "tests"):
+    # 1. build / typecheck / lint / tests / ui
+    #
+    # `ui` exists because type-checking, linting and the build all pass while
+    # the layout breaks - a separate class of defect that needs its own check.
+    # The kernel renders nothing and gains no dependency: it runs the line the
+    # project declared, which is expected to be that project's own Playwright
+    # and axe suite. Evidence, not opinion, exactly as for `tests`.
+    for name in ("build", "typecheck", "lint", "tests", "ui"):
         key = "test" if name == "tests" else name
         line = commands.get(key)
         if _is_none(line):

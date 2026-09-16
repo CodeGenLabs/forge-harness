@@ -107,6 +107,12 @@ commands:
   typecheck: python -c "pass"
   lint: python -c "pass"
   test: python -c "pass"
+  # Declared `none` for the same reason a pure-Python library declares
+  # `build: none`: this fixture has no browser UI, and saying so is a
+  # different answer from saying nothing. Adding `ui` to CONDITIONS made
+  # every existing project `unproven` until it answers - a real migration
+  # cost, taken rather than special-cased away.
+  ui: none
 """
 
 
@@ -332,6 +338,33 @@ def test_an_undeclared_command_is_unavailable_and_blocks_the_verdict(project):
     (project.root / ".forge/config.yaml").write_text("version: 1\n", encoding="utf-8")
     report = verify.verify(project.root, item(project))
     assert report["gates"]["tests"]["status"] == "unavailable"
+    assert report["verdict"] == "unproven"
+
+
+def test_ui_is_a_condition_of_its_own(project):
+    """Type-checking, linting and the build all pass while the layout breaks,
+    so a broken layout needs a check that is not one of those three.
+
+    The kernel renders nothing: `ui` runs the line the project declared, which
+    is expected to be that project's own Playwright and axe suite. Undeclared
+    behaves like every other command - `unavailable`, never a guess.
+    """
+    # The fixture answers `ui: none`. "This project has no such step" and
+    # "nobody has said" are different answers, and only the second is a debt -
+    # a project with no browser must not be permanently unproven for lacking
+    # one.
+    report = verify.verify(project.root, item(project))
+    assert "ui" in report["gates"]
+    assert report["gates"]["ui"]["status"] == "skipped"
+
+    # Undeclared is `unavailable`, exactly like every other command. Guessing
+    # a browser suite because a package.json exists is the same failure as
+    # guessing `npm test`.
+    config = project.root / ".forge/config.yaml"
+    config.write_text(config.read_text(encoding="utf-8").replace("  ui: none\n", ""),
+                      encoding="utf-8")
+    report = verify.verify(project.root, item(project))
+    assert report["gates"]["ui"]["status"] == "unavailable"
     assert report["verdict"] == "unproven"
 
 

@@ -38,8 +38,9 @@ all**. Nobody has asked whether writing a spec first reduces rework.
 
 Everything below is subordinate to this.
 
-Forge is at 0.1.0 with documentation, installers and three hosts. `corvus-db-studio`
-already carries the conformance tests delivered during W3, so it is half adopted already.
+Forge is at 0.1.0 with documentation, installers and three hosts. One real project
+already carries the conformance tests delivered during W3, so adoption there is half
+done.
 What the project has never had is **one person using it continuously on their own work**.
 Every number on the evidence page is n=3 to n=6, produced by agents on borrowed
 repositories, scored by the person who designed the task.
@@ -181,8 +182,8 @@ answers nothing.
 
 ## R6 — A harsher intake for new projects
 
-**From use, with a diagnosis.** `corvus-db-studio` began with a Navicat manual and the
-request "build something like Navicat". What came back had no screen flow, buttons that
+**From use, with a diagnosis.** A real project began with a mature product's manual and
+the request "build something like it". What came back had no screen flow, buttons that
 existed but did nothing, dummy data behind a UI that looked live, and features implemented
 at their most literal reading — the SQL editor was a text area, with no syntax
 highlighting, line numbers, search and replace, or beautify, all of which the reference
@@ -197,7 +198,7 @@ information was available and went unused.
 - **Product intent, once, at birth.** `docs/system/product.md`: why this product exists,
   who for, which products it references, and — the part that does work — **non-goals and a
   deferral list**. `OVERVIEW.md` describes the system; nothing describes the intent, which
-  is why "like Navicat" was never turned into a scope.
+  is why "like that product" was never turned into a scope.
 - **A flow artifact before tasks.** Requirements carry scenarios; nothing forces the
   movement *between* screens, which is exactly what was missing.
 - **Reference parity.** When a reference product is supplied, each feature's spec

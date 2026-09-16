@@ -43,3 +43,5 @@ commands:
   # for the shell it will be run under, so the config carries the host's
   # spelling and a project on two platforms needs two configs.
   test: .venv\Scripts\python.exe -m pytest -q
+  # The kernel is a CLI; there is no browser UI to check.
+  ui: none

@@ -168,6 +168,42 @@ together with the claim files beside it (S16). When it grows, something moves
 out - the budget is never raised.
 """
 
+_PRODUCT = """# Product intent
+
+Written once, at the start, and edited rarely. `OVERVIEW.md` describes the
+*system*; this describes the *intent*, and nothing else in the store carries
+it. A request like "build something like <product>" that never becomes the
+four sections below is how a project ships a thing that runs without being
+the thing that was wanted.
+
+## What this is for, and who for
+
+One paragraph. The user, the job, and what they do today instead.
+
+## Reference products
+
+Which existing products this is measured against, and what each is being
+referenced *for* - not admiration, a yardstick. If a manual or a running copy
+is available, say where it is: a reference nobody opens is the same as none.
+
+For each capability that references one of these, the spec owes a parity list:
+what the reference does, and for every item either it is built or it is
+deferred **with a reason**. Silence is the defect, because silence reads as
+"considered and rejected" six months later when it was never considered.
+
+## Non-goals
+
+What this deliberately will not be. This section does more work than the first
+one: a scope with no edge is not a scope, and every argument about whether
+something belongs is settled here or nowhere.
+
+## Deferred
+
+Things that are wanted and are not being built yet, each with the condition
+that would change that. This list is the honest form of "later" - it keeps a
+decision visible instead of letting it decay into an omission.
+"""
+
 _STORE_FILES = {
     "architecture.md": (
         "# Architecture\n\n"
@@ -268,6 +304,7 @@ def init_files(today: _dt.date | None = None) -> dict[str, str]:
         f"{schema.SCHEMA_DIR}/feature.yaml": schema.builtin_schema_text("feature"),
         f"{schema.SCHEMA_DIR}/bugfix.yaml": schema.builtin_schema_text("bugfix"),
         f"{store.STORE_DIR}/OVERVIEW.md": _OVERVIEW,
+        f"{store.STORE_DIR}/product.md": _PRODUCT,
         f"{store.DECISIONS_DIR}/ADR-0001-adopt-forge.md":
             _ADOPTION_ADR.format(date=today.isoformat()),
     }
@@ -459,10 +496,45 @@ a chore. Work naming no requirement is work nobody agreed to.
 - [ ] Chore: something real that discharges no requirement.
 """
 
+_T_FLOW = """{marker}
+# Flow - {title}
+
+## Entry points
+
+Where a person can be when this becomes relevant, and what they do to reach
+it. If there is only one way in, say so - that is a finding, not an omission.
+
+## The path
+
+Screen by screen, in order. For each: what is on it that matters, and what
+the person does next.
+
+1.
+2.
+
+## Every screen's states
+
+Requirements carry scenarios; nothing else carries what a screen looks like
+when there is nothing to show. For each screen above, say what the user sees
+when it is empty, loading, errored, or asked for something this connection
+does not support. A screen with only its happy state is the one that ships as
+a permanent spinner.
+
+| Screen | Empty | Loading | Error | Unsupported |
+| --- | --- | --- | --- | --- |
+|  |  |  |  |  |
+
+## Where this can fail
+
+The dead end, the back button, the half-finished action. Name the ones this
+change introduces.
+"""
+
 CHANGE_TEMPLATES = {
     "reproduce": _T_REPRODUCE,
     "proposal": _T_PROPOSAL,
     "spec": _T_SPEC,
+    "flow": _T_FLOW,
     "impact": _T_IMPACT,
     "design": _T_DESIGN,
     "tasks": _T_TASKS,

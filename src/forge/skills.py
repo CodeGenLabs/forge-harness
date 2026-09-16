@@ -75,6 +75,11 @@ _SHOUT_ALLOWED = frozenset({
     "ADDED", "MODIFIED", "REMOVED", "RENAMED", "REQUIREMENTS",
     "SHALL", "MUST", "WHEN", "THEN", "GIVEN", "AND", "TODO", "ADR", "REQ",
     "JSON", "YAML", "DAG", "TDD", "API", "URL", "CI",
+    # Standards named in two adjacent all-caps words are vocabulary, not
+    # volume. `WCAG AA` fired the rule when the `interface` skill first named
+    # the contrast level it expects a project's own suite to check - a false
+    # positive of the two-adjacent-words heuristic, fixed where it belongs.
+    "WCAG", "AA", "AAA", "HTML", "CSS", "SQL", "DOM", "UI", "UX",
 })
 _COMPULSION_PHRASES = (
     re.compile(r"\byou (?:have no choice|must not ever|are forbidden)\b", re.I),
