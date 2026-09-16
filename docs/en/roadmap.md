@@ -131,6 +131,168 @@ much easier.
 
 ---
 
+## Added from use, 2026-09-17
+
+R1 to R4 were argued from the measurements. The four below were argued from something
+the project had never had before: **a person using it on their own work and saying where
+it hurt.** The roadmap's closing section says it gets revised by exactly that, so these
+are not an exception to its discipline - they are the first instance of it working.
+
+They are ordered by cost against the likelihood of the thing working, not by how much the
+problem stings. R5 also moves R3, for a reason given under R5.
+
+## R5 — Knowledge that binds the next session
+
+**From use.** Rules agreed in one session are gone in the next; a fix scoped to one
+feature turns out to affect later ones and nothing records that it did.
+
+**Why this is not settled by Q1 and W2.** Both measured the same thing: whether a pointer
+to curated knowledge helps a *single* agent avoid a trap in a repository that already
+documents itself well. Twice null. **Neither measured whether a decision taken in session
+N binds session N+1.** Q1b named that dimension — reach, knowledge recorded nowhere near
+the work — and nothing has tested it. And a rule agreed in conversation has no document to
+be redundant with, which makes it the one class of knowledge Q1b concluded the store should
+own.
+
+**Two mechanisms, both reusing what exists.**
+
+- **A close-out step.** When a change is archived, ask what was agreed that is written
+  nowhere. Forge has `archive`; it has no moment that asks this.
+- **The recording heuristic is computable, not a judgement.** `forge impact` already
+  separates the diff from the blast radius. A fix whose blast radius materially exceeds its
+  diff, or that reaches a shared module, is a claim candidate; one whose radius is its own
+  diff is local and should not be recorded. That is the intuition "look at what the change
+  affects", made mechanical.
+
+**Constraint.** Reuse `CON-`, `PIT-` and ADRs. No new claim kind — "more claim kinds" is on
+the do-not-build list below and this must not be the first exception.
+
+**What counts as failure, declared now.** If, across ten real changes, claims recorded this
+way are never cited by a later session, or the same settled questions get re-litigated at
+the same rate as before, the mechanism failed and the honest response is to delete it. The
+measurable proxy is the count of decisions re-argued per session.
+
+**Sequencing note — this changes the order of R3.** R3 proposes running without a store to
+see whether it is missed. If that experiment runs *before* R5, the store will not be missed
+for an uninteresting reason: it was never given this job. **R5 comes first**, or R3's null
+answers nothing.
+
+---
+
+## R6 — A harsher intake for new projects
+
+**From use, with a diagnosis.** `corvus-db-studio` began with a Navicat manual and the
+request "build something like Navicat". What came back had no screen flow, buttons that
+existed but did nothing, dummy data behind a UI that looked live, and features implemented
+at their most literal reading — the SQL editor was a text area, with no syntax
+highlighting, line numbers, search and replace, or beautify, all of which the reference
+product has and the supplied manual documents.
+
+The failure has a precise shape: **the agent implements the minimum that satisfies the
+words, not the product they imply.** It is worse when a reference exists, because the
+information was available and went unused.
+
+**Three additions.**
+
+- **Product intent, once, at birth.** `docs/system/product.md`: why this product exists,
+  who for, which products it references, and — the part that does work — **non-goals and a
+  deferral list**. `OVERVIEW.md` describes the system; nothing describes the intent, which
+  is why "like Navicat" was never turned into a scope.
+- **A flow artifact before tasks.** Requirements carry scenarios; nothing forces the
+  movement *between* screens, which is exactly what was missing.
+- **Reference parity.** When a reference product is supplied, each feature's spec
+  enumerates what the reference does, and every item is either built or **explicitly
+  deferred with a reason**. For a SQL editor that list is syntax highlighting, line
+  numbers, search and replace, beautify, autocomplete. Silence is the defect.
+
+Two smaller rules follow from the same incident: an interactive control must trace to a
+requirement or not exist, and shipping dummy data behind a live-looking UI is a gate
+failure rather than a style note.
+
+**The safety catch, which matters more than the additions.** The output is an **explicit
+deferral list, not mandatory implementation**. "You may not silently omit" is not "you must
+build everything". Without this, every new project becomes ceremony — the failure mode
+Phase 0 warns about — and the harness gets uninstalled in three weeks.
+
+**What counts as failure.** If the artifacts get written and the same omissions still ship
+— a parity list filled in where nothing is ever selected, or a deferral list that defers
+everything — the intake is a rubber stamp. A second signal: if a new project's intake takes
+longer than its first working increment, ceremony has won.
+
+**Not now:** generating a BRD, SRS or FRS as separate documents. Each would restate the
+capability specs, and two sources that drift apart is the failure this harness exists to
+detect. If an SRS is ever required for an audit or a customer, it should be **exported from
+the specs** rather than written beside them — and only when a real person asks for it.
+
+---
+
+## R7 — A `ui` verification condition
+
+**From use.** Broken layouts, controls that disappear at narrow widths, table text clipped
+as it shrinks, colours applied ad hoc to text, labels and tags. The reason these survive
+review is documented: **type-checking, linting and the build all pass while the layout
+breaks.** They are a separate class of defect and need a separate check.
+
+**Mechanism, and it keeps the architecture.** Add `ui` to `CONDITIONS` and to `commands:`.
+Forge renders nothing and gains no dependency — it runs **the project's own** Playwright
+and axe suite and records the result, exactly as it already does for `tests`. Evidence, not
+opinion.
+
+What such a suite should assert, from published practice:
+
+- no horizontal overflow at a declared viewport set, counting an element only when no
+  ancestor has `overflow-x`
+- every interactive control reachable at every breakpoint
+- colours from tokens only — no raw hex in components
+- WCAG AA contrast, which is computed rather than judged
+- touch targets at 44px, and truncation declared rather than accidental
+
+**One thing that must be a recorded decision rather than a default.** There is no correct
+responsive table. A table used for *comparison* must keep rows and columns and scroll
+horizontally with the first column pinned; a table used for *listing* is better stacked.
+And stacking via `display` **destroys the native table semantics screen readers rely on**.
+Whichever is chosen is a trade, so the choice belongs in the spec, not in whatever the
+component library defaulted to.
+
+**What counts as failure.** If `ui` reports `unavailable` on every project because nobody
+ever stands up the suite, the condition is theatre and should be removed. A second signal:
+if after ten real changes on a project that *does* have the suite the condition has never
+once reported `fail`, either the assertions are too weak or the problem was not there —
+and both are worth knowing.
+
+---
+
+## R8 — Ban the average, prescribe nothing
+
+**From use.** Front ends carry a recognisable "made by AI" feel. The cause is not a lack of
+model capability; it is statistical averaging over unconstrained input. The model predicts
+the most likely design, and the most likely design is the mean of everything it has seen.
+The 2026 tells are specific enough to name: a purple-to-blue gradient, Inter as the default
+face, four cards in a grid, and a single border radius and padding applied to everything so
+the page reads flat.
+
+**Mechanism: a negative list, not a style.** A skill carrying the defaults that are banned
+*because they are defaults*, with nothing prescribed in their place. Banning the average
+forces a choice, and a choice has to be justified. This is the only form of this rule that
+does not limit what the agent may invent.
+
+**Advisory, never a gate.** Forge has measured its own mechanisms and published where they
+failed; it has not earned authority over taste, and asserting it would contradict the
+evidence page. R7 gates the failure modes. R8 only argues.
+
+Design systems worth reading rather than copying, since all publish tokens, components and
+usage guidance under permissive licences: **Primer** (GitHub) first for anything
+data-dense, which is the shape of a database client; then Carbon, Spectrum, Material 3 and
+Cloudscape.
+
+**What counts as failure, and it is the subtle one.** If the banned list becomes a new
+uniform — everybody avoids purple and ships the same green instead — it has replaced one
+average with another and made things worse by looking principled. The list must ban
+*categories of default*, not enumerate forbidden colours, and it should be re-read against
+real output rather than maintained by addition.
+
+---
+
 ## Risks being carried
 
 Named because they are known, not because they are urgent.
