@@ -96,6 +96,9 @@ def _load_grammar(key: str) -> Grammar | None:
         elif key == "go":
             import tree_sitter_go as mod
             raw = mod.language()
+        elif key == "csharp":
+            import tree_sitter_c_sharp as mod
+            raw = mod.language()
         else:
             return None
     except ImportError:
@@ -105,7 +108,8 @@ def _load_grammar(key: str) -> Grammar | None:
 
 def available_languages() -> list[str]:
     """Language keys whose grammar is importable in this environment."""
-    return [k for k in ("python", "typescript", "tsx", "go") if _load_grammar(k) is not None]
+    return [k for k in ("python", "typescript", "tsx", "go", "csharp")
+            if _load_grammar(k) is not None]
 
 
 def language_for_path(path: str) -> str | None:
@@ -250,6 +254,17 @@ _NAMED_DECLS = {
     },
     "go": {
         "function_declaration", "method_declaration",
+    },
+    # C# puts the type and the member in the same shape, so one set covers
+    # both. Fields and events carry no `name` field of their own - they wrap a
+    # `variable_declaration` whose `variable_declarator` is already in
+    # _DECLARATOR_TYPES, so `private string name = "x";` is found by the same
+    # walk that finds `const a = 1` in TypeScript.
+    "csharp": {
+        "namespace_declaration", "class_declaration", "struct_declaration",
+        "interface_declaration", "record_declaration", "enum_declaration",
+        "delegate_declaration", "method_declaration", "constructor_declaration",
+        "property_declaration", "event_declaration",
     },
 }
 _NAMED_DECLS["tsx"] = _NAMED_DECLS["typescript"]

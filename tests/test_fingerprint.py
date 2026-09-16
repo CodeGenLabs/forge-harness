@@ -54,6 +54,14 @@ def test_comment_edits_are_absorbed():
     assert sym(before, "a.py", "f").full_digest == sym(after, "a.py", "f").full_digest
 
 
+def test_csharp_doc_comment_edits_are_absorbed():
+    """`///` XML doc comments are the dominant comment form in C#, and rewording
+    one is the most common edit that must not make a claim look stale."""
+    before = "public class C {\n  /// <summary>Adds.</summary>\n  public int F(int a) { return a; }\n}\n"
+    after = "public class C {\n  /// <summary>Adds two numbers, ignoring overflow.</summary>\n  /// <param name=\"a\">the addend</param>\n  public int F(int a) { return a; }\n}\n"
+    assert sym(before, "S.cs", "C.F").full_digest == sym(after, "S.cs", "C.F").full_digest
+
+
 @pytest.mark.parametrize(
     ("path", "name", "double", "single"),
     [
@@ -95,6 +103,8 @@ def test_string_prefixes_survive_quote_normalisation(prefixed, plain):
         ("a.py", "f", "def f(x):\n    return x > 1\n", "def f(x):\n    return x < 1\n"),
         ("m.go", "F", "package m\nfunc F(a, b int) int { return a * b }\n",
                       "package m\nfunc F(a, b int) int { return a / b }\n"),
+        ("S.cs", "C.F", "public class C { public int F(int a) { return a * 2; } }\n",
+                        "public class C { public int F(int a) { return a / 2; } }\n"),
     ],
 )
 def test_operators_are_not_dropped(path, name, a, b):
@@ -169,6 +179,18 @@ def test_symbol_without_a_body_reports_signature_equal_to_full():
         ("m.go", "package m\ntype Cfg struct{ A int }\n", "Cfg"),
         ("m.go", "package m\nfunc (c Cfg) Run() int { return 1 }\n", "Run"),
         ("a.py", "@decorator\ndef wrapped(x):\n    return x\n", "wrapped"),
+        # C# declares a type and its members in the same shape, so one table
+        # entry covers both. A field carries no `name` of its own - it wraps a
+        # `variable_declarator`, the node TypeScript's `const a = 1` already
+        # needed, so it is found without a C#-specific rule.
+        ("S.cs", "public class Calc { public int Add(int a) { return a; } }\n", "Calc"),
+        ("S.cs", "public class Calc { public int Add(int a) { return a; } }\n", "Calc.Add"),
+        ("S.cs", "public interface IThing { int Id { get; } }\n", "IThing"),
+        ("S.cs", "public record Point(int X, int Y);\n", "Point"),
+        ("S.cs", "public enum Color { Red, Blue }\n", "Color"),
+        ("S.cs", "public struct Vec { public int X; }\n", "Vec"),
+        ("S.cs", 'public class C { private string name = "x"; }\n', "name"),
+        ("S.cs", "public class C { public int Id => 1; }\n", "C.Id"),
     ],
 )
 def test_declaration_forms_resolve(path, source, name):

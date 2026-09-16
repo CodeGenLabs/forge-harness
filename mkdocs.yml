@@ -73,6 +73,7 @@ nav:
       - Constitution: en/constitution.md
       - Workflow & Gates: en/workflow.md
       - System Knowledge: en/system-knowledge.md
+      - Evidence: en/evidence.md
   - Tiếng Việt:
       - Giới thiệu: vi/index.md
       - Bắt đầu nhanh: vi/getting-started.md
@@ -85,6 +86,7 @@ nav:
       - Hiến pháp kỹ nghệ: vi/constitution.md
       - Vòng đời phát triển: vi/workflow.md
       - Tri thức hệ thống: vi/system-knowledge.md
+      - Bằng chứng: vi/evidence.md
   - 日本語:
       - 概要: ja/index.md
       - クイックスタート: ja/getting-started.md
@@ -97,3 +99,4 @@ nav:
       - 設計憲法: ja/constitution.md
       - 開発ワークフロー: ja/workflow.md
       - システム知識: ja/system-knowledge.md
+      - エビデンス: ja/evidence.md

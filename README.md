@@ -65,9 +65,18 @@ forge install --host codex        # For OpenAI Codex / Cursor / ChatGPT (AGENTS.
 ```
 
 ### Step 4: Synchronize & Verify Project Health
+
+> **Order matters.** The derived tier is generated from `HEAD`, so commit what Forge
+> scaffolded *before* you sync, then commit the tier on its own. Syncing first produces a
+> tier that is stale the moment it is written, and `forge check` will say so.
+
 ```bash
 # Declare build/test commands in .forge/config.yaml if applicable (e.g. npm test, pytest, dotnet test)
+git add -A && git commit -m "chore: adopt forge"
+
 forge sync derived
+git add docs/system/derived && git commit -m "chore: sync derived tier"
+
 forge check   # When it prints "ok - no issues", you are 100% ready!
 ```
 *(For existing codebases — Brownfield)*: Run this additional command so Forge automatically maps your modules, languages, and dependencies:

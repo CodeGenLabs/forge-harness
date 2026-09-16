@@ -26,6 +26,7 @@ grammars = [
     "tree-sitter-python>=0.23",
     "tree-sitter-typescript>=0.23",
     "tree-sitter-go>=0.23",
+    "tree-sitter-c-sharp>=0.23",
 ]
 dev = ["pytest>=8"]
 docs = [

@@ -76,7 +76,7 @@ Expected output:
 ok python         3.11.9
 ok git            2.44.0
 ok tree_sitter    0.23.2
-ok grammars       python, typescript, go
+ok grammars       python, typescript, tsx, go, csharp
 ok console        cp1252 (safe output enabled)
 Forge is ready.
 ```

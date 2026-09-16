@@ -162,11 +162,15 @@ forge install --host codex        # Cursor / Codex向け (AGENTS.md)
 
 # 3. .forge/config.yaml にビルド/テストコマンドを設定
 
-# 4. 派生層の同期とインベントリスキャン:
+# 4. 足場を先にコミットする（派生層は HEAD から生成されるため、順序が重要）:
+git add -A && git commit -m "chore: adopt forge"
+
+# 5. 派生層の同期とインベントリスキャン（同期後、派生層のみを単独でコミット）:
 forge sync derived
+git add docs/system/derived && git commit -m "chore: sync derived tier"
 forge bootstrap derive
 
-# 5. リポジトリ健全性の検証:
+# 6. リポジトリ健全性の検証:
 forge doctor
 forge check
 ```

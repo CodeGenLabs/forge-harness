@@ -65,9 +65,18 @@ forge install --host codex        # Dành cho OpenAI Codex / Cursor / ChatGPT (A
 ```
 
 ### Bước 4: Đồng bộ dữ liệu & Kiểm tra dự án
+
+> **Thứ tự quan trọng.** Tầng phái sinh được sinh ra từ `HEAD`, nên hãy commit những gì
+> Forge vừa tạo *trước khi* sync, rồi commit tầng phái sinh thành một commit riêng. Sync
+> trước sẽ tạo ra tầng phái sinh lạc hậu ngay khi vừa ghi, và `forge check` sẽ báo lỗi.
+
 ```bash
 # Khai báo lệnh build/test trong .forge/config.yaml nếu có (ví dụ: npm test, pytest, dotnet test)
+git add -A && git commit -m "chore: adopt forge"
+
 forge sync derived
+git add docs/system/derived && git commit -m "chore: sync derived tier"
+
 forge check   # Màn hình hiện "ok - no issues" là sẵn sàng 100%!
 ```
 *(Nếu là dự án đã có sẵn code — Brownfield)*: Chạy thêm lệnh sau để Forge tự động quét và lập bản đồ các module, ngôn ngữ, packages:

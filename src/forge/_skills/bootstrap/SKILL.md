@@ -68,11 +68,12 @@ A conformance test that exists to stop one mistake - `no-mock-in-bundle.test.ts`
 
 **Then ask where the knowledge already lives.** A rule the project wrote down
 is the best source for a candidate and the worst reason to keep one: an agent
-that finds the document gets the knowledge without the claim. Measured -
-`docs/measurements/q1-does-the-store-help.md` - three agents pointed at a
-claim store and three pointed only at the code avoided the same trap at the
-same rate, and every agent in the second arm found the rules file unaided and
-cited the exact section the claim had been derived from.
+that finds the document gets the knowledge without the claim. Measured twice
+(Q1 and W2, https://codegenlabs.github.io/forge-harness/en/evidence/): three
+agents pointed at a claim store and three pointed only at the code avoided the
+same trap at the same rate, both times, and every agent in the second arm found
+the written rule unaided and cited the exact section the claim had been derived
+from.
 
 So for each candidate drawn from a document, answer one question before
 writing it: **what does the claim add that its source does not?** Two answers

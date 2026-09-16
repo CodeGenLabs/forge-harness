@@ -90,11 +90,11 @@ anyone, read each edit against three questions:
   it, say so in the prose, because an unenforced repository-wide rule is a
   claim whose anchor cannot go stale when it breaks.
 
-  Measured, in `docs/measurements/q1c-what-an-anchor-does-not-cover.md`:
+  Measured (Q1c, https://codegenlabs.github.io/forge-harness/en/evidence/):
   seven of eighteen pitfalls and invariants across three repositories can
   be falsified without touching an anchor. Six were caught anyway by a test,
-  a check or a foreign key. One was caught by nothing, and had been green
-  for its whole life.
+  a check or a foreign key. One was caught only instance by instance, and
+  the rule across instances had been green for its whole life.
 
 Set `reviewed:` to today only where you actually re-read the prose and agreed
 with it. It feeds review-debt reporting, and a date stamped by habit makes
