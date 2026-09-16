@@ -1319,9 +1319,14 @@
             "covers": [],
             "line": 422,
             "name": "test_go_comments_vs_literals"
+          },
+          {
+            "covers": [],
+            "line": 444,
+            "name": "test_comments_survive_depth_and_multibyte_text"
           }
         ],
-        "untagged": 39
+        "untagged": 40
       },
       "tests/test_evidence.py": {
         "language": "python",
@@ -3880,9 +3885,9 @@
       }
     },
     "tagged_tests": 0,
-    "total_tests": 739
+    "total_tests": 740
   },
-  "generated_from_commit": "77e9f76c782c7f0c8e744a063391aa6ae2dfa7e7",
+  "generated_from_commit": "8368446e0a1619e07472097bca59fa2869120e87",
   "generator": "forge sync derived",
   "tool": "forge"
 }
