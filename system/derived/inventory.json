@@ -3,20 +3,20 @@
   "data": {
     "by_language": {
       "markdown": {
-        "files": 84,
-        "lines": 5932
+        "files": 93,
+        "lines": 7741
       },
       "other": {
         "files": 2,
-        "lines": 41
+        "lines": 45
       },
       "powershell": {
         "files": 1,
         "lines": 100
       },
       "python": {
-        "files": 59,
-        "lines": 23286
+        "files": 60,
+        "lines": 23508
       },
       "script": {
         "files": 1,
@@ -28,18 +28,18 @@
       },
       "toml": {
         "files": 1,
-        "lines": 50
+        "lines": 51
       },
       "yaml": {
         "files": 9,
-        "lines": 356
+        "lines": 364
       }
     },
     "entry_points": [
       "src/forge/cli.py"
     ],
-    "files_considered": 158,
-    "files_tracked": 158,
+    "files_considered": 168,
+    "files_tracked": 168,
     "stack": {
       "python": {
         "lockfile": null,
@@ -75,6 +75,8 @@
       "tests/skills/implement/loops-on-a-failing-approach.md",
       "tests/skills/implement/scope-creep.md",
       "tests/skills/implement/untagged-test.md",
+      "tests/skills/interface/banned-list-becomes-a-uniform.md",
+      "tests/skills/interface/button-vanishes-at-375.md",
       "tests/skills/investigate/guessed-rationale.md",
       "tests/skills/investigate/re-derives-an-existing-claim.md",
       "tests/skills/investigate/unanchored-candidate.md",
@@ -117,7 +119,7 @@
       "tools/pressure_test.py"
     ]
   },
-  "generated_from_commit": "a7702fb192d95f4e75d49c00864daefdeeee4602",
+  "generated_from_commit": "8368446e0a1619e07472097bca59fa2869120e87",
   "generator": "forge sync derived",
   "tool": "forge"
 }
