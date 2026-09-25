@@ -51,6 +51,9 @@ class Config:
     #: still matches, which is what freshness actually means - this is about
     #: how long it has been since anything re-checked that.
     derived_stale_commits: int = 20
+    #: House rules per phase or artifact (e.g. `rules.spec`). Surfaced to the
+    #: model by `forge instructions <phase>`.
+    rules: dict[str, list[str]] = field(default_factory=dict)
     #: Where the file came from, or None when defaults are in use.
     source: str | None = None
     #: Populated when the file exists but could not be read.
@@ -84,6 +87,13 @@ def load_config(repo: Path) -> Config:
     derive_section = _section(raw, "derive")
     budgets = _section(raw, "budgets")
     thresholds = _section(raw, "thresholds")
+    rules_section = _section(raw, "rules")
+    rules: dict[str, list[str]] = {}
+    for key, value in rules_section.items():
+        parsed = _string_list(value)
+        if parsed:
+            rules[str(key)] = parsed
+
     defaults = Config()
     return Config(
         kernel_version=kernel_version,
@@ -98,6 +108,7 @@ def load_config(repo: Path) -> Config:
         derived_stale_commits=_positive_int(
             thresholds.get("derived_stale_commits"), defaults.derived_stale_commits
         ),
+        rules=rules,
         source=CONFIG_PATH,
     )
 

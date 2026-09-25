@@ -25,7 +25,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from . import change, derive, impact, schema, store
+from . import change, config, derive, impact, schema, store
 
 __all__ = ["resolve", "InstructionError"]
 
@@ -129,6 +129,9 @@ def resolve(repo: Path, item: change.Change, artifact_id: str,
         candidate = f"{_TEMPLATE_DIR}/{artifact.template}"
         template = candidate if (repo / candidate).is_file() else None
 
+    cfg = config.load_config(repo)
+    rules = list(cfg.rules.get(artifact_id, []))
+
     return {
         "artifact": artifact.id,
         "change": item.name,
@@ -143,6 +146,7 @@ def resolve(repo: Path, item: change.Change, artifact_id: str,
             "derived": sorted(set(derived)),
             "claims": claims_out,
         },
+        "rules": rules,
         "unresolved": sorted(set(unresolved)),
     }
 

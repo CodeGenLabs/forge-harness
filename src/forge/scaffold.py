@@ -255,6 +255,11 @@ budgets:
 thresholds:
   # How many recent changes the orphan check looks back over.
   orphan_change_window: 20
+
+# rules:
+#   # Project house rules surfaced to agents during `forge instructions <phase>`.
+#   spec:
+#     - "money is integer minor units"
 """
 
 _ADOPTION_ADR = """\

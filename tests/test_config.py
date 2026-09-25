@@ -25,6 +25,34 @@ def test_load_config_defaults(tmp_path):
     assert cfg.kernel_version is None
     assert cfg.exclude == []
     assert cfg.always_loaded_lines == 400
+    assert cfg.rules == {}
+
+
+def test_load_config_rules(tmp_path):
+    target = tmp_path / config.CONFIG_PATH
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(
+        "rules:\n"
+        "  spec:\n"
+        "    - money is integer minor units\n"
+        "    - no floats\n"
+        "  proposal:\n"
+        "    - one sentence why\n",
+        encoding="utf-8",
+    )
+    cfg = config.load_config(tmp_path)
+    assert cfg.rules == {
+        "spec": ["money is integer minor units", "no floats"],
+        "proposal": ["one sentence why"],
+    }
+
+
+def test_load_config_rules_invalid(tmp_path):
+    target = tmp_path / config.CONFIG_PATH
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text("rules: 'not a mapping'\n", encoding="utf-8")
+    cfg = config.load_config(tmp_path)
+    assert cfg.rules == {}
 
 
 def test_load_config_kernel_version(tmp_path):

@@ -4,7 +4,7 @@
     "by_language": {
       "markdown": {
         "files": 93,
-        "lines": 7745
+        "lines": 7906
       },
       "other": {
         "files": 2,
@@ -16,7 +16,7 @@
       },
       "python": {
         "files": 60,
-        "lines": 23608
+        "lines": 23686
       },
       "script": {
         "files": 1,
@@ -119,7 +119,7 @@
       "tools/pressure_test.py"
     ]
   },
-  "generated_from_commit": "788aea13a5224d4cc2e199fce682ad3aa995bc92",
+  "generated_from_commit": "fcd8adbc862190dbc124b601a2e398cf14b1ea64",
   "generator": "forge sync derived",
   "tool": "forge"
 }
