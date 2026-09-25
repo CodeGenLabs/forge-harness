@@ -88,12 +88,15 @@ def get_test_command(repo: Path) -> str | None:
     return str(cmd).strip()
 
 
-def build_test_command(base_cmd: str, target: str) -> str:
+def build_test_command(base_cmd: str, target: str, repo: Path | None = None) -> str:
     """Construct a shell command that runs specifically *target*.
 
-    Handles pytest, vitest, jest, and generic runners.
+    Handles pytest, vitest, jest, `dotnet test`, and generic runners. *repo* is
+    needed only by `dotnet test`, which runs a project rather than a file.
     """
     lower = base_cmd.lower()
+    if _DOTNET_TEST_RE.search(base_cmd):
+        return _dotnet_test_command(base_cmd, target, repo)
     if "vitest" in lower or "jest" in lower:
         if "::" in target:
             file_part, test_part = target.split("::", 1)
@@ -101,6 +104,71 @@ def build_test_command(base_cmd: str, target: str) -> str:
         return f"{base_cmd} {target}"
     # Default (pytest, go test, etc.): append target directly
     return f"{base_cmd} {target}"
+
+
+_DOTNET_TEST_RE = re.compile(r"\bdotnet\s+test\b", re.I)
+# What selects *what* to test in the project's own line - replaced by the
+# evidence target's project. `--solution X` / `--project X` (Microsoft.Testing
+# .Platform) or a positional .sln/.slnx/.csproj path (VSTest).
+_DOTNET_SELECTOR_RE = re.compile(
+    r"""\s--(?:solution|project)\s+(?:"[^"]*"|\S+)|\s(?:"[^"]*\.(?:slnx?|csproj)"|\S+\.(?:slnx?|csproj))(?=\s|$)""",
+    re.I,
+)
+
+
+def _dotnet_test_command(base_cmd: str, target: str, repo: Path | None) -> str:
+    """`dotnet test` runs a project, not a file, and selects a test by filter.
+
+    Appending `path/to/FooTests.cs::Name` to the project's own line - what the
+    generic branch does - makes `dotnet test` fail on an unknown argument, so a
+    passing test is reported as failing evidence. Instead: run the project that
+    contains the file, and filter to the method. Microsoft.Testing.Platform
+    (opted into with `--solution`/`--project`, or `test.runner` in global.json)
+    takes `--filter-method`; VSTest takes `--filter FullyQualifiedName~`.
+    """
+    file_part, _, test_part = target.partition("::")
+    mtp = bool(re.search(r"\s--(?:solution|project)\s", base_cmd)) or _global_json_uses_mtp(repo)
+    rest = _DOTNET_SELECTOR_RE.sub("", " " + base_cmd).strip()
+    # Whatever precedes `dotnet test` (an env prefix, a `cd`) is kept, and so are
+    # the project's own flags after it (`-c Release`, `--no-build`, ...).
+    before, args = _DOTNET_TEST_RE.split(rest, maxsplit=1)
+    prefix = f"{before}dotnet test".strip()
+    project = _nearest_project_dir(repo, file_part) if repo is not None else None
+    project_part = f'"{project}"' if project else ""
+    if mtp:
+        cmd = f"{prefix} --project {project_part}" if project else prefix
+        cmd += args
+        if test_part:
+            cmd += f' --filter-method "*.{test_part}"'
+        return cmd
+    cmd = f"{prefix} {project_part}".rstrip() + args
+    if test_part:
+        cmd += f' --filter "FullyQualifiedName~{test_part}"'
+    return cmd
+
+
+def _nearest_project_dir(repo: Path, file_part: str) -> str | None:
+    """The directory of the nearest .csproj/.fsproj at or above the test file, repo-relative."""
+    root = repo.resolve()
+    here = (root / file_part).parent
+    while True:
+        if any(here.glob("*.csproj")) or any(here.glob("*.fsproj")):
+            return here.relative_to(root).as_posix() or "."
+        if here == root or root not in here.parents:
+            return None
+        here = here.parent
+
+
+def _global_json_uses_mtp(repo: Path | None) -> bool:
+    if repo is None:
+        return False
+    try:
+        import json
+        data = json.loads((repo / "global.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return False
+    runner = (data.get("test") or {}).get("runner") if isinstance(data, dict) else None
+    return isinstance(runner, str) and runner.lower() == "microsoft.testing.platform"
 
 
 def _extract_failures(stdout: bytes | None, stderr: bytes | None) -> list[str]:
@@ -130,7 +198,7 @@ def run_evidence_test(
             reason="no test command configured in .forge/config.yaml",
         )
 
-    cmd = build_test_command(cmd_base, target)
+    cmd = build_test_command(cmd_base, target, repo)
     start = time.perf_counter()
     try:
         completed = subprocess.run(
