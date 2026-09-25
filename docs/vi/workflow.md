@@ -13,7 +13,7 @@ Mọi giai đoạn dưới đây đều là một node trong đồ thị phụ t
 2. **Cổng kiểm soát (Gates) là các mã thoát lệnh (Exit Codes):**  
    Một cổng kiểm soát có cấu trúc: `{point, check, blocking, onError}`. Lệnh `forge gate <point>` chạy toàn bộ các phép kiểm tra cơ học đã đăng ký tại điểm đó và trả về mã thoát khác 0 nếu có bất kỳ kiểm tra dạng chặn (blocking) nào thất bại. Quy trình không dựa dẫm vào những câu dặn dò mơ hồ như "AI hãy cẩn thận".
 
-Các điểm đặt cổng: `investigate:pre`, `spec:post`, `impact:post`, `design:post`, `analyze:post`, `tasks:post`, `implement:pre`, `implement:task:post`, `verify:pre`, `verify:post`, `sync:pre`, `converge:post`.
+Các điểm đặt cổng (do kernel cố định, `forge gate --help` in danh sách hiện tại): `investigate:pre`, `spec:post`, `impact:post`, `analyze:post`, `implement:pre`, `implement:task:post`, `verify:post`, `sync:pre`, `converge:post`. Không có cổng sau `proposal`, `design` hay `tasks`: các artifact đó do DAG kiểm tra.
 
 ---
 
@@ -98,7 +98,7 @@ flowchart TD
 ### 3.7 `tasks` (Lập Kế hoạch Nhiệm vụ TDD)
 - **Mục đích:** Phân rã thiết kế thành danh sách các task nhỏ, có thể kiểm thử độc lập, mỗi task bắt buộc phải gắn thẻ mã Requirement mà nó giải quyết (`[REQ-xxx]`).
 - **Đầu ra:** `changes/NNNN/tasks.md`.
-- **Cổng kiểm soát:** `forge gate tasks:post --change <N>`
+- **Cổng kiểm soát:** `forge gate analyze:post --change <N>` (mọi Requirement đều có task tương ứng)
 
 ### 3.8 `implement` (Triển khai theo chuẩn TDD)
 - **Mục đích:** Thực thi từng task một cách kỷ luật theo đúng chu trình:

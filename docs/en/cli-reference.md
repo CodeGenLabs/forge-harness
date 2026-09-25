@@ -71,18 +71,22 @@ forge change list
 # Show change status and open gates
 forge change show 0001
 
-# Archive a completed change
-forge change archive 0001
+# Archive a completed change (a top-level command, not a `change` subcommand)
+forge archive --change 0001
 ```
 
 ### `forge gate <checkpoint>`
 Evaluates whether a change satisfies prerequisites to advance to the next development phase:
 ```bash
-forge gate proposal:pre --change 0001
-forge gate proposal:post --change 0001
-forge gate design:post --change 0001
+forge gate spec:post --change 0001
 forge gate impact:post --change 0001
+forge gate analyze:post --change 0001
+forge gate implement:pre --change 0001
 ```
+
+The points are fixed by the kernel: `investigate:pre`, `spec:post`, `impact:post`, `analyze:post`, `implement:pre`,
+`implement:task:post`, `verify:post`, `sync:pre`, `converge:post` (`forge gate --help` prints the current list).
+There is no gate after `proposal` or `design`: those artifacts are checked by the DAG, not by a gate.
 
 ### `forge verify`
 Runs test commands configured in `.forge/config.yaml` and reconciles touched claims against git diff:

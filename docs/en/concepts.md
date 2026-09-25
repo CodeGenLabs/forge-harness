@@ -95,16 +95,16 @@ sequenceDiagram
 
     Dev->>Forge: forge change new "jwt-auth"
     Note over Dev,Forge: Stage 1: Proposal (Why)
-    Dev->>Forge: forge gate proposal:pre / post
+    Dev->>Forge: forge gate spec:post
     Note over Dev,Forge: Stage 2: Design & Impact (What)
-    Dev->>Forge: forge gate design:post
     Dev->>Forge: forge gate impact:post
+    Dev->>Forge: forge gate analyze:post
     Note over Dev,Forge: Stage 3: Implementation & Tasks
     Dev->>Git: Edit Code & Tests
     Note over Dev,Forge: Stage 4: Verification & Archive
     Dev->>Forge: forge verify --change 0001
     Forge-->>Dev: PASS (Tests green, claims accounted for)
-    Dev->>Forge: forge change archive 0001
+    Dev->>Forge: forge archive --change 0001
 ```
 
 ---
