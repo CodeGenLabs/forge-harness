@@ -25,7 +25,7 @@ import shutil as _shutil
 import sys
 from pathlib import Path
 
-from . import (bootstrap, change, config, derive, gates, gitio, hooks, hosts, impact,
+from . import (anchor, bootstrap, change, config, derive, gates, gitio, hooks, hosts, impact,
                instructions, ledger, reconcile as reconcile_mod, report, scaffold,
                schema, skills, spec, store, trace, validate, verify)
 from .anchor import (AnchorError, Status, classify, classify_store,
@@ -806,6 +806,84 @@ def _cmd_claim_show(args: argparse.Namespace) -> int:
               f"store.id_unique", file=sys.stderr)
         return _EXIT_CHANGED
     return _EXIT_OK
+
+
+def _cmd_claim_stamp(args: argparse.Namespace) -> int:
+    repo = args.repo.resolve()
+    if not gitio.is_repo(repo):
+        print(f"forge: {repo} is not a git repository", file=sys.stderr)
+        return _EXIT_USAGE
+
+    try:
+        sha = gitio.rev_parse(repo, args.head)
+    except (gitio.GitError, gitio.InvalidRevision) as exc:
+        print(f"forge: {exc}", file=sys.stderr)
+        return _EXIT_USAGE
+
+    all_claims = list(store.load_store(repo))
+    claims_by_id = {c.id: c for c in all_claims if not c.is_candidate}
+
+    if args.all:
+        target_ids = []
+        for c in all_claims:
+            if c.is_candidate or not c.anchors:
+                continue
+            has_unstamped = False
+            for raw in c.anchors:
+                try:
+                    a = anchor.parse_anchor(raw)
+                    if not a.sha:
+                        has_unstamped = True
+                        break
+                except anchor.AnchorError:
+                    continue
+            if has_unstamped:
+                target_ids.append(c.id)
+        if not target_ids:
+            print("no claims have unstamped anchors")
+            return _EXIT_OK
+    elif args.id:
+        target_ids = args.id
+    else:
+        print("forge: `claim stamp` needs a claim id or --all", file=sys.stderr)
+        return _EXIT_USAGE
+
+    short = sha[:10]
+    exit_code = _EXIT_OK
+    for cid in target_ids:
+        if cid not in claims_by_id:
+            print(f"forge: no claim defines {cid}", file=sys.stderr)
+            exit_code = _EXIT_CHANGED
+            continue
+        claim = claims_by_id[cid]
+        if not claim.anchors:
+            print(f"claim {cid} has no anchors to stamp")
+            continue
+        restamped = ledger._restamp(repo, cid, sha, _dt.date.today())
+        if not restamped:
+            all_stamped_at_head = True
+            for raw in claim.anchors:
+                try:
+                    a = anchor.parse_anchor(raw)
+                    if a.sha != short:
+                        all_stamped_at_head = False
+                        break
+                except anchor.AnchorError:
+                    all_stamped_at_head = False
+                    break
+            if all_stamped_at_head:
+                print(f"claim {cid} already stamped at {short}")
+            else:
+                print(f"forge: no anchor of {cid} could be restamped; the claim may have "
+                      f"moved or its anchors may be malformed - `forge check --scope store`",
+                      file=sys.stderr)
+                exit_code = _EXIT_CHANGED
+            continue
+        print(f"stamped  {cid} at {short} ({len(restamped)} anchor line(s))")
+        for where in restamped:
+            print(f"  {where}")
+
+    return exit_code
 
 
 def _load_schema(repo: Path, name: str) -> schema.Schema | None:
@@ -1891,6 +1969,20 @@ def build_parser() -> argparse.ArgumentParser:
     claim_show.add_argument("--repo", type=Path, default=Path.cwd())
     claim_show.add_argument("--json", action="store_true")
     claim_show.set_defaults(func=_cmd_claim_show)
+
+    claim_stamp = claim_sub.add_parser(
+        "stamp",
+        help="stamp one or more claims' anchors at HEAD (or --head)",
+        description="Stamp unstamped anchors with the current commit SHA and "
+                    "update reviewed date to today.",
+    )
+    claim_stamp.add_argument("id", nargs="*", help="the claim ID(s) to stamp")
+    claim_stamp.add_argument("--all", action="store_true",
+                             help="stamp all claims that have unstamped anchors")
+    claim_stamp.add_argument("--head", default="HEAD",
+                             help="commit to stamp anchors at (default: HEAD)")
+    claim_stamp.add_argument("--repo", type=Path, default=Path.cwd())
+    claim_stamp.set_defaults(func=_cmd_claim_stamp)
 
     chg = sub.add_parser("change", help="open, inspect and re-track a change")
     chg_sub = chg.add_subparsers(dest="change_command", required=True)

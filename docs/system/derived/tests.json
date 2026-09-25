@@ -2308,9 +2308,24 @@
             "covers": [],
             "line": 251,
             "name": "test_the_ledger_survives_a_write_and_a_read"
+          },
+          {
+            "covers": [],
+            "line": 262,
+            "name": "test_confirm_restamps_block_list_anchors"
+          },
+          {
+            "covers": [],
+            "line": 289,
+            "name": "test_confirm_stamps_unstamped_anchors_in_block_list"
+          },
+          {
+            "covers": [],
+            "line": 314,
+            "name": "test_confirm_stamps_unstamped_anchors_in_flow_list"
           }
         ],
-        "untagged": 22
+        "untagged": 25
       },
       "tests/test_lifecycle.py": {
         "language": "python",
@@ -2988,15 +3003,30 @@
           {
             "covers": [],
             "line": 264,
+            "name": "test_claim_stamp_single_claim"
+          },
+          {
+            "covers": [],
+            "line": 298,
+            "name": "test_claim_stamp_all"
+          },
+          {
+            "covers": [],
+            "line": 336,
+            "name": "test_claim_stamp_unknown_claim_exits_one"
+          },
+          {
+            "covers": [],
+            "line": 349,
             "name": "test_status_json"
           },
           {
             "covers": [],
-            "line": 275,
+            "line": 360,
             "name": "test_an_unbuilt_tier_is_reported_once_not_five_times"
           }
         ],
-        "untagged": 25
+        "untagged": 28
       },
       "tests/test_schema.py": {
         "language": "python",
@@ -3925,9 +3955,9 @@
       }
     },
     "tagged_tests": 0,
-    "total_tests": 748
+    "total_tests": 754
   },
-  "generated_from_commit": "fcd8adbc862190dbc124b601a2e398cf14b1ea64",
+  "generated_from_commit": "109ce52ea830fbbd1f93fb485ed8c2eb628f7bd6",
   "generator": "forge sync derived",
   "tool": "forge"
 }

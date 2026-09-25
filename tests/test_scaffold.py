@@ -259,6 +259,91 @@ def test_claim_show_json(fresh, capsys):
 
 
 # ---------------------------------------------------------------------------
+# forge claim stamp
+# ---------------------------------------------------------------------------
+
+def test_claim_stamp_single_claim(fresh, capsys):
+    fresh.write("src/app.py", "def greet(name):\n    return f'hello {name}'\n")
+    fresh.commit("code")
+    main(["init", "--repo", str(fresh.root)])
+    fresh.write("docs/system/domain.md",
+        "# Domain\n\n### INV-greeting - the greeting never changes shape\n\n"
+        "```claim\n"
+        "kind:     invariant\n"
+        "status:   asserted\n"
+        "truth-source: code\n"
+        "anchors:\n"
+        '  - "src/app.py#greet"\n'
+        "reviewed: 2026-09-01\n"
+        "```\n\n"
+        "Prose about the greeting.\n"
+    )
+    head = fresh.commit("a claim with unstamped anchor")
+    capsys.readouterr()
+
+    # Stamp the claim
+    assert main(["claim", "stamp", "INV-greeting", "--repo", str(fresh.root)]) == 0
+    out = capsys.readouterr().out
+    assert f"stamped  INV-greeting at {head[:10]}" in out
+    assert "docs/system/domain.md" in out
+
+    # Drift should now report fresh
+    assert main(["drift", "--store", "--repo", str(fresh.root)]) == 0
+    drift_out = capsys.readouterr().out
+    assert "1 fresh" in drift_out or "fresh" in drift_out
+
+    # Stamping again says already stamped
+    assert main(["claim", "stamp", "INV-greeting", "--repo", str(fresh.root)]) == 0
+    assert f"already stamped at {head[:10]}" in capsys.readouterr().out
+
+
+def test_claim_stamp_all(fresh, capsys):
+    fresh.write("src/app.py", "def greet(name):\n    return f'hello {name}'\n\ndef farewell():\n    return 'bye'\n")
+    fresh.commit("code")
+    main(["init", "--repo", str(fresh.root)])
+    fresh.write("docs/system/domain.md",
+        "# Domain\n\n### INV-greeting - the greeting never changes shape\n\n"
+        "```claim\n"
+        "kind:     invariant\n"
+        "status:   asserted\n"
+        "truth-source: code\n"
+        "anchors:\n"
+        '  - "src/app.py#greet"\n'
+        "reviewed: 2026-09-01\n"
+        "```\n\n"
+        "Prose about the greeting.\n\n"
+        "### INV-farewell - the farewell never changes shape\n\n"
+        "```claim\n"
+        "kind:     invariant\n"
+        "status:   asserted\n"
+        "truth-source: code\n"
+        'anchors:  ["src/app.py#farewell"]\n'
+        "reviewed: 2026-09-01\n"
+        "```\n\n"
+        "Prose about farewell.\n"
+    )
+    head = fresh.commit("claims with unstamped anchors")
+    capsys.readouterr()
+
+    assert main(["claim", "stamp", "--all", "--repo", str(fresh.root)]) == 0
+    out = capsys.readouterr().out
+    assert f"stamped  INV-greeting at {head[:10]}" in out
+    assert f"stamped  INV-farewell at {head[:10]}" in out
+
+    # Running --all again reports no claims have unstamped anchors
+    assert main(["claim", "stamp", "--all", "--repo", str(fresh.root)]) == 0
+    assert "no claims have unstamped anchors" in capsys.readouterr().out
+
+
+def test_claim_stamp_unknown_claim_exits_one(fresh, capsys):
+    main(["init", "--repo", str(fresh.root)])
+    fresh.commit("scaffold")
+    capsys.readouterr()
+    assert main(["claim", "stamp", "INV-404", "--repo", str(fresh.root)]) == 1
+    assert "no claim defines INV-404" in capsys.readouterr().err
+
+
+# ---------------------------------------------------------------------------
 # --json on every command
 # ---------------------------------------------------------------------------
 

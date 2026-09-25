@@ -259,3 +259,80 @@ def test_the_ledger_survives_a_write_and_a_read(drifted):
     assert entry.resolved == "2026-09-11"
     assert "never enforced" in entry.evidence
     assert entry.parse_error is None
+
+
+def test_confirm_restamps_block_list_anchors(repo):
+    repo.write("src/app.py", CODE)
+    base = repo.commit("the code")
+    main(["init", "--repo", str(repo.root)])
+    repo.write("docs/system/domain.md",
+        "# Domain\n\n### INV-greeting - the greeting never changes shape\n\n"
+        "```claim\n"
+        "kind:     invariant\n"
+        "status:   asserted\n"
+        "truth-source: code\n"
+        "anchors:\n"
+        f'  - "src/app.py#greet@{base}"\n'
+        "reviewed: 2026-09-01\n"
+        "```\n\n"
+        "Prose about the greeting.\n"
+    )
+    repo.commit("a claim with block-list anchors")
+    repo.write("src/app.py", "def greet(name):\n    return f'hi {name}'\n")
+    new_head = repo.commit("the signature changed")
+    record(repo)
+    entry, restamped = ledger.confirm(repo.root, "D-001", today=TODAY)
+    assert entry.verdict == "confirmed"
+    assert restamped
+    after = next(c for c in store.load_store(repo.root))
+    assert after.anchors == [f"src/app.py#greet@{new_head[:10]}"]
+
+
+def test_confirm_stamps_unstamped_anchors_in_block_list(repo):
+    repo.write("src/app.py", CODE)
+    repo.commit("the code")
+    main(["init", "--repo", str(repo.root)])
+    repo.write("docs/system/domain.md",
+        "# Domain\n\n### INV-greeting - the greeting never changes shape\n\n"
+        "```claim\n"
+        "kind:     invariant\n"
+        "status:   asserted\n"
+        "truth-source: code\n"
+        "anchors:\n"
+        '  - "src/app.py#greet"\n'
+        "reviewed: 2026-09-01\n"
+        "```\n\n"
+        "Prose about the greeting.\n"
+    )
+    head = repo.commit("a claim with unstamped block-list anchors")
+    record(repo)
+    entry, restamped = ledger.confirm(repo.root, "D-001", today=TODAY)
+    assert entry.verdict == "confirmed"
+    assert restamped
+    after = next(c for c in store.load_store(repo.root))
+    assert after.anchors == [f"src/app.py#greet@{head[:10]}"]
+
+
+def test_confirm_stamps_unstamped_anchors_in_flow_list(repo):
+    repo.write("src/app.py", CODE)
+    repo.commit("the code")
+    main(["init", "--repo", str(repo.root)])
+    repo.write("docs/system/domain.md",
+        "# Domain\n\n### INV-greeting - the greeting never changes shape\n\n"
+        "```claim\n"
+        "kind:     invariant\n"
+        "status:   asserted\n"
+        "truth-source: code\n"
+        'anchors:  ["src/app.py#greet"]\n'
+        "reviewed: 2026-09-01\n"
+        "```\n\n"
+        "Prose about the greeting.\n"
+    )
+    head = repo.commit("a claim with unstamped flow-list anchors")
+    record(repo)
+    entry, restamped = ledger.confirm(repo.root, "D-001", today=TODAY)
+    assert entry.verdict == "confirmed"
+    assert restamped
+    after = next(c for c in store.load_store(repo.root))
+    assert after.anchors == [f"src/app.py#greet@{head[:10]}"]
+
