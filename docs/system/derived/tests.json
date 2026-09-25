@@ -916,9 +916,14 @@
             "covers": [],
             "line": 396,
             "name": "test_drift_record_with_test_proposes_v1_when_fail"
+          },
+          {
+            "covers": [],
+            "line": 412,
+            "name": "test_check_in_empty_repo_does_not_crash"
           }
         ],
-        "untagged": 29
+        "untagged": 30
       },
       "tests/test_config.py": {
         "language": "python",
@@ -1642,9 +1647,34 @@
             "covers": [],
             "line": 223,
             "name": "test_blobs_at_validates_its_paths"
+          },
+          {
+            "covers": [],
+            "line": 229,
+            "name": "test_has_commits_on_empty_and_populated_repo"
+          },
+          {
+            "covers": [],
+            "line": 235,
+            "name": "test_has_commits_on_non_repo"
+          },
+          {
+            "covers": [],
+            "line": 239,
+            "name": "test_list_files_at_on_empty_repo"
+          },
+          {
+            "covers": [],
+            "line": 243,
+            "name": "test_list_files_at_on_non_repo_raises_git_error"
+          },
+          {
+            "covers": [],
+            "line": 248,
+            "name": "test_list_files_at_invalid_rev_raises_git_error_when_commits_exist"
           }
         ],
-        "untagged": 21
+        "untagged": 26
       },
       "tests/test_hooks.py": {
         "language": "python",
@@ -3955,9 +3985,9 @@
       }
     },
     "tagged_tests": 0,
-    "total_tests": 754
+    "total_tests": 760
   },
-  "generated_from_commit": "109ce52ea830fbbd1f93fb485ed8c2eb628f7bd6",
+  "generated_from_commit": "1a1940e8ca8aa969df774d3c01d5371b1bef4ca7",
   "generator": "forge sync derived",
   "tool": "forge"
 }
