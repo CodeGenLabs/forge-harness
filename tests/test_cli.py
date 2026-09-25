@@ -410,3 +410,14 @@ def test_drift_record_with_test_proposes_v1_when_fail(stored, capsys):
     assert "proposed_verdict: V1" in drift_text
     assert "Evidence test failed" in drift_text
 
+
+def test_check_in_empty_repo_does_not_crash(repo, capsys):
+    main(["init", "--repo", str(repo.root)])
+    code = main(["check", "--repo", str(repo.root)])
+    # The derived tier has not been built yet, so check exits 1, but must not crash
+    assert code == 1
+    err = capsys.readouterr().err
+    assert "internal error" not in err
+    assert "GitError" not in err
+
+

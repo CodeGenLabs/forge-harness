@@ -226,3 +226,29 @@ def test_blobs_at_validates_its_paths(repo):
     repo.commit("empty")
     with pytest.raises(gitio.InvalidPath):
         gitio.blobs_at(repo.root, "HEAD", ["../escape.txt"])
+
+
+def test_has_commits_on_empty_and_populated_repo(repo):
+    assert gitio.has_commits(repo.root) is False
+    repo.commit("initial")
+    assert gitio.has_commits(repo.root) is True
+
+
+def test_has_commits_on_non_repo(tmp_path):
+    assert gitio.has_commits(tmp_path) is False
+
+
+def test_list_files_at_on_empty_repo(repo):
+    assert gitio.list_files_at(repo.root, "HEAD") == []
+
+
+def test_list_files_at_on_non_repo_raises_git_error(tmp_path):
+    with pytest.raises(gitio.GitError):
+        gitio.list_files_at(tmp_path, "HEAD")
+
+
+def test_list_files_at_invalid_rev_raises_git_error_when_commits_exist(repo):
+    repo.commit("initial")
+    with pytest.raises(gitio.GitError):
+        gitio.list_files_at(repo.root, "0" * 40)
+

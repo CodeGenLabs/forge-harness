@@ -72,7 +72,11 @@ def _scan_changes(repo: Path) -> dict[str, list[str]]:
     build until then would be useless in the meantime.
     """
     by_id: dict[str, list[str]] = {}
-    for path in gitio.list_files_at(repo, "HEAD"):
+    try:
+        paths = gitio.list_files_at(repo, "HEAD")
+    except (gitio.GitError, gitio.InvalidRevision):
+        return {}
+    for path in paths:
         if not path.startswith(f"{_CHANGES_DIR}/") or not path.endswith(".md"):
             continue
         if path.startswith(f"{_CHANGES_DIR}/archive/"):
