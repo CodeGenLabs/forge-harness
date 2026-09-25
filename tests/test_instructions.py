@@ -217,3 +217,28 @@ def test_an_artifact_absent_from_the_track_still_resolves(project):
     changed.write_meta()
     assert instructions.resolve(project.root, change.find_change(project.root, "1"),
                                 "impact")["required"] == schema.ABSENT
+
+
+def test_instructions_includes_phase_rules(project):
+    cfg_file = project.root / ".forge/config.yaml"
+    cfg_file.write_text(
+        cfg_file.read_text(encoding="utf-8") +
+        "\nrules:\n  spec:\n    - money is integer minor units\n",
+        encoding="utf-8",
+    )
+    resolved = resolve(project, "spec")
+    assert resolved["rules"] == ["money is integer minor units"]
+
+
+def test_instructions_cli_prints_rules(project, capsys):
+    cfg_file = project.root / ".forge/config.yaml"
+    cfg_file.write_text(
+        cfg_file.read_text(encoding="utf-8") +
+        "\nrules:\n  spec:\n    - money is integer minor units\n",
+        encoding="utf-8",
+    )
+    assert main(["instructions", "spec", "--change", "1",
+                 "--repo", str(project.root)]) == 0
+    out = capsys.readouterr().out
+    assert "rules:" in out
+    assert "money is integer minor units" in out

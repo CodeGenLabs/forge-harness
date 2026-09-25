@@ -1393,6 +1393,11 @@ def _cmd_instructions(args: argparse.Namespace) -> int:
               f"{', '.join(e['id'] for e in claims['entries'])}")
     for item_text in resolved["unresolved"]:
         print(f"  MISSING   {item_text}")
+    rules = resolved.get("rules") or []
+    if rules:
+        print("  rules:")
+        for rule in rules:
+            print(f"    - {rule}")
     if resolved["instruction"]:
         print(f"\n{resolved['instruction']}")
     return _EXIT_OK
