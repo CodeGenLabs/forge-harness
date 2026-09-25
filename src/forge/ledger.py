@@ -24,12 +24,12 @@ from pathlib import Path
 
 import yaml
 
-from . import gitio, store
+from . import anchor, gitio, store
 
 __all__ = [
     "DRIFT_FILE", "Entry", "LedgerError", "VERDICTS",
     "load_ledger", "next_id", "record", "resolve", "waive", "confirm",
-    "confirm_green", "open_entries",
+    "confirm_green", "open_entries", "stamp",
 ]
 
 DRIFT_FILE = "docs/system/DRIFT.md"
@@ -501,6 +501,68 @@ def confirm_green(repo: Path, *, head: str = "HEAD",
     return confirmed_list
 
 
+def stamp(repo: Path, claim_id: str, *, head: str = "HEAD",
+          today: _dt.date | None = None) -> list[str]:
+    """Stamp or restamp one claim's anchors and reviewed date at a commit."""
+    today = today or _dt.date.today()
+    sha = gitio.rev_parse(repo, head)
+    return _restamp(repo, claim_id, sha, today)
+
+
+def _stamp_anchor_item(item_text: str, short: str) -> tuple[str, bool]:
+    """Stamp one anchor item text, preserving quotes, indentation, and comments."""
+    stripped = item_text.strip()
+    if not stripped or stripped.startswith("#"):
+        return item_text, False
+
+    quote = ""
+    start_idx = -1
+    end_idx = -1
+    for q in ('"', "'"):
+        s = item_text.find(q)
+        if s != -1:
+            e = item_text.find(q, s + 1)
+            if e != -1:
+                start_idx = s
+                end_idx = e
+                quote = q
+                raw_val = item_text[s + 1:e]
+                break
+
+    if quote:
+        try:
+            a = anchor.parse_anchor(raw_val)
+        except anchor.AnchorError:
+            return item_text, False
+        without_sha = raw_val[:raw_val.rfind("@")] if a.sha else raw_val
+        new_val = f"{without_sha}@{short}"
+        if new_val == raw_val:
+            return item_text, False
+        new_item = item_text[:start_idx + 1] + new_val + item_text[end_idx:]
+        return new_item, True
+    else:
+        m = re.search(r"\s+#", item_text)
+        if m:
+            comment_idx = m.start()
+            val_part = item_text[:comment_idx].strip()
+            comment_part = item_text[comment_idx:]
+        else:
+            val_part = item_text.strip()
+            comment_part = ""
+
+        try:
+            a = anchor.parse_anchor(val_part)
+        except anchor.AnchorError:
+            return item_text, False
+        without_sha = val_part[:val_part.rfind("@")] if a.sha else val_part
+        new_val = f"{without_sha}@{short}"
+        if new_val == val_part:
+            return item_text, False
+        leading = item_text[:len(item_text) - len(item_text.lstrip())]
+        new_item = leading + new_val + comment_part
+        return new_item, True
+
+
 def _restamp(repo: Path, claim_id: str, sha: str, today: _dt.date) -> list[str]:
     """Rewrite one claim's `@sha` values and its `reviewed:` date, in place."""
     short = sha[:10]
@@ -510,23 +572,63 @@ def _restamp(repo: Path, claim_id: str, sha: str, today: _dt.date) -> list[str]:
             continue
         target = repo / claim.file
         lines = target.read_text(encoding="utf-8").split("\n")
+        in_anchors_block = False
+        reviewed_changed = False
+
         for index in range(claim.line - 1, min(claim.end_line, len(lines))):
             line = lines[index]
-            if line.lstrip().startswith("anchors:"):
-                new = re.sub(r"@[0-9a-fA-F]{4,40}", f"@{short}", line)
-                if "@" not in line:
-                    # An unstamped anchor is the case `forge check` reports as
-                    # a defect, not one to quietly invent a baseline for.
+            stripped = line.lstrip()
+
+            if stripped.startswith("anchors:"):
+                after = stripped.split(":", 1)[1].strip()
+                if not after or after.startswith("#"):
+                    in_anchors_block = True
+                else:
+                    open_b = line.find("[")
+                    close_b = line.rfind("]")
+                    if open_b != -1 and close_b != -1 and close_b > open_b:
+                        inner = line[open_b + 1:close_b]
+                        raw_items = inner.split(",")
+                        new_items = []
+                        line_changed = False
+                        for it in raw_items:
+                            stamped_it, it_changed = _stamp_anchor_item(it, short)
+                            new_items.append(stamped_it)
+                            if it_changed:
+                                line_changed = True
+                        if line_changed:
+                            lines[index] = line[:open_b + 1] + ",".join(new_items) + line[close_b:]
+                            changed.append(f"{claim.file}:{index + 1}")
+                    else:
+                        prefix, item_part = line.split(":", 1)
+                        new_item_part, it_changed = _stamp_anchor_item(item_part, short)
+                        if it_changed:
+                            lines[index] = prefix + ":" + new_item_part
+                            changed.append(f"{claim.file}:{index + 1}")
+                continue
+
+            if in_anchors_block:
+                if stripped.startswith("- "):
+                    prefix, item_part = line.split("-", 1)
+                    new_item_part, it_changed = _stamp_anchor_item(item_part, short)
+                    if it_changed:
+                        lines[index] = prefix + "-" + new_item_part
+                        changed.append(f"{claim.file}:{index + 1}")
                     continue
-                if new != line:
-                    lines[index] = new
-                    changed.append(f"{claim.file}:{index + 1}")
-            elif line.lstrip().startswith("reviewed:"):
-                lines[index] = re.sub(r"reviewed:\s*\S+",
-                                      f"reviewed: {today.isoformat()}", line)
-        if changed:
+                elif stripped and not stripped.startswith("#"):
+                    in_anchors_block = False
+
+            if stripped.startswith("reviewed:"):
+                new_rev = re.sub(r"reviewed:\s*\S+",
+                                 f"reviewed: {today.isoformat()}", line)
+                if new_rev != line:
+                    lines[index] = new_rev
+                    reviewed_changed = True
+
+        if changed or reviewed_changed:
             target.write_text("\n".join(lines), encoding="utf-8", newline="\n")
     return changed
+
 
 
 def _adr_id(value: str) -> str:

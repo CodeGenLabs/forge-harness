@@ -16,7 +16,7 @@ Comprehensive documentation for all 11 subcommands available in the `forge` comm
 | `forge check` | Validate repository integrity, claims & gates | `--repo <path>`, `--scope <all\|claims\|trace>` |
 | `forge sync` | Synchronize derived machine-truth tier | `derived`, `--repo <path>` |
 | `forge anchor` | Classify and inspect AST code anchors | `classify <anchor>`, `find <file>` |
-| `forge claim` | Query, list, and validate claims | `list`, `show <id>`, `stale` |
+| `forge claim` | Query, scaffold, and stamp claims | `new`, `show <id>`, `stamp <id>` |
 | `forge change` | Manage structured change lifecycle | `new`, `list`, `show`, `archive` |
 | `forge gate` | Evaluate lifecycle checkpoint gates | `<point>`, `--change <id>` |
 | `forge verify` | Execute tests and claim-touch accounting | `--change <id>`, `--fast` |
@@ -58,6 +58,20 @@ forge sync derived [--repo <path>]
 ```
 > [!IMPORTANT]
 > Always commit your source code changes *first*, then run `forge sync derived` and commit the updated `docs/system/derived/` files.
+
+### `forge claim`
+Scaffolds, inspects, and stamps claims in the system store:
+```bash
+# Print a claim template for a given kind
+forge claim new invariant --id INV-refund-cap --title "Refund never exceeds capture"
+
+# View one claim as written
+forge claim show INV-refund-cap
+
+# Stamp unstamped anchors of a claim at HEAD (or specified commit)
+forge claim stamp INV-refund-cap
+forge claim stamp --all
+```
 
 ### `forge change`
 Manages changes in `changes/XXXX-name/`:
