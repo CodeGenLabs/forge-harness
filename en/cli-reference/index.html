@@ -2245,16 +2245,19 @@ Always commit your source code changes <em>first</em>, then run <code>forge sync
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># Show change status and open gates</span>
 </span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>forge<span class="w"> </span>change<span class="w"> </span>show<span class="w"> </span><span class="m">0001</span>
 </span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="c1"># Archive a completed change</span>
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>forge<span class="w"> </span>change<span class="w"> </span>archive<span class="w"> </span><span class="m">0001</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="c1"># Archive a completed change (a top-level command, not a `change` subcommand)</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>forge<span class="w"> </span>archive<span class="w"> </span>--change<span class="w"> </span><span class="m">0001</span>
 </span></code></pre></div></p>
 <h3 id="forge-gate-checkpoint"><code>forge gate &lt;checkpoint&gt;</code></h3>
 <p>Evaluates whether a change satisfies prerequisites to advance to the next development phase:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>forge<span class="w"> </span>gate<span class="w"> </span>proposal:pre<span class="w"> </span>--change<span class="w"> </span><span class="m">0001</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>forge<span class="w"> </span>gate<span class="w"> </span>proposal:post<span class="w"> </span>--change<span class="w"> </span><span class="m">0001</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>forge<span class="w"> </span>gate<span class="w"> </span>design:post<span class="w"> </span>--change<span class="w"> </span><span class="m">0001</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>forge<span class="w"> </span>gate<span class="w"> </span>impact:post<span class="w"> </span>--change<span class="w"> </span><span class="m">0001</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>forge<span class="w"> </span>gate<span class="w"> </span>spec:post<span class="w"> </span>--change<span class="w"> </span><span class="m">0001</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>forge<span class="w"> </span>gate<span class="w"> </span>impact:post<span class="w"> </span>--change<span class="w"> </span><span class="m">0001</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>forge<span class="w"> </span>gate<span class="w"> </span>analyze:post<span class="w"> </span>--change<span class="w"> </span><span class="m">0001</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>forge<span class="w"> </span>gate<span class="w"> </span>implement:pre<span class="w"> </span>--change<span class="w"> </span><span class="m">0001</span>
 </span></code></pre></div></p>
+<p>The points are fixed by the kernel: <code>investigate:pre</code>, <code>spec:post</code>, <code>impact:post</code>, <code>analyze:post</code>, <code>implement:pre</code>,
+<code>implement:task:post</code>, <code>verify:post</code>, <code>sync:pre</code>, <code>converge:post</code> (<code>forge gate --help</code> prints the current list).
+There is no gate after <code>proposal</code> or <code>design</code>: those artifacts are checked by the DAG, not by a gate.</p>
 <h3 id="forge-verify"><code>forge verify</code></h3>
 <p>Runs test commands configured in <code>.forge/config.yaml</code> and reconciles touched claims against git diff:
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>forge<span class="w"> </span>verify<span class="w"> </span>--change<span class="w"> </span><span class="m">0001</span>

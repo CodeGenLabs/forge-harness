@@ -2109,16 +2109,16 @@
 
     Dev-&gt;&gt;Forge: forge change new "jwt-auth"
     Note over Dev,Forge: Stage 1: Proposal (Why)
-    Dev-&gt;&gt;Forge: forge gate proposal:pre / post
+    Dev-&gt;&gt;Forge: forge gate spec:post
     Note over Dev,Forge: Stage 2: Design &amp; Impact (What)
-    Dev-&gt;&gt;Forge: forge gate design:post
     Dev-&gt;&gt;Forge: forge gate impact:post
+    Dev-&gt;&gt;Forge: forge gate analyze:post
     Note over Dev,Forge: Stage 3: Implementation &amp; Tasks
     Dev-&gt;&gt;Git: Edit Code &amp; Tests
     Note over Dev,Forge: Stage 4: Verification &amp; Archive
     Dev-&gt;&gt;Forge: forge verify --change 0001
     Forge--&gt;&gt;Dev: PASS (Tests green, claims accounted for)
-    Dev-&gt;&gt;Forge: forge change archive 0001</code></pre>
+    Dev-&gt;&gt;Forge: forge archive --change 0001</code></pre>
 <hr />
 <h2 id="5-attributed-drift">5. Attributed Drift</h2>
 <p>When code changes outpace documentation, <code>forge check</code> pinpoints:

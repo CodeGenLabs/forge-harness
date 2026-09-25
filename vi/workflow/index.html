@@ -2270,7 +2270,7 @@
 <li><strong>Cổng kiểm soát (Gates) là các mã thoát lệnh (Exit Codes):</strong><br />
    Một cổng kiểm soát có cấu trúc: <code>{point, check, blocking, onError}</code>. Lệnh <code>forge gate &lt;point&gt;</code> chạy toàn bộ các phép kiểm tra cơ học đã đăng ký tại điểm đó và trả về mã thoát khác 0 nếu có bất kỳ kiểm tra dạng chặn (blocking) nào thất bại. Quy trình không dựa dẫm vào những câu dặn dò mơ hồ như "AI hãy cẩn thận".</li>
 </ol>
-<p>Các điểm đặt cổng: <code>investigate:pre</code>, <code>spec:post</code>, <code>impact:post</code>, <code>design:post</code>, <code>analyze:post</code>, <code>tasks:post</code>, <code>implement:pre</code>, <code>implement:task:post</code>, <code>verify:pre</code>, <code>verify:post</code>, <code>sync:pre</code>, <code>converge:post</code>.</p>
+<p>Các điểm đặt cổng (do kernel cố định, <code>forge gate --help</code> in danh sách hiện tại): <code>investigate:pre</code>, <code>spec:post</code>, <code>impact:post</code>, <code>analyze:post</code>, <code>implement:pre</code>, <code>implement:task:post</code>, <code>verify:post</code>, <code>sync:pre</code>, <code>converge:post</code>. Không có cổng sau <code>proposal</code>, <code>design</code> hay <code>tasks</code>: các artifact đó do DAG kiểm tra.</p>
 <hr />
 <h2 id="1-bo-inh-tuyen-3-track-scale-router">1. Bộ định tuyến 3 Track (Scale Router)</h2>
 <p>Việc phân loại quy mô diễn ra một lần duy nhất, công khai, ngay khi bắt đầu giai đoạn <code>understand</code>. Cơ chế chuyển đổi là <strong>bánh cóc một chiều (one-way ratchet)</strong>: khi phát hiện độ phức tạp tiềm ẩn, hệ thống sẽ nâng cấp Track và ghi nhận lại lý do; tuyệt đối không có cơ chế hạ cấp Track.</p>
@@ -2391,7 +2391,7 @@
 <ul>
 <li><strong>Mục đích:</strong> Phân rã thiết kế thành danh sách các task nhỏ, có thể kiểm thử độc lập, mỗi task bắt buộc phải gắn thẻ mã Requirement mà nó giải quyết (<code>[REQ-xxx]</code>).</li>
 <li><strong>Đầu ra:</strong> <code>changes/NNNN/tasks.md</code>.</li>
-<li><strong>Cổng kiểm soát:</strong> <code>forge gate tasks:post --change &lt;N&gt;</code></li>
+<li><strong>Cổng kiểm soát:</strong> <code>forge gate analyze:post --change &lt;N&gt;</code> (mọi Requirement đều có task tương ứng)</li>
 </ul>
 <h3 id="38-implement-trien-khai-theo-chuan-tdd">3.8 <code>implement</code> (Triển khai theo chuẩn TDD)</h3>
 <ul>
