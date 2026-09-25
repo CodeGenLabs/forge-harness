@@ -38,6 +38,9 @@ __all__ = [
     "resolve_path_at",
     "changed_files",
     "staged_files",
+    "uncommitted_files",
+    "list_files_at",
+    "has_commits",
     "first_commit_touching",
     "parent_of",
     "diff_is_whitespace_only",
@@ -391,7 +394,12 @@ def list_files_at(repo: Path, rev: str) -> list[str]:
     if rev == INDEX:
         out = git(repo, "ls-files")
     else:
-        out = git(repo, "ls-tree", "-r", "--name-only", rev)
+        try:
+            out = git(repo, "ls-tree", "-r", "--name-only", rev)
+        except GitError:
+            if is_repo(repo) and not has_commits(repo):
+                return []
+            raise
     return [line.strip() for line in out.splitlines() if line.strip()]
 
 
@@ -557,4 +565,16 @@ def is_repo(path: Path) -> bool:
         capture_output=True, check=False,
     )
     return completed.returncode == 0
+
+
+def has_commits(repo: Path) -> bool:
+    """True if the repository has at least one commit."""
+    if not is_repo(repo):
+        return False
+    completed = subprocess.run(
+        ["git", "-C", str(repo), "rev-parse", "--verify", "HEAD"],
+        capture_output=True, check=False,
+    )
+    return completed.returncode == 0
+
 
