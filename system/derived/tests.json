@@ -1344,30 +1344,50 @@
           {
             "covers": [],
             "line": 46,
-            "name": "test_get_test_command"
+            "name": "test_build_test_command_dotnet_mtp_runs_the_project_and_filters_the_method"
           },
           {
             "covers": [],
             "line": 59,
-            "name": "test_run_evidence_test_pass"
+            "name": "test_build_test_command_dotnet_mtp_from_global_json"
+          },
+          {
+            "covers": [],
+            "line": 66,
+            "name": "test_build_test_command_dotnet_vstest_uses_filter"
           },
           {
             "covers": [],
             "line": 72,
+            "name": "test_build_test_command_dotnet_without_a_method_runs_the_whole_project"
+          },
+          {
+            "covers": [],
+            "line": 78,
+            "name": "test_get_test_command"
+          },
+          {
+            "covers": [],
+            "line": 91,
+            "name": "test_run_evidence_test_pass"
+          },
+          {
+            "covers": [],
+            "line": 104,
             "name": "test_run_evidence_test_fail"
           },
           {
             "covers": [],
-            "line": 84,
+            "line": 116,
             "name": "test_run_evidence_unavailable_when_no_runner"
           },
           {
             "covers": [],
-            "line": 90,
+            "line": 122,
             "name": "test_evaluate_claim_evidence"
           }
         ],
-        "untagged": 7
+        "untagged": 11
       },
       "tests/test_fingerprint.py": {
         "language": "python",
@@ -3885,9 +3905,9 @@
       }
     },
     "tagged_tests": 0,
-    "total_tests": 740
+    "total_tests": 744
   },
-  "generated_from_commit": "8368446e0a1619e07472097bca59fa2869120e87",
+  "generated_from_commit": "788aea13a5224d4cc2e199fce682ad3aa995bc92",
   "generator": "forge sync derived",
   "tool": "forge"
 }
