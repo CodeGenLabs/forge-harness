@@ -86,6 +86,7 @@
       "src/forge/instructions.py": [
         "src/forge/__init__.py",
         "src/forge/change.py",
+        "src/forge/config.py",
         "src/forge/derive.py",
         "src/forge/impact.py",
         "src/forge/schema.py",
@@ -190,6 +191,7 @@
         "src/forge/derive.py",
         "src/forge/gates.py",
         "src/forge/impact.py",
+        "src/forge/instructions.py",
         "src/forge/scaffold.py",
         "src/forge/validate.py",
         "src/forge/verify.py"
@@ -289,7 +291,7 @@
     "tool": "forge",
     "unresolved_imports": 0
   },
-  "generated_from_commit": "07814e7b4b6c40ca23f3d1c858c05394ae19b6ee",
+  "generated_from_commit": "fcd8adbc862190dbc124b601a2e398cf14b1ea64",
   "generator": "forge sync derived",
   "tool": "forge"
 }
