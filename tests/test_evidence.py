@@ -45,6 +45,38 @@ def test_build_test_command():
     assert build_test_command(generic, "my_test") == "cargo test -- my_test"
 
 
+def test_build_test_command_dotnet_mtp_runs_the_project_and_filters_the_method(repo):
+    # A passing C# test used to be reported as failing evidence: the target was
+    # appended to `dotnet test --solution X`, which rejects the extra argument.
+    repo.write("tests/Foo.Tests/Foo.Tests.csproj", "<Project />\n")
+    repo.write("tests/Foo.Tests/Bar/BarTests.cs", "class BarTests {}\n")
+    cmd = build_test_command(
+        "dotnet test --solution App.slnx -c Release",
+        "tests/Foo.Tests/Bar/BarTests.cs::Rounds_Down",
+        repo.root,
+    )
+    assert cmd == 'dotnet test --project "tests/Foo.Tests" -c Release --filter-method "*.Rounds_Down"'
+
+
+def test_build_test_command_dotnet_mtp_from_global_json(repo):
+    repo.write("global.json", '{"test": {"runner": "Microsoft.Testing.Platform"}}\n')
+    repo.write("tests/Foo.Tests/Foo.Tests.csproj", "<Project />\n")
+    cmd = build_test_command("dotnet test", "tests/Foo.Tests/BarTests.cs::Works", repo.root)
+    assert cmd == 'dotnet test --project "tests/Foo.Tests" --filter-method "*.Works"'
+
+
+def test_build_test_command_dotnet_vstest_uses_filter(repo):
+    repo.write("tests/Foo.Tests/Foo.Tests.csproj", "<Project />\n")
+    cmd = build_test_command("dotnet test App.sln -c Release", "tests/Foo.Tests/BarTests.cs::Works", repo.root)
+    assert cmd == 'dotnet test "tests/Foo.Tests" -c Release --filter "FullyQualifiedName~Works"'
+
+
+def test_build_test_command_dotnet_without_a_method_runs_the_whole_project(repo):
+    repo.write("tests/Foo.Tests/Foo.Tests.csproj", "<Project />\n")
+    cmd = build_test_command("dotnet test --solution App.slnx", "tests/Foo.Tests/BarTests.cs", repo.root)
+    assert cmd == 'dotnet test --project "tests/Foo.Tests"'
+
+
 def test_get_test_command(repo):
     # No config
     assert get_test_command(repo.root) is None
