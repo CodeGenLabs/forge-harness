@@ -711,10 +711,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#project" class="md-nav__link">
+  <a href="#kernel_version" class="md-nav__link">
     <span class="md-ellipsis">
       
-        project
+        kernel_version
       
     </span>
   </a>
@@ -726,6 +726,39 @@
     <span class="md-ellipsis">
       
         commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#derive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        derive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#budgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        budgets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thresholds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        thresholds
       
     </span>
   </a>
@@ -1854,10 +1887,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#project" class="md-nav__link">
+  <a href="#kernel_version" class="md-nav__link">
     <span class="md-ellipsis">
       
-        project
+        kernel_version
       
     </span>
   </a>
@@ -1869,6 +1902,39 @@
     <span class="md-ellipsis">
       
         commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#derive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        derive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#budgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        budgets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thresholds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        thresholds
       
     </span>
   </a>
@@ -1979,55 +2045,85 @@
 
 <h2 id="english-tieng-viet">[ 🌐 <strong>English</strong> | <a href="../../vi/configuration/">Tiếng Việt</a> | <a href="../../ja/configuration/">日本語</a> ]</h2>
 <h1 id="configuration-reference">Configuration Reference</h1>
-<p>Specification of <code>.forge/config.yaml</code>.</p>
+<p>Specification of <code>.forge/config.yaml</code>. Every key is optional and has a sensible default; an absent file uses defaults across the board.</p>
 <hr />
 <h2 id="schema-overview">Schema Overview</h2>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">project</span><span class="p">:</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"my-project"</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">stack</span><span class="p">:</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">typescript</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nt">paths</span><span class="p">:</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="nt">system_knowledge</span><span class="p">:</span><span class="w"> </span><span class="s">"docs/system"</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="nt">changes</span><span class="p">:</span><span class="w"> </span><span class="s">"changes"</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="nt">derived</span><span class="p">:</span><span class="w"> </span><span class="s">"docs/system/derived"</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="nt">commands</span><span class="p">:</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="s">"pytest</span><span class="nv"> </span><span class="s">-q"</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">  </span><span class="nt">typecheck</span><span class="p">:</span><span class="w"> </span><span class="s">"mypy</span><span class="nv"> </span><span class="s">src"</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">  </span><span class="nt">lint</span><span class="p">:</span><span class="w"> </span><span class="s">"ruff</span><span class="nv"> </span><span class="s">check</span><span class="nv"> </span><span class="s">."</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="nt">rules</span><span class="p">:</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">  </span><span class="nt">require_change_for_claims</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">  </span><span class="nt">allow_unanchored_candidates</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">  </span><span class="nt">gate_timeout_seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">600</span>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="nt">exclude_id_scan</span><span class="p">:</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">".git/**"</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">".venv/**"</span>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"node_modules/**"</span>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"dist/**"</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Pinned kernel version string (e.g. "0.1.0", "&gt;=0.1.0", "~=0.1.0").</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># When present, forge check reports version skew between the repository and the kernel.</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">kernel_version</span><span class="p">:</span><span class="w"> </span><span class="s">"0.1.0"</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Project commands executed during `forge verify` and checked by `forge doctor`.</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># If the project does not have a given step, set its value to `none` (or `n/a`, `-`).</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nt">commands</span><span class="p">:</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="s">"npm</span><span class="nv"> </span><span class="s">run</span><span class="nv"> </span><span class="s">build"</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="nt">typecheck</span><span class="p">:</span><span class="w"> </span><span class="s">"mypy</span><span class="nv"> </span><span class="s">src"</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="nt">lint</span><span class="p">:</span><span class="w"> </span><span class="s">"ruff</span><span class="nv"> </span><span class="s">check</span><span class="nv"> </span><span class="s">."</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="s">"pytest</span><span class="nv"> </span><span class="s">-q"</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span><span class="nt">ui</span><span class="p">:</span><span class="w"> </span><span class="s">"playwright</span><span class="nv"> </span><span class="s">test"</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="c1"># Settings for the derived tier (docs/system/derived/).</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="nt">derive</span><span class="p">:</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="c1"># Globs excluded from everything, on top of built-in vendor and build exclusions.</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">  </span><span class="nt">exclude</span><span class="p">:</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"vendor/**"</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">  </span><span class="c1"># Globs whose ID-looking strings are data/fixtures rather than claim declarations.</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">  </span><span class="nt">exclude_id_scan</span><span class="p">:</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"tests/fixtures/**"</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="c1"># Context and token budgets.</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="nt">budgets</span><span class="p">:</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">  </span><span class="c1"># Line budget for the always-loaded set (OVERVIEW.md + mandatory claims). Default 400.</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">  </span><span class="nt">always_loaded_lines</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">400</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="c1"># Staleness and orphan thresholds.</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="nt">thresholds</span><span class="p">:</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">  </span><span class="c1"># Number of recent changes checked for claim citations (default 20).</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">  </span><span class="nt">orphan_change_window</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w">  </span><span class="c1"># Number of commits the derived tier may lag before freshness warns (default 20).</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="w">  </span><span class="nt">derived_stale_commits</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="c1"># House rules surfaced to agents during `forge instructions &lt;phase&gt;`.</span>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="w">  </span><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"money</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">integer</span><span class="nv"> </span><span class="s">minor</span><span class="nv"> </span><span class="s">units"</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"all</span><span class="nv"> </span><span class="s">public</span><span class="nv"> </span><span class="s">endpoints</span><span class="nv"> </span><span class="s">must</span><span class="nv"> </span><span class="s">specify</span><span class="nv"> </span><span class="s">rate</span><span class="nv"> </span><span class="s">limits"</span>
 </span></code></pre></div>
 <hr />
 <h2 id="configuration-keys">Configuration Keys</h2>
-<h3 id="project"><code>project</code></h3>
+<h3 id="kernel_version"><code>kernel_version</code></h3>
 <ul>
-<li><code>name</code> <em>(string)</em>: Project identifier.</li>
-<li><code>stack</code> <em>(list)</em>: Primary languages (<code>python</code>, <code>typescript</code>, <code>go</code>, <code>csharp</code>).</li>
+<li><em>(string, optional)</em>: Pin the Forge kernel version for the repository (e.g., <code>"0.1.0"</code>, <code>"&gt;=0.1.0"</code>, <code>"~=0.1.0"</code>). <code>forge check</code> and <code>forge doctor</code> verify compatibility and report kernel skew. Can also be written as:
+  <div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">kernel</span><span class="p">:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">"0.1.0"</span>
+</span></code></pre></div></li>
 </ul>
 <h3 id="commands"><code>commands</code></h3>
+<p>Commands executed during <code>forge verify</code> and inspected by <code>forge doctor</code>. If a project lacks a step, set it to <code>none</code> to skip rather than reporting an unconfigured debt.
+* <code>build</code>: Build command.
+* <code>typecheck</code>: Static type analysis command.
+* <code>lint</code>: Code linter command.
+* <code>test</code>: Test suite command.
+* <code>ui</code>: UI/e2e and accessibility test command.
+* <code>timeout</code> <em>(integer)</em>: Maximum execution time in seconds for each command (default <code>300</code>).</p>
+<h3 id="derive"><code>derive</code></h3>
+<p>Controls the generation and indexing of the derived tier (<code>docs/system/derived/</code>).
+* <code>exclude</code> <em>(list of strings)</em>: Path globs ignored by derivation scans, beyond default build/vendor exclusions.
+* <code>exclude_id_scan</code> <em>(list of strings)</em>: Path globs containing fixture data or mock strings that look like IDs (<code>REQ-*</code>, <code>CMP-*</code>, etc.) that should not be harvested as declarations or coverage.</p>
+<h3 id="budgets"><code>budgets</code></h3>
 <ul>
-<li><code>test</code>: Test command executed during <code>forge verify</code>.</li>
-<li><code>typecheck</code>: Optional static type analysis command.</li>
-<li><code>lint</code>: Optional linter command.</li>
+<li><code>always_loaded_lines</code> <em>(integer, default 400)</em>: Maximum total lines permitted for <code>docs/system/OVERVIEW.md</code> and mandatory claim files. May be set lower; never raised.</li>
+</ul>
+<h3 id="thresholds"><code>thresholds</code></h3>
+<ul>
+<li><code>orphan_change_window</code> <em>(integer, default 20)</em>: The number of recent changes examined when checking if an unanchored claim was recently cited.</li>
+<li><code>derived_stale_commits</code> <em>(integer, default 20)</em>: Number of commits <code>docs/system/derived/</code> can lag behind <code>HEAD</code> before <code>derived.freshness</code> reports a warning.</li>
 </ul>
 <h3 id="rules"><code>rules</code></h3>
 <ul>
-<li><code>require_change_for_claims</code>: Enforces that changes to <code>docs/system/</code> must go through a structured change workspace.</li>
-<li><code>allow_unanchored_candidates</code>: Whether candidate claims are allowed without code anchors.</li>
+<li><code>rules.&lt;phase&gt;</code> <em>(list of strings)</em>: Project-specific house rules and style constraints surfaced during <code>forge instructions &lt;phase&gt;</code>. For example, <code>rules.spec</code> defines rules loaded by <code>specify</code> skill (such as currency representations or schema requirements).</li>
 </ul>
 
 

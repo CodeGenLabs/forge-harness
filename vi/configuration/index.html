@@ -1107,6 +1107,106 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Cấu hình .forge/config.yaml">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tong-quan-cau-hinh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tổng quan cấu hình
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chi-tiet-cac-khoa-cau-hinh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chi tiết các khóa cấu hình
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chi tiết các khóa cấu hình">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kernel_version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        kernel_version
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#derive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        derive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#budgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        budgets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thresholds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        thresholds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -1760,6 +1860,106 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Cấu hình .forge/config.yaml">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tong-quan-cau-hinh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tổng quan cấu hình
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chi-tiet-cac-khoa-cau-hinh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chi tiết các khóa cấu hình
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chi tiết các khóa cấu hình">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kernel_version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        kernel_version
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#derive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        derive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#budgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        budgets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thresholds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        thresholds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -1845,26 +2045,86 @@
 
 <h2 id="english-tieng-viet">[ <a href="../../en/configuration/">English</a> | 🌐 <strong>Tiếng Việt</strong> | <a href="../../ja/configuration/">日本語</a> ]</h2>
 <h1 id="cau-hinh-forgeconfigyaml">Cấu hình <code>.forge/config.yaml</code></h1>
-<p>File cấu hình chính của Forge được đặt tại <code>.forge/config.yaml</code>.</p>
+<p>Đặc tả đầy đủ của <code>.forge/config.yaml</code>. Mọi khóa đều là tùy chọn và có giá trị mặc định; nếu file không tồn tại, Forge sẽ dùng cấu hình mặc định.</p>
+<hr />
+<h2 id="tong-quan-cau-hinh">Tổng quan cấu hình</h2>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">project</span><span class="p">:</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"du-an-cua-toi"</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">stack</span><span class="p">:</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">typescript</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nt">paths</span><span class="p">:</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="nt">system_knowledge</span><span class="p">:</span><span class="w"> </span><span class="s">"docs/system"</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="nt">changes</span><span class="p">:</span><span class="w"> </span><span class="s">"changes"</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="nt">derived</span><span class="p">:</span><span class="w"> </span><span class="s">"docs/system/derived"</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="nt">commands</span><span class="p">:</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="s">"pytest</span><span class="nv"> </span><span class="s">-q"</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Phiên bản kernel được ghim (ví dụ: "0.1.0", "&gt;=0.1.0", "~=0.1.0").</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Khi khai báo, `forge check` sẽ kiểm tra độ lệch phiên bản giữa repo và kernel.</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">kernel_version</span><span class="p">:</span><span class="w"> </span><span class="s">"0.1.0"</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Các lệnh được thực thi trong `forge verify` và kiểm tra bởi `forge doctor`.</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># Nếu dự án không có bước tương ứng, đặt giá trị thành `none` (hoặc `n/a`, `-`).</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nt">commands</span><span class="p">:</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="s">"npm</span><span class="nv"> </span><span class="s">run</span><span class="nv"> </span><span class="s">build"</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="nt">typecheck</span><span class="p">:</span><span class="w"> </span><span class="s">"mypy</span><span class="nv"> </span><span class="s">src"</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="nt">lint</span><span class="p">:</span><span class="w"> </span><span class="s">"ruff</span><span class="nv"> </span><span class="s">check</span><span class="nv"> </span><span class="s">."</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="s">"pytest</span><span class="nv"> </span><span class="s">-q"</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span><span class="nt">ui</span><span class="p">:</span><span class="w"> </span><span class="s">"playwright</span><span class="nv"> </span><span class="s">test"</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span>
 </span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="nt">rules</span><span class="p">:</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">  </span><span class="nt">require_change_for_claims</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="c1"># Cấu hình cho tầng dữ liệu dẫn xuất (docs/system/derived/).</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="nt">derive</span><span class="p">:</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="c1"># Danh sách glob bị loại trừ khỏi toàn bộ quá trình quét, ngoài các thư mục build/vendor mặc định.</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">  </span><span class="nt">exclude</span><span class="p">:</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"vendor/**"</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">  </span><span class="c1"># Danh sách glob chứa dữ liệu fixture/mock có chuỗi giống ID nhưng không phải khai báo claim thật.</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">  </span><span class="nt">exclude_id_scan</span><span class="p">:</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"tests/fixtures/**"</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="c1"># Giới hạn dòng và ngữ cảnh.</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="nt">budgets</span><span class="p">:</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">  </span><span class="c1"># Số dòng tối đa cho nhóm tài liệu luôn nạp (OVERVIEW.md + các claim bắt buộc). Mặc định: 400.</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">  </span><span class="nt">always_loaded_lines</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">400</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="c1"># Ngưỡng phát hiện mồ côi và độ tươi dữ liệu.</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="nt">thresholds</span><span class="p">:</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">  </span><span class="c1"># Số lượng change gần nhất được quét để tìm trích dẫn claim (mặc định: 20).</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">  </span><span class="nt">orphan_change_window</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w">  </span><span class="c1"># Số commit tối đa tầng derived được phép trễ trước khi cảnh báo (mặc định: 20).</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="w">  </span><span class="nt">derived_stale_commits</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="c1"># Quy tắc nội bộ dự án cho từng phase, hiển thị cho agent qua `forge instructions &lt;phase&gt;`.</span>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="w">  </span><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"tiền</span><span class="nv"> </span><span class="s">tệ</span><span class="nv"> </span><span class="s">luôn</span><span class="nv"> </span><span class="s">dùng</span><span class="nv"> </span><span class="s">đơn</span><span class="nv"> </span><span class="s">vị</span><span class="nv"> </span><span class="s">số</span><span class="nv"> </span><span class="s">nguyên</span><span class="nv"> </span><span class="s">nhỏ</span><span class="nv"> </span><span class="s">nhất</span><span class="nv"> </span><span class="s">(minor</span><span class="nv"> </span><span class="s">units)"</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"mọi</span><span class="nv"> </span><span class="s">endpoint</span><span class="nv"> </span><span class="s">công</span><span class="nv"> </span><span class="s">khai</span><span class="nv"> </span><span class="s">phải</span><span class="nv"> </span><span class="s">quy</span><span class="nv"> </span><span class="s">định</span><span class="nv"> </span><span class="s">rate</span><span class="nv"> </span><span class="s">limit"</span>
 </span></code></pre></div>
+<hr />
+<h2 id="chi-tiet-cac-khoa-cau-hinh">Chi tiết các khóa cấu hình</h2>
+<h3 id="kernel_version"><code>kernel_version</code></h3>
+<ul>
+<li><em>(string, tùy chọn)</em>: Ghim phiên bản Forge kernel cho repository (ví dụ: <code>"0.1.0"</code>, <code>"&gt;=0.1.0"</code>). <code>forge check</code> và <code>forge doctor</code> sẽ kiểm tra tính tương thích. Có thể viết dạng lồng nhau:
+  <div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">kernel</span><span class="p">:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">"0.1.0"</span>
+</span></code></pre></div></li>
+</ul>
+<h3 id="commands"><code>commands</code></h3>
+<p>Các lệnh được chạy trong <code>forge verify</code> và kiểm tra bởi <code>forge doctor</code>. Nếu dự án không có một bước nào đó, hãy đặt giá trị thành <code>none</code> để bỏ qua thay vì bị tính là thiếu sót.
+* <code>build</code>: Lệnh build dự án.
+* <code>typecheck</code>: Lệnh kiểm tra kiểu tĩnh.
+* <code>lint</code>: Lệnh linter kiểm tra chuẩn mã nguồn.
+* <code>test</code>: Lệnh chạy bộ kiểm thử (test suite).
+* <code>ui</code>: Lệnh kiểm thử giao diện / e2e / trợ năng (a11y).
+* <code>timeout</code> <em>(integer)</em>: Thời gian chạy tối đa tính bằng giây cho mỗi lệnh (mặc định <code>300</code>).</p>
+<h3 id="derive"><code>derive</code></h3>
+<p>Điều khiển quá trình sinh và lập chỉ mục tầng dữ liệu dẫn xuất (<code>docs/system/derived/</code>).
+* <code>exclude</code> <em>(danh sách chuỗi)</em>: Các mẫu glob đường dẫn bị bỏ qua khi quét dẫn xuất.
+* <code>exclude_id_scan</code> <em>(danh sách chuỗi)</em>: Các mẫu glob chứa dữ liệu mẫu/test mang hình thức ID (<code>REQ-*</code>, <code>CMP-*</code>, ...) nhưng không phải là claim hay bằng chứng thật.</p>
+<h3 id="budgets"><code>budgets</code></h3>
+<ul>
+<li><code>always_loaded_lines</code> <em>(integer, mặc định 400)</em>: Số dòng tối đa cho <code>OVERVIEW.md</code> và các file claim cốt lõi. Có thể hạ thấp hơn, nhưng không thể nâng cao hơn.</li>
+</ul>
+<h3 id="thresholds"><code>thresholds</code></h3>
+<ul>
+<li><code>orphan_change_window</code> <em>(integer, mặc định 20)</em>: Số lượng change gần nhất được tra cứu khi kiểm tra claim không neo (orphan check).</li>
+<li><code>derived_stale_commits</code> <em>(integer, mặc định 20)</em>: Số commit tối đa <code>docs/system/derived/</code> có thể đi sau commit <code>HEAD</code> trước khi <code>derived.freshness</code> cảnh báo.</li>
+</ul>
+<h3 id="rules"><code>rules</code></h3>
+<ul>
+<li><code>rules.&lt;phase&gt;</code> <em>(danh sách chuỗi)</em>: Quy tắc phong cách và ràng buộc nghiệp vụ cho từng phase, được hiển thị khi chạy lệnh <code>forge instructions &lt;phase&gt;</code>. Ví dụ: <code>rules.spec</code> chứa các quy tắc dành riêng cho quá trình đặc tả yêu cầu (<code>specify</code>).</li>
+</ul>
 
 
 

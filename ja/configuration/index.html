@@ -1530,6 +1530,106 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="設定リファレンス">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        設定スキーマ概要
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        設定キー詳細
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="設定キー詳細">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kernel_version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        kernel_version
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#derive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        derive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#budgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        budgets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thresholds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        thresholds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -1760,6 +1860,106 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="設定リファレンス">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        設定スキーマ概要
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        設定キー詳細
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="設定キー詳細">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kernel_version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        kernel_version
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#derive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        derive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#budgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        budgets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thresholds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        thresholds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -1845,23 +2045,86 @@
 
 <h2 id="english-tieng-viet">[ <a href="../../en/configuration/">English</a> | <a href="../../vi/configuration/">Tiếng Việt</a> | 🌐 <strong>日本語</strong> ]</h2>
 <h1 id="_1">設定リファレンス</h1>
-<p><code>.forge/config.yaml</code> の記述仕様です。</p>
+<p><code>.forge/config.yaml</code> の記述仕様です。すべてのキーは省略可能でデフォルト値を備えており、ファイルが存在しない場合はすべてデフォルト値が適用されます。</p>
+<hr />
+<h2 id="_2">設定スキーマ概要</h2>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">project</span><span class="p">:</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"my-project"</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">stack</span><span class="p">:</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">typescript</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nt">paths</span><span class="p">:</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="nt">system_knowledge</span><span class="p">:</span><span class="w"> </span><span class="s">"docs/system"</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="nt">changes</span><span class="p">:</span><span class="w"> </span><span class="s">"changes"</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="nt">derived</span><span class="p">:</span><span class="w"> </span><span class="s">"docs/system/derived"</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="nt">commands</span><span class="p">:</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="s">"pytest</span><span class="nv"> </span><span class="s">-q"</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># 固定するカーネルバージョン (例: "0.1.0", "&gt;=0.1.0", "~=0.1.0")。</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># 指定した場合、forge check がリポジトリとカーネルのバージョン乖離を検出・報告します。</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">kernel_version</span><span class="p">:</span><span class="w"> </span><span class="s">"0.1.0"</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># `forge verify` で実行され、`forge doctor` で検証されるプロジェクトのコマンド。</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># プロジェクトに対応するステップが存在しない場合は `none` (または `n/a`, `-`) を指定します。</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nt">commands</span><span class="p">:</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="s">"npm</span><span class="nv"> </span><span class="s">run</span><span class="nv"> </span><span class="s">build"</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="nt">typecheck</span><span class="p">:</span><span class="w"> </span><span class="s">"mypy</span><span class="nv"> </span><span class="s">src"</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="nt">lint</span><span class="p">:</span><span class="w"> </span><span class="s">"ruff</span><span class="nv"> </span><span class="s">check</span><span class="nv"> </span><span class="s">."</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="s">"pytest</span><span class="nv"> </span><span class="s">-q"</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span><span class="nt">ui</span><span class="p">:</span><span class="w"> </span><span class="s">"playwright</span><span class="nv"> </span><span class="s">test"</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="c1"># 派生層 (docs/system/derived/) の設定。</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="nt">derive</span><span class="p">:</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="c1"># 標準の vendor や build 除外に加えて無視するパス glob。</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">  </span><span class="nt">exclude</span><span class="p">:</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"vendor/**"</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">  </span><span class="c1"># IDに類似した文字列を含むがクレーム宣言ではないテストデータや fixture のパス glob。</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">  </span><span class="nt">exclude_id_scan</span><span class="p">:</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"tests/fixtures/**"</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="c1"># コンテキストおよび行数予算。</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="nt">budgets</span><span class="p">:</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">  </span><span class="c1"># 常時読み込みセット (OVERVIEW.md + 必須クレームファイル) の最大行数。デフォルト: 400。</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">  </span><span class="nt">always_loaded_lines</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">400</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="c1"># 孤立クレームおよび鮮度しきい値。</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="nt">thresholds</span><span class="p">:</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">  </span><span class="c1"># クレーム引用を検索する直近変更の対象数 (デフォルト: 20)。</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">  </span><span class="nt">orphan_change_window</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w">  </span><span class="c1"># 派生層のコミット遅延許容数 (デフォルト: 20)。超えると警告されます。</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="w">  </span><span class="nt">derived_stale_commits</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="c1"># `forge instructions &lt;phase&gt;` 実行時にエージェントに提示されるプロジェクト規則。</span>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="w">  </span><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"通貨は整数最小単位で表現する"</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"すべての公開エンドポイントにレート制限を指定する"</span>
 </span></code></pre></div>
+<hr />
+<h2 id="_3">設定キー詳細</h2>
+<h3 id="kernel_version"><code>kernel_version</code></h3>
+<ul>
+<li><em>(string, 省略可能)</em>: リポジトリが要求する Forge カーネルバージョン (例: <code>"0.1.0"</code>, <code>"&gt;=0.1.0"</code>, <code>"~=0.1.0"</code>). <code>forge check</code> および <code>forge doctor</code> で整合性が確認されます。以下のように記述することも可能です:
+  <div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">kernel</span><span class="p">:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">"0.1.0"</span>
+</span></code></pre></div></li>
+</ul>
+<h3 id="commands"><code>commands</code></h3>
+<p><code>forge verify</code> で実行され、<code>forge doctor</code> でチェックされるコマンドです。該当するステップがない場合は、未設定の負債として扱われないよう <code>none</code> を指定します。
+* <code>build</code>: ビルドコマンド。
+* <code>typecheck</code>: 静的型チェックコマンド。
+* <code>lint</code>: リンター実行コマンド。
+* <code>test</code>: テストスイート実行コマンド。
+* <code>ui</code>: UI/e2e/アクセシビリティテストコマンド。
+* <code>timeout</code> <em>(integer)</em>: 各コマンドの実行タイムアウト秒数 (デフォルト <code>300</code>)。</p>
+<h3 id="derive"><code>derive</code></h3>
+<p>派生層 (<code>docs/system/derived/</code>) の生成とインデックス抽出を制御します。
+* <code>exclude</code> <em>(文字列リスト)</em>: 派生スキャンから除外するパス glob。
+* <code>exclude_id_scan</code> <em>(文字列リスト)</em>: ID 類似文字列 (<code>REQ-*</code>, <code>CMP-*</code> など) を含んでいるが、クレーム宣言やカバレッジとして収集しないテストデータ等のパス glob。</p>
+<h3 id="budgets"><code>budgets</code></h3>
+<ul>
+<li><code>always_loaded_lines</code> <em>(integer, デフォルト 400)</em>: <code>docs/system/OVERVIEW.md</code> および必須クレームファイルの合計最大行数。引き下げることは可能ですが、引き上げることは許可されません。</li>
+</ul>
+<h3 id="thresholds"><code>thresholds</code></h3>
+<ul>
+<li><code>orphan_change_window</code> <em>(integer, デフォルト 20)</em>: アンカーのないクレームが最近引用されたかを判定する直近 change の参照件数。</li>
+<li><code>derived_stale_commits</code> <em>(integer, デフォルト 20)</em>: <code>HEAD</code> に対して <code>docs/system/derived/</code> が遅れてよい最大コミット数。</li>
+</ul>
+<h3 id="rules"><code>rules</code></h3>
+<ul>
+<li><code>rules.&lt;phase&gt;</code> <em>(文字列リスト)</em>: 各フェーズ実行時 (<code>forge instructions &lt;phase&gt;</code>) に提示されるプロジェクト固有の規約や制約。例えば <code>rules.spec</code> は <code>specify</code> スキル実行時に参照されます。</li>
+</ul>
 
 
 
