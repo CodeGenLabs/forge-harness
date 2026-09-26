@@ -1282,66 +1282,81 @@
           },
           {
             "covers": [],
-            "line": 309,
+            "line": 304,
+            "name": "test_amending_commit_with_derived_tier_does_not_make_it_stale"
+          },
+          {
+            "covers": [],
+            "line": 313,
+            "name": "test_unknown_origin_matching_head_is_not_stale"
+          },
+          {
+            "covers": [],
+            "line": 323,
+            "name": "test_unknown_origin_differing_from_head_reports_unknown"
+          },
+          {
+            "covers": [],
+            "line": 343,
             "name": "test_exclude_id_scan_keeps_the_file_but_drops_its_ids"
           },
           {
             "covers": [],
-            "line": 320,
+            "line": 354,
             "name": "test_exclude_drops_the_file_entirely"
           },
           {
             "covers": [],
-            "line": 326,
+            "line": 360,
             "name": "test_a_directory_pattern_covers_its_subtree"
           },
           {
             "covers": [],
-            "line": 336,
+            "line": 370,
             "name": "test_a_malformed_config_falls_back_to_defaults"
           },
           {
             "covers": [],
-            "line": 350,
+            "line": 384,
             "name": "test_no_config_is_not_an_error"
           },
           {
             "covers": [],
-            "line": 362,
+            "line": 396,
             "name": "test_covers_in_string_literals_are_ignored"
           },
           {
             "covers": [],
-            "line": 368,
+            "line": 402,
             "name": "test_fake"
           },
           {
             "covers": [],
-            "line": 373,
+            "line": 407,
             "name": "test_real"
           },
           {
             "covers": [],
-            "line": 383,
+            "line": 417,
             "name": "test_backrefs_in_string_literals_are_ignored"
           },
           {
             "covers": [],
-            "line": 400,
+            "line": 434,
             "name": "test_typescript_comments_vs_literals"
           },
           {
             "covers": [],
-            "line": 422,
+            "line": 456,
             "name": "test_go_comments_vs_literals"
           },
           {
             "covers": [],
-            "line": 444,
+            "line": 478,
             "name": "test_comments_survive_depth_and_multibyte_text"
           }
         ],
-        "untagged": 40
+        "untagged": 43
       },
       "tests/test_evidence.py": {
         "language": "python",
@@ -3985,9 +4000,9 @@
       }
     },
     "tagged_tests": 0,
-    "total_tests": 760
+    "total_tests": 763
   },
-  "generated_from_commit": "1a1940e8ca8aa969df774d3c01d5371b1bef4ca7",
+  "generated_from_commit": "5316099accb73fd64cdf296ef31327717c994f33",
   "generator": "forge sync derived",
   "tool": "forge"
 }

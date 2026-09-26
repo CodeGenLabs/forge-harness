@@ -303,6 +303,40 @@ def test_a_real_change_still_registers_as_stale(project):
     assert set(derive.stale_artifacts(project.root).values()) == {1}
 
 
+def test_amending_commit_with_derived_tier_does_not_make_it_stale(project):
+    project.write("src/demo/pay.py", "def refundable(a, b):\n    return max(0, a - b)\n")
+    project.commit("clamp")
+    derive.derive_all(project.root)
+    project._git("add", derive.DERIVED_DIR)
+    project._git("commit", "--amend", "--no-edit")
+    assert set(derive.stale_artifacts(project.root).values()) == {0}
+
+
+def test_unknown_origin_matching_head_is_not_stale(project):
+    derive.derive_all(project.root)
+    for artifact in derive.ARTIFACTS:
+        path = project.root / derive.DERIVED_DIR / artifact.name
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        payload["generated_from_commit"] = "0000000000000000000000000000000000000000"
+        path.write_bytes(derive.render_json(payload))
+    assert set(derive.stale_artifacts(project.root).values()) == {0}
+
+
+def test_unknown_origin_differing_from_head_reports_unknown(project):
+    derive.derive_all(project.root)
+    project.write("src/demo/pay.py", "def refundable(a, b):\n    # extra line\n    return max(0, a - b)\n")
+    project.commit("change pay with extra line")
+
+    for artifact in derive.ARTIFACTS:
+        path = project.root / derive.DERIVED_DIR / artifact.name
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        payload["generated_from_commit"] = "0000000000000000000000000000000000000000"
+        path.write_bytes(derive.render_json(payload))
+    assert derive.stale_artifacts(project.root)["inventory.json"] is None
+
+
+
+
 # --------------------------------------------------------------------------
 # Project configuration
 # --------------------------------------------------------------------------

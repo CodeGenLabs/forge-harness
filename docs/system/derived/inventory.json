@@ -16,7 +16,7 @@
       },
       "python": {
         "files": 60,
-        "lines": 24103
+        "lines": 24160
       },
       "script": {
         "files": 1,
@@ -119,7 +119,7 @@
       "tools/pressure_test.py"
     ]
   },
-  "generated_from_commit": "1a1940e8ca8aa969df774d3c01d5371b1bef4ca7",
+  "generated_from_commit": "5316099accb73fd64cdf296ef31327717c994f33",
   "generator": "forge sync derived",
   "tool": "forge"
 }

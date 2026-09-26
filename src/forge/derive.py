@@ -1024,12 +1024,35 @@ def stale_artifacts(repo: Path) -> dict[str, int | None]:
             out[artifact.name] = 0
             continue
         try:
+            valid_origin = gitio.validate_rev(origin)
+            gitio.git(repo, "rev-parse", "--verify", f"{valid_origin}^{{commit}}")
+            # If the tree outside the derived tier is identical to origin,
+            # it is 0 commits behind (e.g. when the commit was amended to
+            # fold in the derived tier).
+            diff = gitio.git(
+                repo, "diff", "--name-only", valid_origin, head,
+                "--", ".", f":(exclude){DERIVED_DIR}",
+            ).strip()
+            if not diff:
+                out[artifact.name] = 0
+                continue
+
             count = gitio.git(
                 repo, "rev-list", "--count",
-                f"{gitio.validate_rev(origin)}..{head}",
+                f"{valid_origin}..{head}",
                 "--", ".", f":(exclude){DERIVED_DIR}",
             ).strip()
             out[artifact.name] = int(count)
         except (gitio.GitError, gitio.InvalidRevision, ValueError):
+            # If origin is not in the git history (e.g. an amended or squashed
+            # commit pushed to remote / fresh clone), check whether the artifact's
+            # data is identical to what HEAD currently derives.
+            try:
+                if payload.get("data") == artifact.build(repo):
+                    out[artifact.name] = 0
+                    continue
+            except Exception:
+                pass
             out[artifact.name] = None
     return out
+
