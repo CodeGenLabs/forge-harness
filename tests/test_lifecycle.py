@@ -596,3 +596,22 @@ def test_a_folded_requirement_is_not_a_dangling_reference(project):
     summary = (derive.read_json(project.root / derive.DERIVED_DIR / "trace.json")
                or {})["data"]["summary"]
     assert summary["dangling_references"] == []
+
+
+def test_verify_with_amend_auto_syncs_and_amends(project, capsys):
+    write(project, "spec/payments/spec.md", DELTA)
+    write(project, "impact.md", ACCOUNT)
+    write(project, "tasks.md", TASKS)
+    project.write("tests/test_pay.py",
+                  TESTS + "\n\n# @covers REQ-refunds-1\ndef test_over():\n    assert True\n")
+    old_head = project.commit("implement and tag")
+    # Derived tier is dirty because sync() was not run.
+    capsys.readouterr()
+    assert main(["verify", "--change", "1", "--amend", "--repo", str(project.root)]) == 0
+    out = capsys.readouterr().out
+    assert "auto-synced derived tier" in out
+    assert "amended  derived tier" in out
+    assert project.head != old_head
+    dirty = project._git("status", "--porcelain").strip()
+    assert dirty == ""
+

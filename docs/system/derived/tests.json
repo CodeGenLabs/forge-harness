@@ -845,85 +845,90 @@
           {
             "covers": [],
             "line": 221,
+            "name": "test_sync_derived_with_amend_stages_and_amends"
+          },
+          {
+            "covers": [],
+            "line": 232,
             "name": "test_check_reports_a_hand_edited_derived_file"
           },
           {
             "covers": [],
-            "line": 234,
+            "line": 246,
             "name": "test_check_reports_a_dangling_reference"
           },
           {
             "covers": [],
-            "line": 245,
+            "line": 257,
             "name": "test_trace_prints_both_directions"
           },
           {
             "covers": [],
-            "line": 256,
+            "line": 268,
             "name": "test_trace_json_is_parseable"
           },
           {
             "covers": [],
-            "line": 264,
+            "line": 276,
             "name": "test_trace_of_an_unknown_id_exits_one"
           },
           {
             "covers": [],
-            "line": 271,
+            "line": 283,
             "name": "test_status_fits_on_one_screen"
           },
           {
             "covers": [],
-            "line": 280,
+            "line": 292,
             "name": "test_status_reports_the_derived_tier_stale_when_content_moved"
           },
           {
             "covers": [],
-            "line": 293,
+            "line": 305,
             "name": "test_a_body_only_edit_does_not_make_the_derived_tier_stale"
           },
           {
             "covers": [],
-            "line": 307,
+            "line": 319,
             "name": "test_status_stays_current_after_the_derived_tier_is_committed"
           },
           {
             "covers": [],
-            "line": 322,
+            "line": 334,
             "name": "test_output_is_ascii_only"
           },
           {
             "covers": [],
-            "line": 333,
+            "line": 345,
             "name": "test_drift_store_with_passing_evidence_test"
           },
           {
             "covers": [],
-            "line": 347,
+            "line": 359,
             "name": "test_drift_store_with_failing_evidence_test"
           },
           {
             "covers": [],
-            "line": 364,
+            "line": 376,
             "name": "test_drift_store_json_with_evidence"
           },
           {
             "covers": [],
-            "line": 379,
+            "line": 391,
             "name": "test_drift_record_with_test_proposes_confirm_when_pass"
           },
           {
             "covers": [],
-            "line": 396,
+            "line": 408,
             "name": "test_drift_record_with_test_proposes_v1_when_fail"
           },
           {
             "covers": [],
-            "line": 412,
+            "line": 424,
             "name": "test_check_in_empty_repo_does_not_crash"
           }
         ],
-        "untagged": 30
+        "untagged": 31
       },
       "tests/test_config.py": {
         "language": "python",
@@ -2574,9 +2579,14 @@
             "covers": [],
             "line": 586,
             "name": "test_a_folded_requirement_is_not_a_dangling_reference"
+          },
+          {
+            "covers": [],
+            "line": 599,
+            "name": "test_verify_with_amend_auto_syncs_and_amends"
           }
         ],
-        "untagged": 40
+        "untagged": 41
       },
       "tests/test_lifecycle_repairs.py": {
         "language": "python",
@@ -4000,9 +4010,9 @@
       }
     },
     "tagged_tests": 0,
-    "total_tests": 763
+    "total_tests": 765
   },
-  "generated_from_commit": "5316099accb73fd64cdf296ef31327717c994f33",
+  "generated_from_commit": "d5405ea753e35a7e61ea2f8fd542d88a338d9c5d",
   "generator": "forge sync derived",
   "tool": "forge"
 }

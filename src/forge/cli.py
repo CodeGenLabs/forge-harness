@@ -366,13 +366,18 @@ def _cmd_sync(args: argparse.Namespace) -> int:
     for name, was_changed in changed.items():
         print(f"{'updated' if was_changed else 'unchanged'}  {derive.DERIVED_DIR}/{name}")
     if any(changed.values()):
-        # The tier is derived from HEAD, so its content describes HEAD and it
-        # must land in a commit of its own. Folded into the code commit it would
-        # describe that commit's *parent* - stale the moment it is written, and
-        # `forge check` would say so. A derived-only commit is also excluded
-        # from the staleness count, so the steady state stays clean.
-        print("\nCommit these on their own, after the code commit they describe:")
-        print(f"  git add {derive.DERIVED_DIR} && git commit -m 'chore: sync derived tier'")
+        if getattr(args, "amend", False):
+            if gitio.has_commits(repo):
+                gitio.git(repo, "add", derive.DERIVED_DIR)
+                gitio.git(repo, "commit", "--amend", "--no-edit")
+                print(f"\nAmended into HEAD ({gitio.rev_parse(repo, 'HEAD')[:10]}).")
+            else:
+                print("\nWarning: cannot --amend on an unborn branch; commit first.", file=sys.stderr)
+        else:
+            print("\nCommit these with:")
+            print(f"  git add {derive.DERIVED_DIR} && git commit --amend --no-edit")
+            print("or as a separate commit:")
+            print(f"  git add {derive.DERIVED_DIR} && git commit -m 'chore: sync derived tier'")
     if pending:
         shown = ", ".join(pending[:3]) + (" ..." if len(pending) > 3 else "")
         print(f"\nWarning: {len(pending)} tracked file(s) differ from HEAD ({shown}).")
@@ -1279,9 +1284,24 @@ def _cmd_verify(args: argparse.Namespace) -> int:
     if isinstance(item, int) or item is None:
         return item if isinstance(item, int) else _EXIT_USAGE
 
+    auto_sync = getattr(args, "sync", False) or getattr(args, "amend", False)
+    if auto_sync:
+        dirty = [n for n, ch in derive.derive_all(repo, dry_run=True).items() if ch]
+        if dirty:
+            derive.derive_all(repo)
+            if not getattr(args, "json", False):
+                print(f"auto-synced derived tier: {', '.join(dirty)}")
+
     report = verify.verify(repo, item, waived=tuple(args.waive or ()),
                            run_commands=not args.no_run, timeout=args.timeout)
     target = verify.write_verification(repo, item, report)
+
+    amended = False
+    rel_target = str(target.relative_to(repo).as_posix())
+    if getattr(args, "amend", False) and report["verdict"] == "pass" and gitio.has_commits(repo):
+        gitio.git(repo, "add", derive.DERIVED_DIR, rel_target)
+        gitio.git(repo, "commit", "--amend", "--no-edit")
+        amended = True
 
     if args.json:
         print(json.dumps(report, indent=2, sort_keys=True))
@@ -1305,7 +1325,9 @@ def _cmd_verify(args: argparse.Namespace) -> int:
             # the report must say so where the verdict is read, not only in
             # the JSON.
             print(f"still unchecked by this kernel: {', '.join(report['pending'])}")
-        print(f"written  {target.relative_to(repo).as_posix()}")
+        print(f"written  {rel_target}")
+        if amended:
+            print(f"amended  derived tier and {rel_target} into HEAD ({gitio.rev_parse(repo, 'HEAD')[:10]})")
     return _EXIT_OK if report["verdict"] == "pass" else _EXIT_CHANGED
 
 
@@ -1910,6 +1932,8 @@ def build_parser() -> argparse.ArgumentParser:
     sync_derived.add_argument("--repo", type=Path, default=Path.cwd())
     sync_derived.add_argument("--only", action="append", metavar="FILE",
                               help="rebuild just this artifact; repeatable")
+    sync_derived.add_argument("--amend", action="store_true",
+                              help="stage and amend the updated derived tier into the HEAD commit")
     sync_derived.set_defaults(func=_cmd_sync)
 
     tr = sub.add_parser("trace", help="what references this ID, and what it references")
@@ -2088,6 +2112,10 @@ def build_parser() -> argparse.ArgumentParser:
                      help="record a waiver for a waivable condition; repeatable")
     ver.add_argument("--no-run", action="store_true",
                      help="skip build/test commands and record them as unproven")
+    ver.add_argument("--sync", action="store_true",
+                     help="automatically sync the derived tier before verification if dirty")
+    ver.add_argument("--amend", action="store_true",
+                     help="auto-sync derived tier, verify, and amend derived tier + verification.json into HEAD if pass")
     ver.add_argument("--repo", type=Path, default=Path.cwd())
     ver.add_argument("--json", action="store_true")
     ver.add_argument("--timeout", type=int, default=None,

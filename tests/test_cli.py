@@ -220,6 +220,18 @@ def test_sync_does_not_count_the_tier_it_just_wrote(stored, capsys):
     assert "differ from HEAD" not in capsys.readouterr().out
 
 
+def test_sync_derived_with_amend_stages_and_amends(stored, capsys):
+    stored.write("src/pay.py", "def capture(x):\n    return x + 1\n")
+    old_head = stored.commit("add capture")
+    assert main(["sync", "derived", "--amend", "--repo", str(stored.root)]) == 0
+    out = capsys.readouterr().out
+    assert "Amended into HEAD" in out
+    assert stored.head != old_head
+    dirty = stored._git("status", "--porcelain").strip()
+    assert dirty == ""
+
+
+
 def test_check_reports_a_hand_edited_derived_file(stored, capsys):
     main(["sync", "derived", "--repo", str(stored.root)])
     capsys.readouterr()

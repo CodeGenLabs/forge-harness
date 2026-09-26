@@ -108,13 +108,15 @@ rather than at the end when it becomes an archaeology exercise.
 ## 7. After the last task
 
 ```bash
-forge verify --change <n>
+forge verify --change <n> --amend
 ```
 
-Eight conditions, of which the tests passing is one. Read what it reports
-rather than the exit code alone: a verdict of `pass` with conditions listed as
-still unchecked by this kernel is not the same as everything being proven, and
-the report says which.
+Eight conditions, of which the tests passing is one. `--amend` auto-syncs the
+derived tier, generates verification.json, and folds both into the task commit
+upon a passing verdict so the tree stays clean without extra chore commits.
+Read what it reports rather than the exit code alone: a verdict of `pass` with
+conditions listed as still unchecked by this kernel is not the same as
+everything being proven, and the report says which.
 
 ## Exit
 
