@@ -116,6 +116,25 @@ def _section(found: list[skills.Skill], root: Path, repo: Path) -> str:
     return "\n".join(lines) + "\n"
 
 
+def _antigravity_rules() -> str:
+    return (
+        "# Forge Harness Operating Rules for Antigravity\n\n"
+        "Operating rules for working in this repository with Google Antigravity.\n\n"
+        "- **Unified Entrypoint (/forge):** All changes MUST start with `/forge <goal>` or `forge`.\n"
+        "- **Batch Preparation:** When triggered with `/forge`, automatically chain intent restatement, "
+        "codebase investigation, delta specification (`spec.md`), and task planning (`tasks.md`).\n"
+        "- **Single Confirmation Gate:** Present a single unified Plan Artifact with task DAG, "
+        "and ask the user to confirm the execution strategy: Sequential (Single Agent) vs Parallel (Multi Subagents).\n"
+        "- **Autonomous Execution:** Once approved, execute all tasks in `tasks.md` sequentially with "
+        "strict TDD (Red -> Green -> Refactor) and `@covers REQ-...` tags. Do not stop after each task; "
+        "run continuously until `forge verify --change <n>` passes or a declared stop condition is reached.\n"
+        "- **Workspace Isolation:** All changes MUST occur on a dedicated feature branch "
+        "(`forge change new \"<title>\" --track <A|B|C> --branch`). NEVER modify code directly on `main` or `master`.\n"
+        "- **Integration Gate (G5):** Do NOT merge directly into `main`. Once `forge verify` passes, "
+        "stop and ask the user whether to merge locally, create a PR, or keep the branch.\n"
+    )
+
+
 def export(repo: Path, host: str) -> tuple[str, list[str]]:
     """Write the manifest for *host*. Returns (what happened, paths written)."""
     if host not in HOSTS:
@@ -133,8 +152,9 @@ def export(repo: Path, host: str) -> tuple[str, list[str]]:
         # and report `unchanged` on the exact repository whose copy was stale,
         # which is where this was found.
         target_dir = target.target
-        if host == "antigravity" and (repo / ".agents").is_dir() and not (repo / ".agent").is_dir():
-            target_dir = ".agents/skills"
+        base_dir = ".agents" if (repo / ".agents").is_dir() and not (repo / ".agent").is_dir() else ".agent"
+        if host == "antigravity":
+            target_dir = f"{base_dir}/skills"
         written: list[str] = []
         for skill in found:
             source = skills.PACKAGED_SKILLS / skill.name / "SKILL.md"
@@ -147,6 +167,15 @@ def export(repo: Path, host: str) -> tuple[str, list[str]]:
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_text(body, encoding="utf-8", newline="\n")
             written.append(destination.relative_to(repo).as_posix())
+
+        if host == "antigravity":
+            rule_dest = repo / base_dir / "rules" / "forge.md"
+            rule_body = _antigravity_rules()
+            if not (rule_dest.is_file() and rule_dest.read_text(encoding="utf-8") == rule_body):
+                rule_dest.parent.mkdir(parents=True, exist_ok=True)
+                rule_dest.write_text(rule_body, encoding="utf-8", newline="\n")
+                written.append(rule_dest.relative_to(repo).as_posix())
+
         return ("copied" if written else "unchanged"), written
 
     section = _section(found, root, repo)

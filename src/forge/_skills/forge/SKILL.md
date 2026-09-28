@@ -94,6 +94,24 @@ kernel, and the reason is worth knowing: a change that turns out to touch an
 it, one reasonable-looking step at a time. If the scope genuinely shrank,
 close the change and open a smaller one.
 
+## 6. Batch preparation and decision gate
+
+When operating in an autonomous loop, the router coordinates the preparation
+phase without stopping at each intermediate step:
+
+1. **Investigate:** Probe codebase reality and existing claims (`investigate`).
+2. **Clarify:** If edge cases or constraints are ambiguous, ask targeted
+   clarifying questions before writing requirements.
+3. **Specify:** Draft the delta specification in `changes/<n>/spec.md` (`specify`).
+4. **Plan:** Break down requirements into checkable tasks in `tasks.md` (`plan-tasks`).
+5. **Decision gate:** Present the unified plan artifact to the user. Request one
+   decision before execution opens:
+   - **Sequential:** Execute tasks one by one with disciplined test-first cycles.
+   - **Parallel:** Dispatch independent tasks across isolated workers, then merge.
+
+Upon user confirmation, hand off directly to `implement` to execute until the
+change is verified.
+
 ## Handing off
 
 | Next | Skill |
@@ -101,7 +119,7 @@ close the change and open a smaller one.
 | Understand the code before changing it | `investigate` |
 | Write the delta requirements | `specify` |
 | Turn the spec into ordered work | `plan-tasks` |
-| Do one task | `implement` |
+| Do tasks to completion | `implement` |
 | Write what was learned into the store | `curate-knowledge` |
 
 On track A, stop after `investigate`. A probe has no artifacts, and the code

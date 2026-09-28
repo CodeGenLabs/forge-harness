@@ -157,6 +157,17 @@ def test_antigravity_host_prefers_existing_agents_dir(project):
         assert dest.is_file()
 
 
+# @covers REQ-host-antigravity-rules
+def test_antigravity_host_writes_rules(project):
+    outcome, written = hosts.export(project.root, "antigravity")
+    rule_file = project.root / ".agent/rules/forge.md"
+    assert rule_file.is_file()
+    assert ".agent/rules/forge.md" in written
+    text = rule_file.read_text(encoding="utf-8")
+    assert "/forge" in text
+    assert "Operating Rules" in text
+
+
 def test_codex_host_is_alias_for_agents_md(project):
     outcome, written = hosts.export(project.root, "codex")
     assert outcome == "written"

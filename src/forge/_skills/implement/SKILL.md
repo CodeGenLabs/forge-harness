@@ -129,8 +129,22 @@ passes and all tasks are complete, stop and present 3 options to the user:
 
 Wait for the user's explicit decision before taking any integration action.
 
+## 9. Autonomous batch execution
+
+When running in an approved autonomous execution mode, loop through all
+remaining tasks in `tasks.md` without pausing between tasks:
+
+1. Pick the next unchecked task from `tasks.md`.
+2. Execute the disciplined cycle (declare scope, write failing test, pass it, refactor).
+3. Tick the task checkbox and verify scope with `forge check --scope change`.
+4. Proceed immediately to the next task.
+5. Once all tasks are checked, run `forge verify --change <n> --amend` and stop
+   at Gate G5 for the integration decision.
+
+If a stop condition fires, pause immediately and report the finding.
+
 ## Exit
 
-One task done, its test green, its checkbox ticked, and the claim-touch
-account current. Hand back to the router for the next task.
+One task done (or all tasks in autonomous mode), tests green, checkboxes ticked,
+and verified. Hand off to Gate G5 when the change is complete.
 
