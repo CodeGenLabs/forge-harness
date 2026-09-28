@@ -1,0 +1,80 @@
+{
+  "base": "0a1d8acc9b6734a4a455e2ce677ab79262bcb4a7",
+  "change": "0002-autonomous-unified-forge-workflow",
+  "commit": "f3485d534d5fe90c2c86f1fd105b46ff5cb34592",
+  "failing": [],
+  "gates": {
+    "build": {
+      "reason": "`commands.build: none` - this project has no build step",
+      "status": "skipped"
+    },
+    "claim_evidence": {
+      "enforced_claims": 0,
+      "failing": [],
+      "status": "pass"
+    },
+    "claim_touch": {
+      "status": "pass",
+      "unaccounted": []
+    },
+    "debt": {
+      "fix": "until the ledger exists, look for stubs and TODOs added by this change",
+      "reason": "DEBT.md is not built yet",
+      "status": "pending"
+    },
+    "derived_fresh": {
+      "commits_behind": 95,
+      "dirty": [],
+      "status": "pass"
+    },
+    "drift": {
+      "claims": [],
+      "open": [],
+      "reason": "every claim this change touches is either fresh or has a recorded verdict",
+      "status": "pass"
+    },
+    "lint": {
+      "fix": "declare it, write `lint: none` if this project genuinely has no lint step, or accept that this condition is unproven - guessing the command is how a report goes green for a suite that never ran",
+      "reason": "no `commands.lint` in .forge/config.yaml",
+      "status": "unavailable"
+    },
+    "no_new_skips": {
+      "fix": "until the runner records per-test results, check the suite output for newly skipped tests",
+      "reason": "no baseline test run to compare against",
+      "status": "pending"
+    },
+    "requirement_cover": {
+      "discharged": 3,
+      "requirements": 3,
+      "status": "pass",
+      "undischarged": []
+    },
+    "tests": {
+      "cmd": ".venv\\Scripts\\python.exe -m pytest -q",
+      "exit": 0,
+      "status": "pass"
+    },
+    "typecheck": {
+      "reason": "`commands.typecheck: none` - this project has no typecheck step",
+      "status": "skipped"
+    },
+    "ui": {
+      "reason": "`commands.ui: none` - this project has no ui step",
+      "status": "skipped"
+    }
+  },
+  "pending": [
+    "debt",
+    "no_new_skips"
+  ],
+  "skipped": [
+    "build",
+    "typecheck",
+    "ui"
+  ],
+  "unproven": [
+    "lint"
+  ],
+  "verdict": "unproven",
+  "waived": []
+}
