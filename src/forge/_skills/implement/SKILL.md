@@ -118,7 +118,19 @@ Read what it reports rather than the exit code alone: a verdict of `pass` with
 conditions listed as still unchecked by this kernel is not the same as
 everything being proven, and the report says which.
 
+## 8. Gate G5 - Integration & Review Hand-off
+
+Do NOT merge directly into `main` or `master`. Once `forge verify --change <n>`
+passes and all tasks are complete, stop and present 3 options to the user:
+
+1. Merge back to `main` locally (verify full test suite on merged result)
+2. Push branch and create a Pull Request
+3. Keep branch as-is for manual review
+
+Wait for the user's explicit decision before taking any integration action.
+
 ## Exit
 
 One task done, its test green, its checkbox ticked, and the claim-touch
 account current. Hand back to the router for the next task.
+

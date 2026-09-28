@@ -20,6 +20,7 @@ def project(repo):
     repo.commit("a repository")
     main(["init", "--repo", str(repo.root)])
     repo.commit("forge init")
+    repo._git("checkout", "-b", "feat/work")
     return repo
 
 
@@ -330,3 +331,41 @@ def test_bugfix_workflow_change_lifecycle(project, capsys):
     st = {s.id: s.state for s in item.state(loaded)}
     assert st["reproduce"] == change.COMPLETE
     assert st["proposal"] == change.MISSING
+
+
+def test_change_new_refuses_on_main_without_flags(repo, capsys):
+    repo.write("README.md", "# A project\n")
+    repo.commit("initial")
+    main(["init", "--repo", str(repo.root)])
+    repo.commit("forge init")
+    assert repo._git("branch", "--show-current").strip() == "main"
+
+    code = main(["change", "new", "feature on main", "--repo", str(repo.root)])
+    assert code != 0
+    err = capsys.readouterr().err
+    assert "refusing to open a change directly on 'main'" in err
+
+
+def test_change_new_allows_main_with_flag(repo, capsys):
+    repo.write("README.md", "# A project\n")
+    repo.commit("initial")
+    main(["init", "--repo", str(repo.root)])
+    repo.commit("forge init")
+
+    code = main(["change", "new", "feature on main", "--allow-main", "--repo", str(repo.root)])
+    assert code == 0
+    assert (repo.root / "changes/0001-feature-on-main").is_dir()
+
+
+def test_change_new_creates_and_switches_branch(repo, capsys):
+    repo.write("README.md", "# A project\n")
+    repo.commit("initial")
+    main(["init", "--repo", str(repo.root)])
+    repo.commit("forge init")
+
+    code = main(["change", "new", "my feature", "--branch", "--repo", str(repo.root)])
+    assert code == 0
+    assert repo._git("branch", "--show-current").strip() == "change/0001-my-feature"
+    out = capsys.readouterr().out
+    assert "branch     change/0001-my-feature" in out
+

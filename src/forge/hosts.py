@@ -103,6 +103,14 @@ def _section(found: list[skills.Skill], root: Path, repo: Path) -> str:
         "Start at `forge` for any request that will change this repository; it "
         "picks the track",
         "and hands off. `forge status` says where an open change is.",
+        "",
+        "### Operating Rules",
+        "",
+        "- **Workspace Isolation:** All spec and code changes MUST occur on a dedicated feature branch or worktree. NEVER modify code or open changes directly on `main` or `master`.",
+        "- **Open Changes:** Always run `forge change new \"<title>\" --track <A|B|C> --branch` to ensure an isolated branch is created.",
+        "- **TDD Discipline:** Write failing tests first before modifying implementation code (`@covers REQ-...`).",
+        "- **Verification:** Changes are complete only when `forge verify --change <N>` exits 0.",
+        "- **Integration Gate (G5):** Do NOT merge directly into `main`. When tasks and verification are complete, stop and ask the user whether to merge locally, push/open a PR, or keep the branch.",
         MARKER_END,
     ]
     return "\n".join(lines) + "\n"

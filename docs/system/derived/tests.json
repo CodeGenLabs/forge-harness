@@ -522,161 +522,176 @@
         "tests": [
           {
             "covers": [],
-            "line": 37,
+            "line": 38,
             "name": "test_a_new_change_is_numbered_and_slugged"
           },
           {
             "covers": [],
-            "line": 44,
+            "line": 45,
             "name": "test_numbers_are_monotonic_across_the_archive"
           },
           {
             "covers": [],
-            "line": 54,
+            "line": 55,
             "name": "test_a_change_resolves_by_number_padded_number_slug_or_name"
           },
           {
             "covers": [],
-            "line": 60,
+            "line": 61,
             "name": "test_an_unknown_reference_lists_what_is_open"
           },
           {
             "covers": [],
-            "line": 66,
+            "line": 67,
             "name": "test_a_duplicated_number_is_ambiguous_not_guessed"
           },
           {
             "covers": [],
-            "line": 74,
+            "line": 75,
             "name": "test_a_title_with_no_letters_is_refused"
           },
           {
             "covers": [],
-            "line": 84,
+            "line": 85,
             "name": "test_an_artifact_is_complete_because_its_file_exists"
           },
           {
             "covers": [],
-            "line": 90,
+            "line": 91,
             "name": "test_a_glob_artifact_is_complete_on_any_match"
           },
           {
             "covers": [],
-            "line": 98,
+            "line": 99,
             "name": "test_what_is_blocked_is_requires_minus_complete"
           },
           {
             "covers": [],
-            "line": 106,
+            "line": 107,
             "name": "test_track_b_does_not_see_track_c_artifacts"
           },
           {
             "covers": [],
-            "line": 113,
+            "line": 114,
             "name": "test_tasks_on_track_b_waits_only_for_what_track_b_has"
           },
           {
             "covers": [],
-            "line": 119,
+            "line": 120,
             "name": "test_there_is_no_state_file_beyond_the_track"
           },
           {
             "covers": [],
-            "line": 131,
+            "line": 132,
             "name": "test_a_conditional_artifact_is_required_until_it_is_skipped"
           },
           {
             "covers": [],
-            "line": 140,
+            "line": 141,
             "name": "test_a_skip_satisfies_what_depended_on_it"
           },
           {
             "covers": [],
-            "line": 149,
+            "line": 150,
             "name": "test_a_bare_skip_flag_still_records_that_no_reason_was_given"
           },
           {
             "covers": [],
-            "line": 162,
+            "line": 163,
             "name": "test_a_conditional_artifact_is_unconditional_on_the_heavier_track"
           },
           {
             "covers": [],
-            "line": 179,
+            "line": 180,
             "name": "test_upgrading_records_where_it_came_from"
           },
           {
             "covers": [],
-            "line": 186,
+            "line": 187,
             "name": "test_downgrading_is_refused"
           },
           {
             "covers": [],
-            "line": 194,
+            "line": 195,
             "name": "test_upgrading_to_the_same_track_is_refused"
           },
           {
             "covers": [],
-            "line": 205,
+            "line": 206,
             "name": "test_task_completion_is_the_checkbox"
           },
           {
             "covers": [],
-            "line": 216,
+            "line": 217,
             "name": "test_no_tasks_file_is_no_tasks"
           },
           {
             "covers": [],
-            "line": 226,
+            "line": 227,
             "name": "test_change_new_reports_the_artifacts_the_track_wants"
           },
           {
             "covers": [],
-            "line": 232,
+            "line": 233,
             "name": "test_change_new_on_track_a_says_there_is_nothing_to_write"
           },
           {
             "covers": [],
-            "line": 237,
+            "line": 238,
             "name": "test_change_list_is_empty_with_a_next_step"
           },
           {
             "covers": [],
-            "line": 242,
+            "line": 243,
             "name": "test_change_show_names_the_next_artifact"
           },
           {
             "covers": [],
-            "line": 251,
+            "line": 252,
             "name": "test_change_show_json"
           },
           {
             "covers": [],
-            "line": 262,
+            "line": 263,
             "name": "test_change_track_reports_what_is_now_owed"
           },
           {
             "covers": [],
-            "line": 274,
+            "line": 275,
             "name": "test_change_track_refuses_a_downgrade_with_exit_two"
           },
           {
             "covers": [],
-            "line": 282,
+            "line": 283,
             "name": "test_status_shows_open_changes"
           },
           {
             "covers": [],
-            "line": 294,
+            "line": 295,
             "name": "test_init_writes_the_workflow_so_it_can_be_edited"
           },
           {
             "covers": [],
-            "line": 305,
+            "line": 306,
             "name": "test_bugfix_workflow_change_lifecycle"
+          },
+          {
+            "covers": [],
+            "line": 334,
+            "name": "test_change_new_refuses_on_main_without_flags"
+          },
+          {
+            "covers": [],
+            "line": 347,
+            "name": "test_change_new_allows_main_with_flag"
+          },
+          {
+            "covers": [],
+            "line": 358,
+            "name": "test_change_new_creates_and_switches_branch"
           }
         ],
-        "untagged": 31
+        "untagged": 34
       },
       "tests/test_claim_granularity.py": {
         "language": "python",
@@ -1872,26 +1887,31 @@
           },
           {
             "covers": [],
-            "line": 180,
+            "line": 175,
+            "name": "test_forge_install_all_hosts_default"
+          },
+          {
+            "covers": [],
+            "line": 192,
             "name": "test_an_unedited_copy_reads_as_a_copy"
           },
           {
             "covers": [],
-            "line": 184,
+            "line": 196,
             "name": "test_an_edited_copy_reads_as_stale"
           },
           {
             "covers": [],
-            "line": 193,
+            "line": 205,
             "name": "test_line_endings_alone_are_not_a_difference"
           },
           {
             "covers": [],
-            "line": 204,
+            "line": 216,
             "name": "test_this_repository_owns_its_skills"
           }
         ],
-        "untagged": 18
+        "untagged": 19
       },
       "tests/test_impact.py": {
         "language": "python",
@@ -2584,9 +2604,19 @@
             "covers": [],
             "line": 599,
             "name": "test_verify_with_amend_auto_syncs_and_amends"
+          },
+          {
+            "covers": [],
+            "line": 617,
+            "name": "test_archive_auto_syncs_and_restamps"
+          },
+          {
+            "covers": [],
+            "line": 629,
+            "name": "test_archive_with_amend"
           }
         ],
-        "untagged": 41
+        "untagged": 43
       },
       "tests/test_lifecycle_repairs.py": {
         "language": "python",
@@ -2952,132 +2982,132 @@
           },
           {
             "covers": [],
-            "line": 47,
+            "line": 51,
             "name": "test_init_scaffolds_no_claims"
           },
           {
             "covers": [],
-            "line": 55,
+            "line": 59,
             "name": "test_init_never_overwrites"
           },
           {
             "covers": [],
-            "line": 66,
+            "line": 70,
             "name": "test_init_refuses_outside_a_git_repository"
           },
           {
             "covers": [],
-            "line": 72,
+            "line": 76,
             "name": "test_the_scaffold_is_written_with_lf_endings"
           },
           {
             "covers": [],
-            "line": 81,
+            "line": 85,
             "name": "test_the_adoption_adr_records_what_was_rejected"
           },
           {
             "covers": [],
-            "line": 97,
+            "line": 101,
             "name": "test_every_mvp_kind_has_a_template"
           },
           {
             "covers": [],
-            "line": 105,
+            "line": 109,
             "name": "test_a_template_parses_as_a_claim"
           },
           {
             "covers": [],
-            "line": 120,
+            "line": 124,
             "name": "test_a_template_fails_the_placeholder_check_on_purpose"
           },
           {
             "covers": [],
-            "line": 128,
+            "line": 132,
             "name": "test_a_template_with_an_id_and_title_keeps_them"
           },
           {
             "covers": [],
-            "line": 134,
+            "line": 138,
             "name": "test_generated_text_is_ascii"
           },
           {
             "covers": [],
-            "line": 145,
+            "line": 149,
             "name": "test_an_unknown_kind_is_a_usage_error"
           },
           {
             "covers": [],
-            "line": 150,
+            "line": 154,
             "name": "test_the_postponed_kinds_are_not_offered"
           },
           {
             "covers": [],
-            "line": 164,
+            "line": 168,
             "name": "test_claim_new_prints_rather_than_writing"
           },
           {
             "covers": [],
-            "line": 172,
+            "line": 176,
             "name": "test_claim_new_append_puts_each_kind_in_its_own_file"
           },
           {
             "covers": [],
-            "line": 181,
+            "line": 185,
             "name": "test_claim_new_append_says_the_check_will_fail"
           },
           {
             "covers": [],
-            "line": 190,
+            "line": 194,
             "name": "test_claim_new_append_needs_the_scaffold"
           },
           {
             "covers": [],
-            "line": 195,
+            "line": 199,
             "name": "test_claim_new_append_leaves_the_existing_claims_parseable"
           },
           {
             "covers": [],
-            "line": 212,
+            "line": 216,
             "name": "test_claim_show_prints_the_claim_as_written"
           },
           {
             "covers": [],
-            "line": 224,
+            "line": 228,
             "name": "test_claim_show_of_an_unknown_id_exits_one"
           },
           {
             "covers": [],
-            "line": 232,
+            "line": 236,
             "name": "test_claim_show_reports_a_duplicated_id"
           },
           {
             "covers": [],
-            "line": 247,
+            "line": 251,
             "name": "test_claim_show_json"
           },
           {
             "covers": [],
-            "line": 264,
+            "line": 268,
             "name": "test_claim_stamp_single_claim"
           },
           {
             "covers": [],
-            "line": 298,
+            "line": 302,
             "name": "test_claim_stamp_all"
           },
           {
             "covers": [],
-            "line": 336,
+            "line": 340,
             "name": "test_claim_stamp_unknown_claim_exits_one"
           },
           {
             "covers": [],
-            "line": 349,
+            "line": 353,
             "name": "test_status_json"
           },
           {
             "covers": [],
-            "line": 360,
+            "line": 364,
             "name": "test_an_unbuilt_tier_is_reported_once_not_five_times"
           }
         ],
@@ -4010,9 +4040,9 @@
       }
     },
     "tagged_tests": 0,
-    "total_tests": 765
+    "total_tests": 771
   },
-  "generated_from_commit": "d5405ea753e35a7e61ea2f8fd542d88a338d9c5d",
+  "generated_from_commit": "96a0c536ae83ecf9143fb23a9b52e8c81c021192",
   "generator": "forge sync derived",
   "tool": "forge"
 }

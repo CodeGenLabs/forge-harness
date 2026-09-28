@@ -66,8 +66,13 @@ repository, and the track sets every obligation that follows.
 
 ## 4. Open the change
 
+Work must happen in an isolated workspace. Never modify code, spec, or open a
+change directly on `main` or `master`. Pass `--branch` to create and switch to a
+dedicated feature branch automatically, or ensure you are in an isolated worktree
+first:
+
 ```bash
-forge change new "<title>" --track <A|B|C>
+forge change new "<title>" --track <A|B|C> --branch
 forge change show <n>
 ```
 

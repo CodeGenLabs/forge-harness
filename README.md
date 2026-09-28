@@ -48,8 +48,10 @@ forge init
 ```
 
 ### Step 3: Activate Skills for Your AI Coding Agent
-Run the single command matching your agent host:
+Run `forge install` to set up skills for all agents, or specify a host:
 ```bash
+forge install                     # Install for all hosts (Claude, Antigravity, Codex)
+# Or specify a single host:
 forge install --host claude       # For Claude Code (.claude/skills/)
 forge install --host antigravity  # For Google Antigravity (.agent/skills/)
 forge install --host codex        # For OpenAI Codex / Cursor / ChatGPT (AGENTS.md)
@@ -58,10 +60,11 @@ forge install --host codex        # For OpenAI Codex / Cursor / ChatGPT (AGENTS.
 ```markdown
 # Forge Operating Rules
 - All code modifications MUST proceed through Forge Harness.
-- Begin any task by running `forge status` to inspect active changes and claims.
-- Before making changes, open a change via `forge change new "<title>" --track <A|B|C>`.
+- Workspace Isolation: All spec and code changes MUST occur on a dedicated feature branch or worktree. NEVER modify code or open changes directly on `main` or `master`.
+- Open changes via `forge change new "<title>" --track <A|B|C> --branch`.
 - Strictly follow TDD: Test first, code second.
 - Changes are only complete when `forge verify --change <N>` exits 0.
+- Integration Gate: Do NOT merge directly into `main`. Stop and ask the user whether to merge, create a PR, or keep the branch.
 ```
 
 ### Step 4: Synchronize & Verify Project Health
@@ -395,7 +398,7 @@ In your project rules (`AGENTS.md` or `CLAUDE.md`), add:
 | `forge status` | 1-screen summary: track, phase, claims, drift, tests | 0 |
 | `forge check` | Run 18 store integrity checks (S1–S18) and freshness checks | 0 / 1 |
 | `forge init` | Scaffold `.forge/` and `docs/system/` in repository | 0 |
-| `forge install --host <host>` | Install skills into host runtime (`claude`, `antigravity`, `codex`, `agents-md`) | 0 |
+| `forge install [--host <host>]` | Install skills into host runtime (default: all - `claude`, `antigravity`, `codex`) | 0 |
 | `forge hooks install` | Install Git pre-commit hook to prevent drift commits | 0 |
 | `forge hooks uninstall` | Uninstall Git pre-commit hook | 0 |
 | `forge reconcile --since <ref>` | Reconcile unmanaged commits and open drift ledger entries | 0 / 1 |
@@ -408,7 +411,7 @@ In your project rules (`AGENTS.md` or `CLAUDE.md`), add:
 | `forge gate <point> --change <N>` | Execute lifecycle gate (`spec:post`, `impact:post`, etc.) | 0 / 1 |
 | `forge impact --change <N>` | Compute blast radius and claim-touch set | 0 |
 | `forge verify --change <N>` | Verify 11 conditions (tests, DAG, touch compliance) | 0 / 1 |
-| `forge archive --change <N>` | Fold spec deltas into main store and archive change | 0 / 1 |
+| `forge archive --change <N> [--amend]` | Fold spec deltas into main store, restamp claims, auto-sync derived tier, and archive change | 0 / 1 |
 | `forge drift --store` | Scan entire claim store for stale AST anchors | 0 / 1 |
 | `forge drift --changed` | Scan only anchors touched by current git diff | 0 / 1 |
 | `forge claim new <kind> [--append]` | Scaffold claim template (invariant, concept, architecture,...) | 0 |

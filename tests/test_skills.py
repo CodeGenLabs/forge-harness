@@ -442,7 +442,7 @@ def test_a_track_b_change_runs_end_to_end_through_the_skills(repo, capsys):
     capsys.readouterr()
 
     # `forge` router: track B, because the change is bounded.
-    assert main(["change", "new", "tidy the log prefix", "--track", "B",
+    assert main(["change", "new", "tidy the log prefix", "--track", "B", "--branch",
                  "--repo", str(repo.root)]) == 0
     assert main(["change", "show", "1", "--repo", str(repo.root)]) == 0
     repo.commit("open the change")

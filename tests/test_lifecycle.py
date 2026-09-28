@@ -615,3 +615,28 @@ def test_verify_with_amend_auto_syncs_and_amends(project, capsys):
     dirty = project._git("status", "--porcelain").strip()
     assert dirty == ""
 
+
+def test_archive_auto_syncs_and_restamps(project, capsys):
+    _complete(project)
+    capsys.readouterr()
+    assert main(["archive", "--change", "1", "--date", "2026-09-11",
+                 "--repo", str(project.root)]) == 0
+    out = capsys.readouterr().out
+    assert "restamped   anchors at HEAD for INV-refund-cap" in out
+    assert "auto-synced derived tier" in out
+    folded = project.root / spec.SPECS_DIR / "payments/spec.md"
+    assert folded.is_file()
+
+
+def test_archive_with_amend(project, capsys):
+    _complete(project)
+    old_head = project.head
+    capsys.readouterr()
+    assert main(["archive", "--change", "1", "--amend", "--date", "2026-09-11",
+                 "--repo", str(project.root)]) == 0
+    out = capsys.readouterr().out
+    assert "amended     archive and system docs into HEAD" in out
+    assert project.head != old_head
+    dirty = project._git("status", "--porcelain").strip()
+    assert dirty == ""
+

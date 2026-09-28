@@ -174,6 +174,18 @@ def test_forge_install_cli(project, capsys):
     assert (project.root / ".claude/skills/forge/SKILL.md").is_file()
 
 
+def test_forge_install_all_hosts_default(project, capsys):
+    rc = main(["install", "--repo", str(project.root)])
+    assert rc == 0
+    captured = capsys.readouterr()
+    assert ".claude/skills" in captured.out
+    assert ".agent/skills" in captured.out
+    assert "AGENTS.md" in captured.out
+    assert (project.root / ".claude/skills/forge/SKILL.md").is_file()
+    assert (project.root / ".agent/skills/forge/SKILL.md").is_file()
+    assert (project.root / "AGENTS.md").is_file()
+
+
 # ---------------------------------------------------------------------------
 # Knowing a copy has drifted
 # ---------------------------------------------------------------------------

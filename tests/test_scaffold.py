@@ -44,6 +44,10 @@ def test_init_writes_the_mandatory_files(fresh):
     for name in ("architecture.md", "components.md", "domain.md", "pitfalls.md"):
         assert (fresh.root / store.STORE_DIR / name).is_file()
     assert (fresh.root / store.DECISIONS_DIR / "ADR-0001-adopt-forge.md").is_file()
+    assert (fresh.root / store.STORE_DIR).is_dir()
+    assert (fresh.root / store.CANDIDATES_DIR).is_dir()
+    assert (fresh.root / "docs/system/specs").is_dir()
+    assert (fresh.root / derive.DERIVED_DIR).is_dir()
 
 
 def test_init_scaffolds_no_claims(fresh):

@@ -6,6 +6,9 @@
 # Pinned kernel version so this repository can detect version skew (Q11).
 kernel_version: "0.1.0"
 
+# Maintainer repository override: allow operating on main in the harness repository itself
+protect_main: false
+
 derive:
   # Files whose ID-looking strings are *data*, not declarations. They still
   # count in the inventory and the test totals; only `@covers` and `forge:<ID>`

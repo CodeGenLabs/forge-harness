@@ -48,8 +48,10 @@ forge init
 ```
 
 ### Bước 3: Kích hoạt Skills cho AI Coding Agent bạn dùng
-Chạy 1 lệnh tương ứng với AI Coding Agent mà bạn sử dụng:
+Chạy `forge install` để cài đặt skills cho tất cả agent, hoặc chỉ định host cụ thể:
 ```bash
+forge install                     # Cài đặt cho tất cả hosts (Claude, Antigravity, Codex)
+# Hoặc chỉ định một host:
 forge install --host claude       # Dành cho Claude Code (.claude/skills/)
 forge install --host antigravity  # Dành cho Google Antigravity (.agent/skills/)
 forge install --host codex        # Dành cho OpenAI Codex / Cursor / ChatGPT (AGENTS.md)
@@ -57,11 +59,12 @@ forge install --host codex        # Dành cho OpenAI Codex / Cursor / ChatGPT (A
 *(Khuyến nghị)*: Thêm các quy tắc điều hành vào file `CLAUDE.md` (nếu dùng Claude) hoặc `AGENTS.md` (nếu dùng Antigravity / Codex / Cursor):
 ```markdown
 # Forge Operating Rules
-- All code modifications MUST proceed through Forge Harness.
-- Begin any task by running `forge status` to inspect active changes and claims.
-- Before making changes, open a change via `forge change new "<title>" --track <A|B|C>`.
-- Strictly follow TDD: Test first, code second.
-- Changes are only complete when `forge verify --change <N>` exits 0.
+- Mọi sửa đổi mã nguồn BẮT BUỘC phải thông qua Forge Harness.
+- Cách ly không gian làm việc (Workspace Isolation): Toàn bộ spec và code BẮT BUỘC phải thực hiện trên branch hoặc worktree riêng. TUYỆT ĐỐI KHÔNG sửa code hay mở change trực tiếp trên `main` hoặc `master`.
+- Mở change với cờ tách nhánh: `forge change new "<title>" --track <A|B|C> --branch`.
+- Nghiêm ngặt tuân thủ TDD: Viết test trước, viết code sau (`@covers REQ-...`).
+- Change chỉ hoàn tất khi `forge verify --change <N>` đạt exit code 0.
+- Chốt chặn tích hợp (Integration Gate): KHÔNG tự ý merge vào `main`. Dừng lại hỏi ý kiến người dùng trước khi merge hoặc tạo PR.
 ```
 
 ### Bước 4: Đồng bộ dữ liệu & Kiểm tra dự án
@@ -513,7 +516,7 @@ forge archive --change 2
 | `forge status` | Báo cáo tổng quan trạng thái hệ thống, claims, tests, change hiện tại | 0 |
 | `forge check` | Chạy 18 bài kiểm tra toàn vẹn tri thức (S1–S18) và tính tươi mới | 0 / 1 |
 | `forge init` | Khởi tạo cấu trúc `.forge/` và `docs/system/` trong repo | 0 |
-| `forge install --host <host>` | Cài đặt skills vào host agent (`claude`, `antigravity`, `codex`, `agents-md`) | 0 |
+| `forge install [--host <host>]` | Cài đặt skills vào host agent (mặc định: tất cả `claude`, `antigravity`, `codex`) | 0 |
 | `forge hooks install` | Cài đặt Git pre-commit hook tự động chặn vi phạm drift | 0 |
 | `forge hooks uninstall` | Gỡ bỏ Git pre-commit hook | 0 |
 | `forge reconcile --since <ref>` | Đối soát commit ngoài luồng, mở mục ledger cho các claim bị chạm | 0 / 1 |
@@ -526,7 +529,7 @@ forge archive --change 2
 | `forge gate <point> --change <N>` | Chạy cổng kiểm soát tại điểm chuyển giao (`spec:post`, `impact:post`,...) | 0 / 1 |
 | `forge impact --change <N>` | Tính toán bán kính ảnh hưởng và tập claim bị chạm | 0 |
 | `forge verify --change <N>` | Kiểm chứng 11 điều kiện thực tế (chạy test, tính hợp lệ, DAG) | 0 / 1 |
-| `forge archive --change <N>` | Gập delta spec vào hệ thống chính và lưu trữ change | 0 / 1 |
+| `forge archive --change <N> [--amend]` | Gập delta spec vào hệ thống chính, restamp claim, auto-sync derived và lưu trữ change | 0 / 1 |
 | `forge drift --store` | Quét toàn bộ kho tri thức tìm các anchor bị lỗi thời (stale) | 0 / 1 |
 | `forge drift --changed` | Quét độ lệch cho các file đang nằm trong git diff hiện tại | 0 / 1 |
 | `forge claim new <kind> [--append]` | Tạo khung mẫu claim mới (invariant, concept, architecture,...) | 0 |

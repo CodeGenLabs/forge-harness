@@ -45,6 +45,8 @@ __all__ = [
     "parent_of",
     "diff_is_whitespace_only",
     "is_repo",
+    "current_branch",
+    "is_worktree",
 ]
 
 # A revision we are willing to hand to git. Hex object names of 4-40 chars, or
@@ -576,5 +578,36 @@ def has_commits(repo: Path) -> bool:
         capture_output=True, check=False,
     )
     return completed.returncode == 0
+
+
+def current_branch(repo: Path) -> str:
+    """The current branch name, or '' if detached or not in a git repo."""
+    if not is_repo(repo):
+        return ""
+    completed = subprocess.run(
+        ["git", "-C", str(repo), "branch", "--show-current"],
+        capture_output=True, check=False,
+    )
+    return completed.stdout.decode("utf-8", "replace").strip()
+
+
+def is_worktree(repo: Path) -> bool:
+    """True if the repository checkout is a linked worktree (not the main worktree)."""
+    if not is_repo(repo):
+        return False
+    gd = subprocess.run(
+        ["git", "-C", str(repo), "rev-parse", "--git-dir"],
+        capture_output=True, check=False,
+    )
+    gcd = subprocess.run(
+        ["git", "-C", str(repo), "rev-parse", "--git-common-dir"],
+        capture_output=True, check=False,
+    )
+    if gd.returncode != 0 or gcd.returncode != 0:
+        return False
+    git_dir = (repo / gd.stdout.decode("utf-8", "replace").strip()).resolve()
+    common_dir = (repo / gcd.stdout.decode("utf-8", "replace").strip()).resolve()
+    return git_dir != common_dir
+
 
 

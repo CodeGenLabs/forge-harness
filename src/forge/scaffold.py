@@ -20,7 +20,7 @@ from __future__ import annotations
 import datetime as _dt
 from pathlib import Path
 
-from . import __version__, change, schema, skills, store
+from . import __version__, change, derive, schema, skills, store
 from .config import CONFIG_PATH
 
 __all__ = ["claim_template", "adr_template", "init_files", "scaffold", "KIND_FILE"]
@@ -236,6 +236,9 @@ version: 1
 # Pinned kernel version so this repository can detect version skew (Q11).
 kernel_version: "{__version__}"
 
+# Workspace isolation: protect main/master by refusing `forge change new` without --branch or --allow-main.
+protect_main: true
+
 derive:
   # Paths the derived tier does not describe, on top of the built-in vendor and
   # build exclusions. Use for code this project does not own.
@@ -334,6 +337,12 @@ def scaffold(repo: Path, *, today: _dt.date | None = None) -> tuple[list[str], l
     did not need before - and a scaffolder that clobbers is one nobody runs
     twice.
     """
+    (repo / store.STORE_DIR).mkdir(parents=True, exist_ok=True)
+    (repo / store.CANDIDATES_DIR).mkdir(parents=True, exist_ok=True)
+    (repo / store.DECISIONS_DIR).mkdir(parents=True, exist_ok=True)
+    (repo / "docs/system/specs").mkdir(parents=True, exist_ok=True)
+    (repo / derive.DERIVED_DIR).mkdir(parents=True, exist_ok=True)
+
     created: list[str] = []
     skipped: list[str] = []
     for relative, content in sorted(init_files(today).items()):

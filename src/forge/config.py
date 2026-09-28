@@ -54,6 +54,9 @@ class Config:
     #: House rules per phase or artifact (e.g. `rules.spec`). Surfaced to the
     #: model by `forge instructions <phase>`.
     rules: dict[str, list[str]] = field(default_factory=dict)
+    #: Whether to protect main/master branches by refusing `forge change new`
+    #: without --branch or --allow-main.
+    protect_main: bool = True
     #: Where the file came from, or None when defaults are in use.
     source: str | None = None
     #: Populated when the file exists but could not be read.
@@ -109,6 +112,7 @@ def load_config(repo: Path) -> Config:
             thresholds.get("derived_stale_commits"), defaults.derived_stale_commits
         ),
         rules=rules,
+        protect_main=bool(raw["protect_main"]) if "protect_main" in raw else defaults.protect_main,
         source=CONFIG_PATH,
     )
 

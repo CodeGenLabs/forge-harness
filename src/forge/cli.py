@@ -740,6 +740,7 @@ def _cmd_init(args: argparse.Namespace) -> int:
         print(f"created    {relative}")
     for relative in skipped:
         print(f"kept       {relative}")
+
     if not created:
         print("\nNothing to create; the scaffold is already here.")
         return _EXIT_OK
@@ -904,17 +905,49 @@ def _cmd_change_new(args: argparse.Namespace) -> int:
     if not gitio.is_repo(repo):
         print(f"forge: {repo} is not a git repository", file=sys.stderr)
         return _EXIT_USAGE
+
+    cfg = config.load_config(repo)
+    branch = gitio.current_branch(repo)
+    is_wt = gitio.is_worktree(repo)
+
+    if cfg.protect_main and branch in ("main", "master") and not is_wt:
+        if not getattr(args, "branch", False) and not getattr(args, "allow_main", False):
+            print(
+                f"forge: refusing to open a change directly on '{branch}'.\n"
+                f"Work must happen on an isolated feature branch or worktree to protect {branch}.\n\n"
+                f"To create and switch to a new branch automatically, re-run with --branch:\n"
+                f"  forge change new \"{args.title}\" --track {args.track} --branch\n\n"
+                f"Or switch to a branch manually first:\n"
+                f"  git checkout -b change/<name>\n\n"
+                f"(To bypass this protection, pass --allow-main)",
+                file=sys.stderr,
+            )
+            return _EXIT_USAGE
+
     try:
         created = change.new_change(repo, args.title, track=args.track,
                                     workflow=args.workflow)
     except change.ChangeError as exc:
         print(f"forge: {exc}", file=sys.stderr)
         return _EXIT_USAGE
+
+    branch_created = None
+    if getattr(args, "branch", False):
+        branch_name = f"change/{created.name}"
+        try:
+            gitio.git(repo, "checkout", "-b", branch_name)
+            branch_created = branch_name
+        except gitio.GitError as exc:
+            print(f"forge: failed to create git branch {branch_name!r}: {exc}", file=sys.stderr)
+            return _EXIT_USAGE
+
     loaded = _load_schema(repo, created.workflow)
     if loaded is None:
         return _EXIT_USAGE
     print(f"created    {created.relative}/")
     print(f"track      {created.track}")
+    if branch_created:
+        print(f"branch     {branch_created}")
     wanted = [a.id for a in loaded.for_track(created.track)]
     art_desc = ', '.join(wanted) if wanted else 'none - track A is a question, not a deliverable'
     print(f"artifacts  {art_desc}")
@@ -1348,7 +1381,7 @@ def _cmd_archive(args: argparse.Namespace) -> int:
         return item if isinstance(item, int) else _EXIT_USAGE
 
     blocking: list[Issue] = []
-    for point in ("spec:post", "impact:post", "analyze:post"):
+    for point in ("spec:post", "impact:post", "analyze:post", "sync:pre"):
         for result in gates.run_gate(repo, point, item):
             if result.blocks:
                 blocking.extend(result.errors)
@@ -1393,9 +1426,36 @@ def _cmd_archive(args: argparse.Namespace) -> int:
     destination.parent.mkdir(parents=True, exist_ok=True)
     _shutil.move(str(item.root), str(destination))
     print(f"archived    {destination.relative_to(repo).as_posix()}")
-    print("\nNow: `forge sync derived` and commit. The archive is never an input "
-          "to any phase, so anything in it that still matters belongs in the "
-          "permanent tier.")
+
+    # 1. Restamp any claims marked 'Updated' in impact.md to HEAD
+    account_file = destination / "impact.md"
+    if account_file.is_file() and gitio.has_commits(repo):
+        try:
+            account = impact.parse_account(account_file.read_text(encoding="utf-8", errors="replace"))
+            sha = gitio.rev_parse(repo, "HEAD")
+            updated_ids = [cid for cid, heads in account.by_id.items() if any(h.lower() == "updated" for h in heads)]
+            restamped_ids = []
+            for cid in updated_ids:
+                if ledger._restamp(repo, cid, sha, _dt.date.today()):
+                    restamped_ids.append(cid)
+            if restamped_ids:
+                print(f"restamped   anchors at HEAD for {', '.join(restamped_ids)}")
+        except Exception:
+            pass
+
+    # 2. Re-derive machine-owned artifacts in docs/system/derived
+    derived_changed = derive.derive_all(repo)
+    dirty = [n for n, ch in derived_changed.items() if ch]
+    if dirty:
+        print(f"auto-synced derived tier: {', '.join(dirty)}")
+
+    # 3. Handle --amend if requested
+    if getattr(args, "amend", False) and gitio.has_commits(repo):
+        gitio.git(repo, "add", "-A", derive.DERIVED_DIR, change.ARCHIVE_DIR, store.STORE_DIR, item.relative)
+        gitio.git(repo, "commit", "--amend", "--no-edit")
+        print(f"amended     archive and system docs into HEAD ({gitio.rev_parse(repo, 'HEAD')[:10]})")
+    else:
+        print("\nNow: commit the archive and updated system docs.")
     return _EXIT_OK
 
 
@@ -1691,15 +1751,24 @@ def _cmd_bootstrap_seal(args: argparse.Namespace) -> int:
 
 def _cmd_skill_export(args: argparse.Namespace) -> int:
     repo = args.repo.resolve()
-    if args.host not in hosts.HOSTS:
-        print(f"forge: no host {args.host!r}. Known: "
-              + ", ".join(f"{h.name} ({h.note})" for h in hosts.HOSTS.values()),
-              file=sys.stderr)
-        return _EXIT_USAGE
-    outcome, written = hosts.export(repo, args.host)
-    print(f"{outcome:10} {hosts.HOSTS[args.host].target}")
-    for path in written[:8]:
-        print(f"           {path}")
+    host_arg = getattr(args, "host", None)
+    if host_arg is None or host_arg == "all":
+        target_hosts = ["claude", "antigravity", "codex"]
+    else:
+        target_hosts = [host_arg]
+
+    for host_name in target_hosts:
+        if host_name not in hosts.HOSTS:
+            print(f"forge: no host {host_name!r}. Known: "
+                  + ", ".join(f"{h.name} ({h.note})" for h in hosts.HOSTS.values()),
+                  file=sys.stderr)
+            return _EXIT_USAGE
+        outcome, written = hosts.export(repo, host_name)
+        print(f"{outcome:10} {hosts.HOSTS[host_name].target}")
+        for path in written[:8]:
+            print(f"           {path}")
+        if len(written) > 8:
+            print(f"           ... and {len(written) - 8} more")
     return _EXIT_OK
 
 
@@ -2022,6 +2091,10 @@ def build_parser() -> argparse.ArgumentParser:
     chg_new.add_argument("title")
     chg_new.add_argument("--track", default="C", choices=list(schema.TRACKS))
     chg_new.add_argument("--workflow", default="feature")
+    chg_new.add_argument("--branch", action="store_true",
+                         help="create and switch to a git branch for this change (change/NNNN-<slug>)")
+    chg_new.add_argument("--allow-main", action="store_true",
+                         help="allow opening a change directly on protected branch (main/master)")
     chg_new.add_argument("--repo", type=Path, default=Path.cwd())
     chg_new.set_defaults(func=_cmd_change_new)
 
@@ -2136,6 +2209,8 @@ def build_parser() -> argparse.ArgumentParser:
                       help="archive despite blockers, recording which ones in "
                            ".forge.yaml")
     arch.add_argument("--date", help="the archive date stamp (default: today)")
+    arch.add_argument("--amend", action="store_true",
+                      help="stage and amend the archive, restamped claims, and derived tier into HEAD")
     arch.add_argument("--repo", type=Path, default=Path.cwd())
     arch.set_defaults(func=_cmd_archive)
 
@@ -2176,7 +2251,9 @@ def build_parser() -> argparse.ArgumentParser:
                     "table entry; if one ever needs more, the bet was wrong and the "
                     "cost is visible in one file.",
     )
-    skl_export.add_argument("--host", required=True, choices=sorted(hosts.HOSTS))
+    skl_export.add_argument("--host", required=False, default=None,
+                            choices=sorted(hosts.HOSTS) + ["all"],
+                            help="which host to export manifest for (default: all - claude, antigravity, codex)")
     skl_export.add_argument("--repo", type=Path, default=Path.cwd())
     skl_export.set_defaults(func=_cmd_skill_export)
 
@@ -2260,7 +2337,9 @@ def build_parser() -> argparse.ArgumentParser:
         description="Write the packaged skills to where each host reads them "
                     "(.claude/skills/, AGENTS.md, etc.). A manifest, never a port.",
     )
-    inst.add_argument("--host", required=True, choices=sorted(hosts.HOSTS))
+    inst.add_argument("--host", required=False, default=None,
+                      choices=sorted(hosts.HOSTS) + ["all"],
+                      help="which host runtime to install for (default: all - claude, antigravity, codex)")
     inst.add_argument("--repo", type=Path, default=Path.cwd())
     inst.set_defaults(func=_cmd_skill_export)
 
