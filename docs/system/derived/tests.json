@@ -1,7 +1,17 @@
 {
   "$schema": "forge/derived/v1",
   "data": {
-    "covers_index": {},
+    "covers_index": {
+      "REQ-host-antigravity-rules": [
+        "tests/test_hosts.py::test_antigravity_host_writes_rules"
+      ],
+      "REQ-skill-implement-autonomous": [
+        "tests/test_skills.py::test_implement_skill_autonomous_batch_execution_section"
+      ],
+      "REQ-skill-router-batch": [
+        "tests/test_skills.py::test_forge_router_batch_preparation_section"
+      ]
+    },
     "files": {
       "tests/test_anchor_classify.py": {
         "language": "python",
@@ -1876,38 +1886,45 @@
             "name": "test_antigravity_host_prefers_existing_agents_dir"
           },
           {
+            "covers": [
+              "REQ-host-antigravity-rules"
+            ],
+            "line": 161,
+            "name": "test_antigravity_host_writes_rules"
+          },
+          {
             "covers": [],
-            "line": 158,
+            "line": 169,
             "name": "test_codex_host_is_alias_for_agents_md"
           },
           {
             "covers": [],
-            "line": 166,
+            "line": 177,
             "name": "test_forge_install_cli"
           },
           {
             "covers": [],
-            "line": 175,
+            "line": 186,
             "name": "test_forge_install_all_hosts_default"
           },
           {
             "covers": [],
-            "line": 192,
+            "line": 203,
             "name": "test_an_unedited_copy_reads_as_a_copy"
           },
           {
             "covers": [],
-            "line": 196,
+            "line": 207,
             "name": "test_an_edited_copy_reads_as_stale"
           },
           {
             "covers": [],
-            "line": 205,
+            "line": 216,
             "name": "test_line_endings_alone_are_not_a_difference"
           },
           {
             "covers": [],
-            "line": 216,
+            "line": 227,
             "name": "test_this_repository_owns_its_skills"
           }
         ],
@@ -3233,188 +3250,202 @@
             "name": "test_the_mvp_ships_the_seven_skills"
           },
           {
+            "covers": [
+              "REQ-skill-router-batch"
+            ],
+            "line": 104,
+            "name": "test_forge_router_batch_preparation_section"
+          },
+          {
+            "covers": [
+              "REQ-skill-implement-autonomous"
+            ],
+            "line": 115,
+            "name": "test_implement_skill_autonomous_batch_execution_section"
+          },
+          {
             "covers": [],
-            "line": 101,
+            "line": 121,
             "name": "test_every_shipped_skill_is_pressure_tested"
           },
           {
             "covers": [],
-            "line": 106,
+            "line": 126,
             "name": "test_every_shipped_scenario_is_well_formed"
           },
           {
             "covers": [],
-            "line": 110,
+            "line": 130,
             "name": "test_every_skill_has_at_least_two_scenarios"
           },
           {
             "covers": [],
-            "line": 120,
+            "line": 140,
             "name": "test_the_uncaught_scenarios_are_a_minority"
           },
           {
             "covers": [],
-            "line": 131,
+            "line": 151,
             "name": "test_every_declared_signal_is_one_the_kernel_emits"
           },
           {
             "covers": [],
-            "line": 151,
+            "line": 171,
             "name": "test_a_long_skill_is_rejected"
           },
           {
             "covers": [],
-            "line": 156,
+            "line": 176,
             "name": "test_the_shipped_skills_are_well_under_budget"
           },
           {
             "covers": [],
-            "line": 166,
+            "line": 186,
             "name": "test_a_declared_command_that_is_never_used_is_rejected"
           },
           {
             "covers": [],
-            "line": 173,
+            "line": 193,
             "name": "test_a_command_the_kernel_does_not_have_is_rejected"
           },
           {
             "covers": [],
-            "line": 180,
+            "line": 200,
             "name": "test_every_shipped_requires_kernel_entry_is_real"
           },
           {
             "covers": [],
-            "line": 192,
+            "line": 212,
             "name": "test_shouting_is_rejected"
           },
           {
             "covers": [],
-            "line": 205,
+            "line": 225,
             "name": "test_compulsion_phrases_are_rejected"
           },
           {
             "covers": [],
-            "line": 209,
+            "line": 229,
             "name": "test_the_delta_verbs_are_not_shouting"
           },
           {
             "covers": [],
-            "line": 217,
+            "line": 237,
             "name": "test_compulsion_inside_a_code_fence_is_not_compulsion"
           },
           {
             "covers": [],
-            "line": 227,
+            "line": 247,
             "name": "test_a_skill_with_no_announce_is_rejected"
           },
           {
             "covers": [],
-            "line": 237,
+            "line": 257,
             "name": "test_a_skill_with_no_scenarios_is_a_warning"
           },
           {
             "covers": [],
-            "line": 251,
+            "line": 271,
             "name": "test_a_skill_with_no_frontmatter_is_rejected"
           },
           {
             "covers": [],
-            "line": 255,
+            "line": 275,
             "name": "test_a_name_that_disagrees_with_its_directory_is_rejected"
           },
           {
             "covers": [],
-            "line": 261,
+            "line": 281,
             "name": "test_a_skill_with_no_description_is_rejected"
           },
           {
             "covers": [],
-            "line": 272,
+            "line": 292,
             "name": "test_a_scenario_must_name_a_signal"
           },
           {
             "covers": [],
-            "line": 280,
+            "line": 300,
             "name": "test_an_invented_signal_is_rejected"
           },
           {
             "covers": [],
-            "line": 288,
+            "line": 308,
             "name": "test_a_scenario_for_a_skill_that_does_not_exist_is_rejected"
           },
           {
             "covers": [],
-            "line": 296,
+            "line": 316,
             "name": "test_a_scenario_with_no_body_is_rejected"
           },
           {
             "covers": [],
-            "line": 309,
+            "line": 329,
             "name": "test_skill_list"
           },
           {
             "covers": [],
-            "line": 313,
+            "line": 333,
             "name": "test_skill_show"
           },
           {
             "covers": [],
-            "line": 318,
+            "line": 338,
             "name": "test_skill_show_of_an_unknown_name_lists_what_exists"
           },
           {
             "covers": [],
-            "line": 323,
+            "line": 343,
             "name": "test_check_scope_skills"
           },
           {
             "covers": [],
-            "line": 330,
+            "line": 350,
             "name": "test_a_repository_with_no_skills_is_not_an_error"
           },
           {
             "covers": [],
-            "line": 341,
+            "line": 361,
             "name": "test_the_pressure_runner_says_it_did_nothing_without_a_model"
           },
           {
             "covers": [],
-            "line": 354,
+            "line": 374,
             "name": "test_the_pressure_note_exists_and_says_what_does_not_run"
           },
           {
             "covers": [],
-            "line": 380,
+            "line": 400,
             "name": "test_every_command_a_skill_tells_you_to_run_exists"
           },
           {
             "covers": [],
-            "line": 421,
+            "line": 441,
             "name": "test_a_track_b_change_runs_end_to_end_through_the_skills"
           },
           {
             "covers": [],
-            "line": 501,
+            "line": 521,
             "name": "test_a_project_with_no_skills_gets_the_packaged_set"
           },
           {
             "covers": [],
-            "line": 508,
+            "line": 528,
             "name": "test_a_project_copy_wins_whole"
           },
           {
             "covers": [],
-            "line": 515,
+            "line": 535,
             "name": "test_an_unmodified_copy_needs_no_local_scenarios"
           },
           {
             "covers": [],
-            "line": 527,
+            "line": 547,
             "name": "test_an_edited_copy_owes_its_own_scenarios"
           },
           {
             "covers": [],
-            "line": 541,
+            "line": 561,
             "name": "test_this_repository_is_not_exempt_from_testing_its_own_skills"
           }
         ],
@@ -4039,10 +4070,10 @@
         "untagged": 64
       }
     },
-    "tagged_tests": 0,
-    "total_tests": 771
+    "tagged_tests": 3,
+    "total_tests": 774
   },
-  "generated_from_commit": "96a0c536ae83ecf9143fb23a9b52e8c81c021192",
+  "generated_from_commit": "92c18d9b8f995d5d83a33983a8d946a8d3819e4f",
   "generator": "forge sync derived",
   "tool": "forge"
 }

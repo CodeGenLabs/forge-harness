@@ -100,6 +100,26 @@ def test_the_mvp_ships_the_seven_skills():
     assert sorted(s.name for s in skills.load_skills(REPO)) == SHIPPED
 
 
+# @covers REQ-skill-router-batch
+def test_forge_router_batch_preparation_section():
+    """Verify forge router skill contains batch preparation and decision gate."""
+    found = skills.load_skills(REPO)
+    forge_skill = next(s for s in found if s.name == "forge")
+    assert "Batch preparation" in forge_skill.body
+    assert "Decision gate" in forge_skill.body
+    assert "Sequential" in forge_skill.body
+    assert "Parallel" in forge_skill.body
+
+
+# @covers REQ-skill-implement-autonomous
+def test_implement_skill_autonomous_batch_execution_section():
+    """Verify implement skill contains autonomous batch execution section."""
+    found = skills.load_skills(REPO)
+    impl_skill = next(s for s in found if s.name == "implement")
+    assert "Autonomous batch execution" in impl_skill.body
+    assert "without pausing between tasks" in impl_skill.body
+
+
 def test_every_shipped_skill_is_pressure_tested():
     found = skills.check_skills(REPO, Issue, known_subcommands())
     assert [i for i in found if i.code == "skill.untested"] == []
