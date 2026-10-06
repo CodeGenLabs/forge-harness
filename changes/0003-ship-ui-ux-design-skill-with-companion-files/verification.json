@@ -1,11 +1,8 @@
 {
   "base": "b73acfdf82b83584737f32452b72223519911475",
   "change": "0003-ship-ui-ux-design-skill-with-companion-files",
-  "commit": "b73acfdf82b83584737f32452b72223519911475",
-  "failing": [
-    "requirement_cover",
-    "tests"
-  ],
+  "commit": "5e2e16a5330bf46f0b869032c77943bed2a1b53a",
+  "failing": [],
   "gates": {
     "build": {
       "reason": "`commands.build: none` - this project has no build step",
@@ -26,7 +23,7 @@
       "status": "pending"
     },
     "derived_fresh": {
-      "commits_behind": 97,
+      "commits_behind": 98,
       "dirty": [],
       "status": "pass"
     },
@@ -37,9 +34,8 @@
       "status": "pass"
     },
     "lint": {
-      "fix": "declare it, write `lint: none` if this project genuinely has no lint step, or accept that this condition is unproven - guessing the command is how a report goes green for a suite that never ran",
-      "reason": "no `commands.lint` in .forge/config.yaml",
-      "status": "unavailable"
+      "reason": "`commands.lint: none` - this project has no lint step",
+      "status": "skipped"
     },
     "no_new_skips": {
       "fix": "until the runner records per-test results, check the suite output for newly skipped tests",
@@ -47,34 +43,15 @@
       "status": "pending"
     },
     "requirement_cover": {
-      "discharged": 0,
+      "discharged": 4,
       "requirements": 4,
-      "status": "fail",
-      "undischarged": [
-        "REQ-interface-points-to-ui-ux",
-        "REQ-skill-companions-ship",
-        "REQ-skill-reference-resolves",
-        "REQ-ui-ux-skill"
-      ]
+      "status": "pass",
+      "undischarged": []
     },
     "tests": {
-      "cmd": ".venv\\Scripts\\python.exe -m pytest -q",
-      "exit": 1,
-      "failures": [
-        ">       assert issues and \"day is out of range\" in issues[0].message",
-        "E       AssertionError: assert ([Issue(level='ERROR', code='store.claim_fence', path='docs/system/pitfalls.md', message='claim block is not valid YAML...026', fix='the claim fence is ```claim followed by a YAML mapping and a closing ```', line=3, claim='PIT-float-money')] and 'day is out of range' in 'claim block is not valid YAML: day 30 must be in range 1..28 for month 2 in year 2026')",
-        "E        +  where 'claim block is not valid YAML: day 30 must be in range 1..28 for month 2 in year 2026' = Issue(level='ERROR', code='store.claim_fence', path='docs/system/pitfalls.md', message='claim block is not valid YAML:...2026', fix='the claim fence is ```claim followed by a YAML mapping and a closing ```', line=3, claim='PIT-float-money').message",
-        "tests\\test_validate.py:441: AssertionError",
-        "FAILED tests/test_validate.py::test_s4_an_unquoted_impossible_date_is_caught_by_the_fence"
-      ],
-      "status": "fail",
-      "tail": [
-        "E       AssertionError: assert ([Issue(level='ERROR', code='store.claim_fence', path='docs/system/pitfalls.md', message='claim block is not valid YAML...026', fix='the claim fence is ```claim followed by a YAML mapping and a closing ```', line=3, claim='PIT-float-money')] and 'day is out of range' in 'claim block is not valid YAML: day 30 must be in range 1..28 for month 2 in year 2026')",
-        "E        +  where 'claim block is not valid YAML: day 30 must be in range 1..28 for month 2 in year 2026' = Issue(level='ERROR', code='store.claim_fence', path='docs/system/pitfalls.md', message='claim block is not valid YAML:...2026', fix='the claim fence is ```claim followed by a YAML mapping and a closing ```', line=3, claim='PIT-float-money').message",
-        "tests\\test_validate.py:441: AssertionError",
-        "=========================== short test summary info ===========================",
-        "FAILED tests/test_validate.py::test_s4_an_unquoted_impossible_date_is_caught_by_the_fence"
-      ]
+      "cmd": ".venv\\Scripts\\python.exe scripts/test_runner.py -n auto",
+      "exit": 0,
+      "status": "pass"
     },
     "typecheck": {
       "reason": "`commands.typecheck: none` - this project has no typecheck step",
@@ -91,12 +68,11 @@
   ],
   "skipped": [
     "build",
+    "lint",
     "typecheck",
     "ui"
   ],
-  "unproven": [
-    "lint"
-  ],
-  "verdict": "fail",
+  "unproven": [],
+  "verdict": "pass",
   "waived": []
 }

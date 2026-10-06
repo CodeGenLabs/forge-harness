@@ -23,8 +23,8 @@
         "lines": 100
       },
       "python": {
-        "files": 61,
-        "lines": 24719
+        "files": 62,
+        "lines": 24823
       },
       "script": {
         "files": 1,
@@ -44,14 +44,14 @@
       },
       "yaml": {
         "files": 11,
-        "lines": 376
+        "lines": 377
       }
     },
     "entry_points": [
       "src/forge/cli.py"
     ],
-    "files_considered": 291,
-    "files_tracked": 291,
+    "files_considered": 292,
+    "files_tracked": 292,
     "stack": {
       "python": {
         "lockfile": null,
@@ -70,6 +70,7 @@
       }
     },
     "test_files": [
+      "scripts/test_runner.py",
       "tests/conftest.py",
       "tests/skills/PRESSURE.md",
       "tests/skills/bootstrap/confident-architecture-claims.md",
@@ -134,7 +135,7 @@
       "tools/pressure_test.py"
     ]
   },
-  "generated_from_commit": "67c6e0832a5437be1666ba058b1fbb06cbe3fd43",
+  "generated_from_commit": "39eed4cef4a6097995b7f6e5af210375261c09f6",
   "generator": "forge sync derived",
   "tool": "forge"
 }

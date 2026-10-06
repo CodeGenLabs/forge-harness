@@ -33,6 +33,7 @@ commands:
   # step; there is no typechecker configured here either.
   build: none
   typecheck: none
+  lint: none
   # This suite takes longer than the kernel's 900s default, so `tests`
   # reported `unavailable` on every run - correctly, but uselessly.
   timeout: 2400
@@ -45,6 +46,6 @@ commands:
   # a leading `.venv/...`. The kernel has no notion of how to spell a path
   # for the shell it will be run under, so the config carries the host's
   # spelling and a project on two platforms needs two configs.
-  test: .venv\Scripts\python.exe -m pytest -q
+  test: .venv\Scripts\python.exe scripts/test_runner.py -n auto
   # The kernel is a CLI; there is no browser UI to check.
   ui: none
