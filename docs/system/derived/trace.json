@@ -413,7 +413,9 @@
         "anchors": [],
         "back_references": [],
         "candidate": false,
-        "changes": [],
+        "changes": [
+          "0003-ship-ui-ux-design-skill-with-companion-files"
+        ],
         "defined_in": "changes/0003-ship-ui-ux-design-skill-with-companion-files/spec/skills.md:96",
         "evidence": [],
         "governed_by": [],
@@ -427,7 +429,9 @@
         "since": null,
         "status": null,
         "supersedes": null,
-        "tests": [],
+        "tests": [
+          "tests/test_skills.py::test_interface_skill_points_to_ui_ux_and_probe"
+        ],
         "title": "The interface contract names the procedure"
       },
       "REQ-skill-companions-ship": {
@@ -435,7 +439,9 @@
         "anchors": [],
         "back_references": [],
         "candidate": false,
-        "changes": [],
+        "changes": [
+          "0003-ship-ui-ux-design-skill-with-companion-files"
+        ],
         "defined_in": "changes/0003-ship-ui-ux-design-skill-with-companion-files/spec/skills.md:12",
         "evidence": [],
         "governed_by": [],
@@ -449,7 +455,13 @@
         "since": null,
         "status": null,
         "supersedes": null,
-        "tests": [],
+        "tests": [
+          "tests/test_skill_companions.py::test_a_copy_host_exports_companions",
+          "tests/test_skill_companions.py::test_companion_files_lists_everything_but_skill_md",
+          "tests/test_skill_companions.py::test_init_copies_companion_files",
+          "tests/test_skill_companions.py::test_init_never_overwrites_an_edited_companion",
+          "tests/test_skill_companions.py::test_package_data_ships_companion_files"
+        ],
         "title": "Companion files travel with their skill"
       },
       "REQ-skill-implement-autonomous": {
@@ -483,7 +495,9 @@
         "anchors": [],
         "back_references": [],
         "candidate": false,
-        "changes": [],
+        "changes": [
+          "0003-ship-ui-ux-design-skill-with-companion-files"
+        ],
         "defined_in": "changes/0003-ship-ui-ux-design-skill-with-companion-files/spec/skills.md:50",
         "evidence": [],
         "governed_by": [],
@@ -497,7 +511,11 @@
         "since": null,
         "status": null,
         "supersedes": null,
-        "tests": [],
+        "tests": [
+          "tests/test_skill_companions.py::test_a_dangling_reference_is_reported",
+          "tests/test_skill_companions.py::test_missing_reference_is_a_known_signal",
+          "tests/test_skill_companions.py::test_resolving_references_are_clean"
+        ],
         "title": "A skill's links to its companions must resolve"
       },
       "REQ-skill-router-batch": {
@@ -531,7 +549,9 @@
         "anchors": [],
         "back_references": [],
         "candidate": false,
-        "changes": [],
+        "changes": [
+          "0003-ship-ui-ux-design-skill-with-companion-files"
+        ],
         "defined_in": "changes/0003-ship-ui-ux-design-skill-with-companion-files/spec/skills.md:69",
         "evidence": [],
         "governed_by": [],
@@ -545,7 +565,9 @@
         "since": null,
         "status": null,
         "supersedes": null,
-        "tests": [],
+        "tests": [
+          "tests/test_skills.py::test_ui_ux_skill_properties"
+        ],
         "title": "forge ships a ui-ux design procedure"
       }
     },
@@ -556,11 +578,11 @@
       "decisions": 1,
       "ids_indexed": 20,
       "invariants_without_tests": [],
-      "tests_tagged": 3,
-      "tests_total": 774
+      "tests_tagged": 13,
+      "tests_total": 784
     }
   },
-  "generated_from_commit": "b73acfdf82b83584737f32452b72223519911475",
+  "generated_from_commit": "67c6e0832a5437be1666ba058b1fbb06cbe3fd43",
   "generator": "forge sync derived",
   "tool": "forge"
 }

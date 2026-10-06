@@ -2,9 +2,17 @@
   "$schema": "forge/derived/v1",
   "data": {
     "by_language": {
+      "css": {
+        "files": 2,
+        "lines": 748
+      },
+      "html": {
+        "files": 2,
+        "lines": 606
+      },
       "markdown": {
-        "files": 105,
-        "lines": 9261
+        "files": 207,
+        "lines": 31118
       },
       "other": {
         "files": 2,
@@ -15,8 +23,8 @@
         "lines": 100
       },
       "python": {
-        "files": 60,
-        "lines": 24493
+        "files": 61,
+        "lines": 24719
       },
       "script": {
         "files": 1,
@@ -28,18 +36,22 @@
       },
       "toml": {
         "files": 1,
-        "lines": 51
+        "lines": 59
+      },
+      "typescript": {
+        "files": 2,
+        "lines": 9282
       },
       "yaml": {
-        "files": 10,
-        "lines": 371
+        "files": 11,
+        "lines": 376
       }
     },
     "entry_points": [
       "src/forge/cli.py"
     ],
-    "files_considered": 181,
-    "files_tracked": 181,
+    "files_considered": 291,
+    "files_tracked": 291,
     "stack": {
       "python": {
         "lockfile": null,
@@ -86,6 +98,8 @@
       "tests/skills/specify/boundary-left-unsaid.md",
       "tests/skills/specify/implementation-as-requirement.md",
       "tests/skills/specify/modified-as-a-fragment.md",
+      "tests/skills/ui-ux/idealised-mock-data.md",
+      "tests/skills/ui-ux/invented-parallel-components.md",
       "tests/test_anchor_classify.py",
       "tests/test_anchor_parse.py",
       "tests/test_anchor_store.py",
@@ -112,6 +126,7 @@
       "tests/test_report.py",
       "tests/test_scaffold.py",
       "tests/test_schema.py",
+      "tests/test_skill_companions.py",
       "tests/test_skills.py",
       "tests/test_spec.py",
       "tests/test_trace.py",
@@ -119,7 +134,7 @@
       "tools/pressure_test.py"
     ]
   },
-  "generated_from_commit": "e873879567696a3d9753db7085a648961a17aaea",
+  "generated_from_commit": "67c6e0832a5437be1666ba058b1fbb06cbe3fd43",
   "generator": "forge sync derived",
   "tool": "forge"
 }
