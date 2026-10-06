@@ -89,7 +89,7 @@ def test_the_shipped_skills_obey_every_rule():
 
 SHIPPED = [
     "bootstrap", "curate-knowledge", "forge", "implement", "interface",
-    "investigate", "plan-tasks", "specify",
+    "investigate", "plan-tasks", "specify", "ui-ux",
 ]
 
 
@@ -98,6 +98,25 @@ def test_the_mvp_ships_the_seven_skills():
     M5's pass 2, which that milestone specifies as a skill rather than kernel
     code."""
     assert sorted(s.name for s in skills.load_skills(REPO)) == SHIPPED
+
+
+# @covers REQ-interface-points-to-ui-ux
+def test_interface_skill_points_to_ui_ux_and_probe():
+    found = skills.load_skills(REPO)
+    interface_skill = next(s for s in found if s.name == "interface")
+    assert "ui-ux" in interface_skill.body
+    assert "scripts/probe.mjs" in interface_skill.body
+
+
+# @covers REQ-ui-ux-skill
+def test_ui_ux_skill_properties():
+    found = skills.load_skills(REPO)
+    ui_skill = next(s for s in found if s.name == "ui-ux")
+    assert ui_skill.phase == "implement"
+    assert "forge verify" in ui_skill.requires_kernel
+    assert ui_skill.lines <= skills.MAX_LINES
+    assert "references/principles.md" in ui_skill.body
+    assert "scripts/probe.mjs" in ui_skill.body
 
 
 # @covers REQ-skill-router-batch

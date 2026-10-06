@@ -157,16 +157,19 @@ def export(repo: Path, host: str) -> tuple[str, list[str]]:
             target_dir = f"{base_dir}/skills"
         written: list[str] = []
         for skill in found:
-            source = skills.PACKAGED_SKILLS / skill.name / "SKILL.md"
-            if not source.is_file():
+            source_dir = skills.PACKAGED_SKILLS / skill.name
+            if not (source_dir / "SKILL.md").is_file():
                 continue
-            destination = repo / target_dir / skill.name / "SKILL.md"
-            body = source.read_text(encoding="utf-8")
-            if destination.is_file() and destination.read_text(encoding="utf-8") == body:
-                continue
-            destination.parent.mkdir(parents=True, exist_ok=True)
-            destination.write_text(body, encoding="utf-8", newline="\n")
-            written.append(destination.relative_to(repo).as_posix())
+            # The skill's directory, not just its SKILL.md: references and
+            # scripts it links to travel with it.
+            for relative in ["SKILL.md", *map(str, skills.companion_files(source_dir))]:
+                destination = repo / target_dir / skill.name / relative
+                body = (source_dir / relative).read_text(encoding="utf-8")
+                if destination.is_file() and destination.read_text(encoding="utf-8") == body:
+                    continue
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                destination.write_text(body, encoding="utf-8", newline="\n")
+                written.append(destination.relative_to(repo).as_posix())
 
         if host == "antigravity":
             rule_dest = repo / base_dir / "rules" / "forge.md"

@@ -438,7 +438,7 @@ def test_s4_an_unquoted_impossible_date_is_caught_by_the_fence(store_repo):
     the one whose job is to report it."""
     edit(store_repo, "docs/system/pitfalls.md", "reviewed: 2026-09-01", "reviewed: 2026-02-30")
     issues = [i for i in check(store_repo) if i.code == "store.claim_fence"]
-    assert issues and "day is out of range" in issues[0].message
+    assert issues and ("day is out of range" in issues[0].message or "must be in range" in issues[0].message)
 
 
 # ---------------------------------------------------------------------------

@@ -326,6 +326,11 @@ def init_files(today: _dt.date | None = None) -> dict[str, str]:
     for path in sorted(skills.PACKAGED_SKILLS.glob("*/SKILL.md")):
         files[f"{skills.SKILLS_DIR}/{path.parent.name}/SKILL.md"] = \
             path.read_text(encoding="utf-8")
+        # A skill is its directory: references and scripts it links to come
+        # with it, or every link in the copy dangles.
+        for relative in skills.companion_files(path.parent):
+            files[f"{skills.SKILLS_DIR}/{path.parent.name}/{relative}"] = \
+                (path.parent / relative).read_text(encoding="utf-8")
     return files
 
 

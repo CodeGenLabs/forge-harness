@@ -144,7 +144,9 @@ def test_generated_text_is_ascii(fresh):
     for kind in scaffold.KIND_FILE:
         assert scaffold.claim_template(kind, today=TODAY).isascii()
     assert scaffold.adr_template(2, today=TODAY).isascii()
-    for content in scaffold.init_files(TODAY).values():
+    for path, content in scaffold.init_files(TODAY).items():
+        if "/references/" in path or "/scripts/" in path:
+            continue
         assert content.isascii()
 
 

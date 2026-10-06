@@ -1,0 +1,5 @@
+created: '2026-10-06'
+title: Ship ui-ux design skill with companion files
+track: C
+workflow: feature
+skip_flow: no user-facing screen; the change ships CLI-copied files and a skill a reader follows, with no navigation between screens

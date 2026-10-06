@@ -96,6 +96,19 @@ _HOST_SPECIFIC_RE = re.compile(
 
 _ANNOUNCE_RE = re.compile(r"^##\s+Announce\b", re.M | re.I)
 
+#: A link to one of the skill's own companion files. Preceded by nothing
+#: path-like, so `ui-ux/scripts/probe.mjs` - a cross-skill mention - is not
+#: resolved against the wrong directory, and ending on a word character so a
+#: trailing full stop or backtick is not part of the path.
+_COMPANION_REF_RE = re.compile(r"(?<![\w/.-])((?:references|scripts)/[\w./-]*\w)")
+
+
+def _skill_dir(repo: Path, skill: "Skill") -> Path:
+    path = PurePosixPath(skill.path)
+    if path.parts and path.parts[0] == "<packaged>":
+        return PACKAGED_SKILLS / skill.name
+    return repo / Path(*path.parent.parts)
+
 
 @dataclass
 class Skill:
@@ -182,6 +195,32 @@ def load_skills(repo: Path) -> list[Skill]:
         out.append(parse_skill(path.read_text(encoding="utf-8", errors="replace"),
                                relative))
     return out
+
+
+#: Never shipped from a skill directory: interpreter caches and OS litter.
+_COMPANION_IGNORED = frozenset({"__pycache__", ".DS_Store", "Thumbs.db"})
+
+
+def companion_files(skill_dir: Path) -> list[PurePosixPath]:
+    """Every file a skill carries besides its `SKILL.md`, relative and sorted.
+
+    A skill whose procedure leans on reference material is a directory, not a
+    file. `forge init` and every copy host ship exactly this list beside the
+    `SKILL.md`, so the two writers cannot disagree about what a skill is.
+    """
+    if not skill_dir.is_dir():
+        return []
+    out = []
+    for path in skill_dir.rglob("*"):
+        if not path.is_file():
+            continue
+        relative = PurePosixPath(path.relative_to(skill_dir).as_posix())
+        if relative == PurePosixPath("SKILL.md"):
+            continue
+        if any(part in _COMPANION_IGNORED for part in relative.parts):
+            continue
+        out.append(relative)
+    return sorted(out)
 
 
 def _strip_fences(text: str) -> str:
@@ -291,6 +330,21 @@ def check_skills(repo: Path, issue, known_commands: set[str] | None = None) -> l
                   "which procedure ran",
                   code="skill.no_announce")
 
+        # Companion links resolve. Fences included: a path in a code block is
+        # still a path the reader will open, and a skill whose references were
+        # renamed under it reads exactly like one whose references exist.
+        skill_dir = _skill_dir(repo, skill)
+        reported: set[str] = set()
+        for match in _COMPANION_REF_RE.finditer(skill.body):
+            ref = match.group(1)
+            if ref in reported or (skill_dir / ref).exists():
+                continue
+            reported.add(ref)
+            error(f"names {ref!r}, which does not exist beside this skill",
+                  "ship the file in the skill's directory or fix the link; a "
+                  "reference that does not resolve sends the reader nowhere",
+                  code="skill.missing_reference")
+
         # 6. pressure-tested - but only what this project actually wrote.
         # An unmodified copy of a shipped skill is pressure-tested where it
         # ships; asking every project to re-write those scenarios would make
@@ -394,7 +448,7 @@ KERNEL_SIGNALS = frozenset({
     "verify.definition_of_done", "repo.clean",
     # skills
     "skill.too_long", "skill.compulsion", "skill.no_announce",
-    "skill.host_specific",
+    "skill.host_specific", "skill.missing_reference",
     "skill.unused_command", "skill.unknown_command", "skill.untested",
     # the change model itself
     "change.downgrade_refused", "change.track_upgrade",

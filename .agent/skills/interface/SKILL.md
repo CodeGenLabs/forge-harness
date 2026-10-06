@@ -67,6 +67,14 @@ different direction.
 - **Carbon** (IBM) - the most complete token layer.
 - **Spectrum** (Adobe), **Material 3** (Google), **Cloudscape** (AWS).
 
+### The design procedure: `ui-ux`
+
+When tasked with designing, redesigning, or refining a screen, invoke the `ui-ux`
+skill. While `interface` establishes the invariant contract (the banned defaults
+and what the `ui` verification proves), `ui-ux` provides the concrete step-by-step
+procedure: brief, viewport wireframing, numeric token constraints, component assemblies,
+and before/after reviews.
+
 ## 3. What the `ui` condition should prove
 
 `forge verify` runs `commands.ui`. The kernel renders nothing and has no
@@ -77,6 +85,11 @@ Declare it in `.forge/config.yaml`:
 commands:
   ui: npm run test:ui     # or `ui: none` if this project has no browser UI
 ```
+
+For projects without an established UI test suite, `ui-ux/scripts/probe.mjs` from the
+shipped `ui-ux` skill can serve as `commands.ui`: it renders pages in headless
+browsers across 375px to 1920px viewports, measuring contrast, overflow and tap
+targets.
 
 `ui: none` is a real answer. Saying nothing is not - it reports `unavailable`
 and leaves the verdict unproven, which is the same contract every other

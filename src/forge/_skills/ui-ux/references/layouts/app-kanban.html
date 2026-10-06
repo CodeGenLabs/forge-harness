@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Task board</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind v4 browser build: same syntax as the skill (outline-hidden, @theme inline). -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+      /* ===== BRAND THEMING BLOCK, copied from references/tokens.css (light mode).
+         No other color hexes outside this block. ===== */
+      :root {
+        /* ===== FONT, DECLARED ONCE, SHARED ACROSS THE APP =====
+           One font across the entire app. Roles separated by weight:
+           heading 600, body 400, secondary labels 500 (T2). */
+        --app-font: "Inter", ui-sans-serif, system-ui, sans-serif;
+        /* ========================================== */
+
+        /* ===== ACCENT COLOR, LIGHT MODE ===== */
+        --primary: #181818;          /* default near-black. Replace here for custom color */
+        --primary-hover: #2e2e2e;    /* one step lighter than --primary */
+        --primary-foreground: #ffffff;
+        /* ============================== */
+
+        --background: #f4f4f6;   /* page background, light grey, never pure white */
+        --surface: #ffffff;      /* card, input, header background */
+        --foreground: #2c2c2c;   /* primary text */
+        --muted: #707070;        /* secondary text, labels, placeholders, secondary icons. 4.95:1 */
+        /* Two border tokens separated by role (M14). --border: hairline decorative border (card borders,
+           dividers). --border-strong: input borders, outline buttons, app shell lines
+           (under header), card border on hover. */
+        --border: #f7f7f8;
+        --border-strong: #eaeaea;
+
+        --secondary: #e7e8ec;        /* secondary buttons, active items; always lower contrast than --surface */
+        --secondary-hover: #dbdce2;
+        --background-hover: #e7e7ea; /* small status cell inside hovered row (M18) */
+        --surface-hover: #f8f8fa;    /* row hover spanning full width of white frame (I10) */
+        --button-hover: #f1f1f3;     /* outline button hover: background only, border unchanged */
+
+        --ring-focus: rgba(24, 24, 24, 0.1);
+        --border-focus: var(--primary);
+      }
+      /* ===== END BRAND THEMING BLOCK ===== */
+
+      /* ===== AUTO-HIDING SCROLLBAR (I18), copied from tokens.css. The board relies on this block:
+         hidden when stationary, reveals 4px on hover so mouse users can drag horizontally. */
+      * { --scrollbar-thumb: transparent; }
+      *:hover { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 16%, transparent); }
+      .is-scrolling { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 28%, transparent); }
+      ::-webkit-scrollbar { width: 4px; height: 4px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 9999px; }
+      ::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--foreground) 40%, transparent); }
+
+      @supports not selector(::-webkit-scrollbar) {
+        * { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+        *:hover { scrollbar-color: color-mix(in srgb, var(--foreground) 18%, transparent) transparent; }
+        .is-scrolling { scrollbar-color: color-mix(in srgb, var(--foreground) 28%, transparent) transparent; }
+      }
+      /* ===================================================== */
+    </style>
+
+    <style type="text/tailwindcss">
+      /* Map tokens to classes, matching the @theme inline block in tokens.css. */
+      @theme inline {
+        --font-sans: var(--app-font);
+
+        --color-primary: var(--primary);
+        --color-primary-hover: var(--primary-hover);
+        --color-primary-foreground: var(--primary-foreground);
+
+        --color-background: var(--background);
+        --color-background-hover: var(--background-hover);
+        --color-surface: var(--surface);
+        --color-surface-hover: var(--surface-hover);
+        --color-foreground: var(--foreground);
+        --color-muted: var(--muted);
+        --color-border: var(--border);
+        --color-border-strong: var(--border-strong);
+        --color-secondary: var(--secondary);
+        --color-secondary-hover: var(--secondary-hover);
+        --color-button-hover: var(--button-hover);
+
+        --border-color-focus: var(--border-focus);
+        --ring-color-focus: var(--ring-focus);
+      }
+    </style>
+  </head>
+
+  <body class="bg-background font-sans text-foreground antialiased">
+    <div class="flex min-h-screen w-full flex-col">
+      <!-- Header bar following layouts/app.md: h-16, white background --surface, bottom border --border-strong.
+           The page has no standalone page header, so the name in the bar is <h1>, font-semibold (T2).
+           px-4 sm:px-6 aligns page title with column header icon below (column row px-3 + column header px-1). -->
+      <header
+        class="flex h-16 shrink-0 items-center justify-between gap-3 border-b border-border bg-surface px-4 sm:px-6"
+      >
+        <h1 class="min-w-0 truncate text-base font-semibold text-foreground">Task board</h1>
+
+        <!-- Single solid button in the bar: h-9 rounded-lg, plus icon (app.md, "Right-side button group in header bar"). -->
+        <button
+          type="button"
+          class="inline-flex h-9 shrink-0 cursor-pointer items-center gap-2 rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground outline-hidden transition-colors hover:bg-primary-hover"
+        >
+          <i data-lucide="plus" class="size-4 shrink-0" aria-hidden="true"></i>
+          Add task
+        </button>
+      </header>
+
+      <!-- Content area has vertical padding only: horizontally scrolling board must touch both screen edges, so
+           horizontal margins sit on individual blocks (filter row mx-3 sm:mx-5; column row px-3 sm:px-5), avoiding -mx to pull out the board (N11). -->
+      <div class="flex flex-1 flex-col py-3 sm:py-5">
+        <div class="mx-3 mb-4 flex flex-col gap-3 sm:mx-5 sm:flex-row sm:items-center sm:justify-between">
+          <!-- Primary filter chips following components/small-controls.md, with aria-pressed. Three chips fit 375px so
+               the row doesn't scroll, no scrollbar-clean. Adding more chips causing overflow follows R6 and R10
+               (responsive.md): scrollbar-clean container + fade edges + arrow buttons on mouse devices. -->
+          <div class="flex items-center gap-2">
+            <button type="button" aria-pressed="true" class="inline-flex h-9 shrink-0 cursor-pointer items-center rounded-full bg-primary px-3.5 text-sm font-medium text-primary-foreground outline-hidden transition-colors">
+              All
+            </button>
+            <button type="button" aria-pressed="false" class="inline-flex h-9 shrink-0 cursor-pointer items-center rounded-full bg-foreground/5 px-3.5 text-sm font-medium text-foreground/70 outline-hidden transition-colors hover:bg-foreground/10 hover:text-foreground">
+              Assigned to me
+            </button>
+            <button type="button" aria-pressed="false" class="inline-flex h-9 shrink-0 cursor-pointer items-center rounded-full bg-foreground/5 px-3.5 text-sm font-medium text-foreground/70 outline-hidden transition-colors hover:bg-foreground/10 hover:text-foreground">
+              Overdue
+            </button>
+          </div>
+
+          <!-- Search input following components/input.md: h-11 md:h-10, text-base md:text-sm (R8). -->
+          <label class="relative block shrink-0 sm:w-64">
+            <span class="sr-only">Search tasks</span>
+            <input
+              type="search"
+              placeholder="Search tasks"
+              class="h-11 w-full rounded-xl border border-border-strong bg-surface px-4 text-base text-foreground outline-hidden transition-colors placeholder:text-muted focus:border-focus focus:ring-2 focus:ring-focus md:h-10 md:text-sm"
+            />
+          </label>
+        </div>
+
+        <!-- Board without scrollbar-clean: auto-hiding scrollbar (I18), mouse users still have a bar to drag horizontally. -->
+        <div class="flex-1 overflow-x-auto">
+          <!-- w-max preserves right margin during scroll, min-w-full allows columns to stretch when space permits (layouts/app.md). -->
+          <div class="flex w-max min-w-full items-start gap-4 px-3 pb-2 sm:px-5">
+            <section class="w-[248px] min-w-0 max-w-[320px] shrink-0 grow">
+              <header class="mb-3 flex items-center gap-2 px-1">
+                <i data-lucide="circle" class="size-4 shrink-0 text-zinc-500"></i>
+                <h2 class="min-w-0 truncate text-base font-semibold text-foreground">To do</h2>
+                <span class="text-xs font-medium text-muted">4</span>
+              </header>
+
+              <ul class="flex flex-col gap-3">
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Rewrite the about page copy based on the new brief
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Website · Aug 22</p>
+                </li>
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Prepare July revenue numbers for the meeting
+                  </p>
+                  <p class="mt-2 text-xs"><span class="text-muted">Reporting · </span><span class="font-medium text-amber-700">2 days overdue</span></p>
+                </li>
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Clean up duplicate customer records in CRM
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Operations · Aug 26</p>
+                </li>
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Schedule final-round interviews for two candidates
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Hiring · Aug 29</p>
+                </li>
+              </ul>
+            </section>
+
+            <section class="w-[248px] min-w-0 max-w-[320px] shrink-0 grow">
+              <header class="mb-3 flex items-center gap-2 px-1">
+                <i data-lucide="circle-dot" class="size-4 shrink-0 text-zinc-500"></i>
+                <h2 class="min-w-0 truncate text-base font-semibold text-foreground">In progress</h2>
+                <span class="text-xs font-medium text-muted">3</span>
+              </header>
+
+              <ul class="flex flex-col gap-3">
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Build checkout screen for the annual plan
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Product · Aug 21</p>
+                </li>
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Migrate product image library to new CDN
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Infrastructure · Aug 25</p>
+                </li>
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Answer 18 pending tickets in support inbox
+                  </p>
+                  <p class="mt-2 text-xs"><span class="text-muted">Support · </span><span class="font-medium text-foreground">Today</span></p>
+                </li>
+              </ul>
+            </section>
+
+            <section class="w-[248px] min-w-0 max-w-[320px] shrink-0 grow">
+              <header class="mb-3 flex items-center gap-2 px-1">
+                <i data-lucide="circle-ellipsis" class="size-4 shrink-0 text-amber-600"></i>
+                <h2 class="min-w-0 truncate text-base font-semibold text-foreground">In review</h2>
+                <span class="text-xs font-medium text-muted">2</span>
+              </header>
+
+              <ul class="flex flex-col gap-3">
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Updated pricing tier for enterprise plan
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Sales · submitted Aug 19</p>
+                </li>
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Renewal contract with server hosting provider
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Legal · submitted Aug 20</p>
+                </li>
+              </ul>
+            </section>
+
+            <section class="w-[248px] min-w-0 max-w-[320px] shrink-0 grow">
+              <header class="mb-3 flex items-center gap-2 px-1">
+                <i data-lucide="circle-check" class="size-4 shrink-0 text-emerald-600"></i>
+                <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Done</h2>
+                <span class="text-xs font-medium text-muted">3</span>
+              </header>
+
+              <ul class="flex flex-col gap-3">
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Finalize homepage design with client
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Website · completed Aug 18</p>
+                </li>
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Q2 database backup
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Infrastructure · completed Aug 17</p>
+                </li>
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Send July invoices to 12 clients
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Accounting · completed Aug 15</p>
+                </li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
