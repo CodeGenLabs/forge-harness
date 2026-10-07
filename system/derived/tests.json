@@ -5,11 +5,29 @@
       "REQ-host-antigravity-rules": [
         "tests/test_hosts.py::test_antigravity_host_writes_rules"
       ],
+      "REQ-interface-points-to-ui-ux": [
+        "tests/test_skills.py::test_interface_skill_points_to_ui_ux_and_probe"
+      ],
+      "REQ-skill-companions-ship": [
+        "tests/test_skill_companions.py::test_a_copy_host_exports_companions",
+        "tests/test_skill_companions.py::test_companion_files_lists_everything_but_skill_md",
+        "tests/test_skill_companions.py::test_init_copies_companion_files",
+        "tests/test_skill_companions.py::test_init_never_overwrites_an_edited_companion",
+        "tests/test_skill_companions.py::test_package_data_ships_companion_files"
+      ],
       "REQ-skill-implement-autonomous": [
         "tests/test_skills.py::test_implement_skill_autonomous_batch_execution_section"
       ],
+      "REQ-skill-reference-resolves": [
+        "tests/test_skill_companions.py::test_a_dangling_reference_is_reported",
+        "tests/test_skill_companions.py::test_missing_reference_is_a_known_signal",
+        "tests/test_skill_companions.py::test_resolving_references_are_clean"
+      ],
       "REQ-skill-router-batch": [
         "tests/test_skills.py::test_forge_router_batch_preparation_section"
+      ],
+      "REQ-ui-ux-skill": [
+        "tests/test_skills.py::test_ui_ux_skill_properties"
       ]
     },
     "files": {
@@ -3049,82 +3067,82 @@
           },
           {
             "covers": [],
-            "line": 149,
+            "line": 151,
             "name": "test_an_unknown_kind_is_a_usage_error"
           },
           {
             "covers": [],
-            "line": 154,
+            "line": 156,
             "name": "test_the_postponed_kinds_are_not_offered"
           },
           {
             "covers": [],
-            "line": 168,
+            "line": 170,
             "name": "test_claim_new_prints_rather_than_writing"
           },
           {
             "covers": [],
-            "line": 176,
+            "line": 178,
             "name": "test_claim_new_append_puts_each_kind_in_its_own_file"
           },
           {
             "covers": [],
-            "line": 185,
+            "line": 187,
             "name": "test_claim_new_append_says_the_check_will_fail"
           },
           {
             "covers": [],
-            "line": 194,
+            "line": 196,
             "name": "test_claim_new_append_needs_the_scaffold"
           },
           {
             "covers": [],
-            "line": 199,
+            "line": 201,
             "name": "test_claim_new_append_leaves_the_existing_claims_parseable"
           },
           {
             "covers": [],
-            "line": 216,
+            "line": 218,
             "name": "test_claim_show_prints_the_claim_as_written"
           },
           {
             "covers": [],
-            "line": 228,
+            "line": 230,
             "name": "test_claim_show_of_an_unknown_id_exits_one"
           },
           {
             "covers": [],
-            "line": 236,
+            "line": 238,
             "name": "test_claim_show_reports_a_duplicated_id"
           },
           {
             "covers": [],
-            "line": 251,
+            "line": 253,
             "name": "test_claim_show_json"
           },
           {
             "covers": [],
-            "line": 268,
+            "line": 270,
             "name": "test_claim_stamp_single_claim"
           },
           {
             "covers": [],
-            "line": 302,
+            "line": 304,
             "name": "test_claim_stamp_all"
           },
           {
             "covers": [],
-            "line": 340,
+            "line": 342,
             "name": "test_claim_stamp_unknown_claim_exits_one"
           },
           {
             "covers": [],
-            "line": 353,
+            "line": 355,
             "name": "test_status_json"
           },
           {
             "covers": [],
-            "line": 364,
+            "line": 366,
             "name": "test_an_unbuilt_tier_is_reported_once_not_five_times"
           }
         ],
@@ -3236,6 +3254,68 @@
         ],
         "untagged": 20
       },
+      "tests/test_skill_companions.py": {
+        "language": "python",
+        "tests": [
+          {
+            "covers": [
+              "REQ-skill-companions-ship"
+            ],
+            "line": 63,
+            "name": "test_companion_files_lists_everything_but_skill_md"
+          },
+          {
+            "covers": [
+              "REQ-skill-companions-ship"
+            ],
+            "line": 71,
+            "name": "test_init_copies_companion_files"
+          },
+          {
+            "covers": [
+              "REQ-skill-companions-ship"
+            ],
+            "line": 82,
+            "name": "test_init_never_overwrites_an_edited_companion"
+          },
+          {
+            "covers": [
+              "REQ-skill-companions-ship"
+            ],
+            "line": 95,
+            "name": "test_a_copy_host_exports_companions"
+          },
+          {
+            "covers": [
+              "REQ-skill-reference-resolves"
+            ],
+            "line": 114,
+            "name": "test_a_dangling_reference_is_reported"
+          },
+          {
+            "covers": [
+              "REQ-skill-reference-resolves"
+            ],
+            "line": 125,
+            "name": "test_resolving_references_are_clean"
+          },
+          {
+            "covers": [
+              "REQ-skill-reference-resolves"
+            ],
+            "line": 136,
+            "name": "test_missing_reference_is_a_known_signal"
+          },
+          {
+            "covers": [
+              "REQ-skill-companions-ship"
+            ],
+            "line": 141,
+            "name": "test_package_data_ships_companion_files"
+          }
+        ],
+        "untagged": 0
+      },
       "tests/test_skills.py": {
         "language": "python",
         "tests": [
@@ -3251,201 +3331,215 @@
           },
           {
             "covers": [
-              "REQ-skill-router-batch"
+              "REQ-interface-points-to-ui-ux"
             ],
             "line": 104,
+            "name": "test_interface_skill_points_to_ui_ux_and_probe"
+          },
+          {
+            "covers": [
+              "REQ-ui-ux-skill"
+            ],
+            "line": 112,
+            "name": "test_ui_ux_skill_properties"
+          },
+          {
+            "covers": [
+              "REQ-skill-router-batch"
+            ],
+            "line": 123,
             "name": "test_forge_router_batch_preparation_section"
           },
           {
             "covers": [
               "REQ-skill-implement-autonomous"
             ],
-            "line": 115,
+            "line": 134,
             "name": "test_implement_skill_autonomous_batch_execution_section"
           },
           {
             "covers": [],
-            "line": 121,
+            "line": 140,
             "name": "test_every_shipped_skill_is_pressure_tested"
           },
           {
             "covers": [],
-            "line": 126,
+            "line": 145,
             "name": "test_every_shipped_scenario_is_well_formed"
           },
           {
             "covers": [],
-            "line": 130,
+            "line": 149,
             "name": "test_every_skill_has_at_least_two_scenarios"
           },
           {
             "covers": [],
-            "line": 140,
+            "line": 159,
             "name": "test_the_uncaught_scenarios_are_a_minority"
           },
           {
             "covers": [],
-            "line": 151,
+            "line": 170,
             "name": "test_every_declared_signal_is_one_the_kernel_emits"
           },
           {
             "covers": [],
-            "line": 171,
+            "line": 190,
             "name": "test_a_long_skill_is_rejected"
           },
           {
             "covers": [],
-            "line": 176,
+            "line": 195,
             "name": "test_the_shipped_skills_are_well_under_budget"
           },
           {
             "covers": [],
-            "line": 186,
+            "line": 205,
             "name": "test_a_declared_command_that_is_never_used_is_rejected"
           },
           {
             "covers": [],
-            "line": 193,
+            "line": 212,
             "name": "test_a_command_the_kernel_does_not_have_is_rejected"
           },
           {
             "covers": [],
-            "line": 200,
+            "line": 219,
             "name": "test_every_shipped_requires_kernel_entry_is_real"
           },
           {
             "covers": [],
-            "line": 212,
+            "line": 231,
             "name": "test_shouting_is_rejected"
           },
           {
             "covers": [],
-            "line": 225,
+            "line": 244,
             "name": "test_compulsion_phrases_are_rejected"
           },
           {
             "covers": [],
-            "line": 229,
+            "line": 248,
             "name": "test_the_delta_verbs_are_not_shouting"
           },
           {
             "covers": [],
-            "line": 237,
+            "line": 256,
             "name": "test_compulsion_inside_a_code_fence_is_not_compulsion"
           },
           {
             "covers": [],
-            "line": 247,
+            "line": 266,
             "name": "test_a_skill_with_no_announce_is_rejected"
           },
           {
             "covers": [],
-            "line": 257,
+            "line": 276,
             "name": "test_a_skill_with_no_scenarios_is_a_warning"
           },
           {
             "covers": [],
-            "line": 271,
+            "line": 290,
             "name": "test_a_skill_with_no_frontmatter_is_rejected"
           },
           {
             "covers": [],
-            "line": 275,
+            "line": 294,
             "name": "test_a_name_that_disagrees_with_its_directory_is_rejected"
           },
           {
             "covers": [],
-            "line": 281,
+            "line": 300,
             "name": "test_a_skill_with_no_description_is_rejected"
           },
           {
             "covers": [],
-            "line": 292,
+            "line": 311,
             "name": "test_a_scenario_must_name_a_signal"
           },
           {
             "covers": [],
-            "line": 300,
+            "line": 319,
             "name": "test_an_invented_signal_is_rejected"
           },
           {
             "covers": [],
-            "line": 308,
+            "line": 327,
             "name": "test_a_scenario_for_a_skill_that_does_not_exist_is_rejected"
           },
           {
             "covers": [],
-            "line": 316,
+            "line": 335,
             "name": "test_a_scenario_with_no_body_is_rejected"
           },
           {
             "covers": [],
-            "line": 329,
+            "line": 348,
             "name": "test_skill_list"
           },
           {
             "covers": [],
-            "line": 333,
+            "line": 352,
             "name": "test_skill_show"
           },
           {
             "covers": [],
-            "line": 338,
+            "line": 357,
             "name": "test_skill_show_of_an_unknown_name_lists_what_exists"
           },
           {
             "covers": [],
-            "line": 343,
+            "line": 362,
             "name": "test_check_scope_skills"
           },
           {
             "covers": [],
-            "line": 350,
+            "line": 369,
             "name": "test_a_repository_with_no_skills_is_not_an_error"
           },
           {
             "covers": [],
-            "line": 361,
+            "line": 380,
             "name": "test_the_pressure_runner_says_it_did_nothing_without_a_model"
           },
           {
             "covers": [],
-            "line": 374,
+            "line": 393,
             "name": "test_the_pressure_note_exists_and_says_what_does_not_run"
           },
           {
             "covers": [],
-            "line": 400,
+            "line": 419,
             "name": "test_every_command_a_skill_tells_you_to_run_exists"
           },
           {
             "covers": [],
-            "line": 441,
+            "line": 460,
             "name": "test_a_track_b_change_runs_end_to_end_through_the_skills"
           },
           {
             "covers": [],
-            "line": 521,
+            "line": 540,
             "name": "test_a_project_with_no_skills_gets_the_packaged_set"
           },
           {
             "covers": [],
-            "line": 528,
+            "line": 547,
             "name": "test_a_project_copy_wins_whole"
           },
           {
             "covers": [],
-            "line": 535,
+            "line": 554,
             "name": "test_an_unmodified_copy_needs_no_local_scenarios"
           },
           {
             "covers": [],
-            "line": 547,
+            "line": 566,
             "name": "test_an_edited_copy_owes_its_own_scenarios"
           },
           {
             "covers": [],
-            "line": 561,
+            "line": 580,
             "name": "test_this_repository_is_not_exempt_from_testing_its_own_skills"
           }
         ],
@@ -4070,10 +4164,10 @@
         "untagged": 64
       }
     },
-    "tagged_tests": 3,
-    "total_tests": 774
+    "tagged_tests": 13,
+    "total_tests": 784
   },
-  "generated_from_commit": "92c18d9b8f995d5d83a33983a8d946a8d3819e4f",
+  "generated_from_commit": "67c6e0832a5437be1666ba058b1fbb06cbe3fd43",
   "generator": "forge sync derived",
   "tool": "forge"
 }
