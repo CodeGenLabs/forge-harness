@@ -41,6 +41,7 @@ def seed(repo, source: str = "def greet():\n    return 'hi'\n") -> str:
 # REQ-drift-store-scan
 # ---------------------------------------------------------------------------
 
+# @covers REQ-drift-store-scan
 def test_a_fresh_store_reports_every_claim_fresh(repo):
     base = seed(repo)
     claim_file(repo, "docs/system/domain.md", one_claim(base))
@@ -182,6 +183,7 @@ def test_a_retired_claim_is_scanned_but_does_not_obligate(repo):
 # REQ-drift-changed-only
 # ---------------------------------------------------------------------------
 
+# @covers REQ-drift-changed-only
 def test_the_filter_keeps_claims_anchoring_a_changed_file(repo):
     base = seed(repo)
     claim_file(repo, "docs/system/domain.md", one_claim(base))
@@ -241,6 +243,7 @@ def test_a_malformed_anchor_survives_the_filter(repo):
 # REQ-drift-never-rewrites
 # ---------------------------------------------------------------------------
 
+# @covers REQ-drift-never-rewrites
 def test_a_scan_over_a_stale_store_writes_nothing(repo):
     """Reporting drift and resolving it are separate acts, and only the second
     one is a human's. The kernel contains no command that rewrites a claim to

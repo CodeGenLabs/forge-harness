@@ -145,9 +145,213 @@
         "src/forge/ledger.py",
         "src/forge/spec.py",
         "src/forge/validate.py"
+      ],
+      "tests/test_anchor_classify.py": [
+        "src/forge/__init__.py",
+        "src/forge/anchor.py",
+        "src/forge/gitio.py"
+      ],
+      "tests/test_anchor_parse.py": [
+        "src/forge/anchor.py"
+      ],
+      "tests/test_anchor_store.py": [
+        "src/forge/__init__.py",
+        "src/forge/anchor.py"
+      ],
+      "tests/test_bootstrap.py": [
+        "src/forge/__init__.py",
+        "src/forge/bootstrap.py",
+        "src/forge/cli.py",
+        "src/forge/derive.py",
+        "src/forge/store.py",
+        "src/forge/validate.py"
+      ],
+      "tests/test_change.py": [
+        "src/forge/__init__.py",
+        "src/forge/change.py",
+        "src/forge/cli.py",
+        "src/forge/schema.py"
+      ],
+      "tests/test_claim_granularity.py": [
+        "src/forge/__init__.py",
+        "src/forge/change.py",
+        "src/forge/cli.py",
+        "src/forge/gitio.py",
+        "src/forge/impact.py",
+        "src/forge/store.py"
+      ],
+      "tests/test_cli.py": [
+        "src/forge/cli.py"
+      ],
+      "tests/test_config.py": [
+        "src/forge/__init__.py",
+        "src/forge/cli.py",
+        "src/forge/config.py",
+        "src/forge/validate.py"
+      ],
+      "tests/test_deps.py": [
+        "src/forge/__init__.py",
+        "src/forge/derive.py"
+      ],
+      "tests/test_derive.py": [
+        "src/forge/__init__.py",
+        "src/forge/config.py",
+        "src/forge/derive.py"
+      ],
+      "tests/test_evidence.py": [
+        "src/forge/evidence.py",
+        "src/forge/store.py"
+      ],
+      "tests/test_fingerprint.py": [
+        "src/forge/__init__.py",
+        "src/forge/anchor.py",
+        "src/forge/fingerprint.py"
+      ],
+      "tests/test_gitio.py": [
+        "src/forge/__init__.py",
+        "src/forge/gitio.py"
+      ],
+      "tests/test_hooks.py": [
+        "src/forge/__init__.py",
+        "src/forge/anchor.py",
+        "src/forge/change.py",
+        "src/forge/cli.py",
+        "src/forge/gitio.py",
+        "src/forge/hooks.py",
+        "src/forge/ledger.py"
+      ],
+      "tests/test_hosts.py": [
+        "src/forge/__init__.py",
+        "src/forge/cli.py",
+        "src/forge/hosts.py",
+        "src/forge/skills.py"
+      ],
+      "tests/test_impact.py": [
+        "src/forge/__init__.py",
+        "src/forge/change.py",
+        "src/forge/cli.py",
+        "src/forge/derive.py",
+        "src/forge/impact.py",
+        "src/forge/validate.py"
+      ],
+      "tests/test_impact_scope.py": [
+        "src/forge/__init__.py",
+        "src/forge/change.py",
+        "src/forge/cli.py",
+        "src/forge/derive.py",
+        "src/forge/gates.py",
+        "src/forge/impact.py",
+        "src/forge/validate.py"
+      ],
+      "tests/test_instructions.py": [
+        "src/forge/__init__.py",
+        "src/forge/change.py",
+        "src/forge/cli.py",
+        "src/forge/derive.py",
+        "src/forge/instructions.py",
+        "src/forge/schema.py"
+      ],
+      "tests/test_ledger.py": [
+        "src/forge/__init__.py",
+        "src/forge/anchor.py",
+        "src/forge/cli.py",
+        "src/forge/ledger.py",
+        "src/forge/store.py"
+      ],
+      "tests/test_lifecycle.py": [
+        "src/forge/__init__.py",
+        "src/forge/change.py",
+        "src/forge/cli.py",
+        "src/forge/derive.py",
+        "src/forge/gates.py",
+        "src/forge/spec.py",
+        "src/forge/verify.py"
+      ],
+      "tests/test_lifecycle_repairs.py": [
+        "src/forge/__init__.py",
+        "src/forge/change.py",
+        "src/forge/cli.py",
+        "src/forge/derive.py",
+        "src/forge/gates.py",
+        "src/forge/scaffold.py",
+        "src/forge/schema.py",
+        "src/forge/spec.py",
+        "src/forge/trace.py",
+        "src/forge/verify.py"
+      ],
+      "tests/test_perturbations.py": [
+        "src/forge/fingerprint.py"
+      ],
+      "tests/test_reconcile.py": [
+        "src/forge/__init__.py",
+        "src/forge/cli.py",
+        "src/forge/gitio.py",
+        "src/forge/ledger.py",
+        "src/forge/reconcile.py"
+      ],
+      "tests/test_report.py": [
+        "src/forge/__init__.py",
+        "src/forge/cli.py",
+        "src/forge/report.py"
+      ],
+      "tests/test_scaffold.py": [
+        "src/forge/__init__.py",
+        "src/forge/cli.py",
+        "src/forge/derive.py",
+        "src/forge/scaffold.py",
+        "src/forge/store.py",
+        "src/forge/validate.py"
+      ],
+      "tests/test_schema.py": [
+        "src/forge/__init__.py",
+        "src/forge/schema.py"
+      ],
+      "tests/test_skill_companions.py": [
+        "src/forge/__init__.py",
+        "src/forge/cli.py",
+        "src/forge/hosts.py",
+        "src/forge/scaffold.py",
+        "src/forge/skills.py"
+      ],
+      "tests/test_skills.py": [
+        "src/forge/__init__.py",
+        "src/forge/cli.py",
+        "src/forge/derive.py",
+        "src/forge/skills.py",
+        "src/forge/validate.py"
+      ],
+      "tests/test_spec.py": [
+        "src/forge/__init__.py",
+        "src/forge/change.py",
+        "src/forge/cli.py",
+        "src/forge/spec.py",
+        "src/forge/validate.py"
+      ],
+      "tests/test_trace.py": [
+        "src/forge/__init__.py",
+        "src/forge/derive.py",
+        "src/forge/store.py",
+        "src/forge/trace.py"
+      ],
+      "tests/test_validate.py": [
+        "src/forge/__init__.py",
+        "src/forge/cli.py",
+        "src/forge/derive.py",
+        "src/forge/store.py",
+        "src/forge/validate.py"
+      ],
+      "tools/perturb_anchors.py": [
+        "src/forge/__init__.py",
+        "src/forge/anchor.py",
+        "src/forge/fingerprint.py",
+        "src/forge/gitio.py"
+      ],
+      "tools/pressure_test.py": [
+        "src/forge/__init__.py",
+        "src/forge/skills.py"
       ]
     },
-    "files_with_imports": 19,
+    "files_with_imports": 52,
     "reverse": {
       "src/forge/__init__.py": [
         "src/forge/anchor.py",
@@ -165,7 +369,36 @@
         "src/forge/scaffold.py",
         "src/forge/trace.py",
         "src/forge/validate.py",
-        "src/forge/verify.py"
+        "src/forge/verify.py",
+        "tests/test_anchor_classify.py",
+        "tests/test_anchor_store.py",
+        "tests/test_bootstrap.py",
+        "tests/test_change.py",
+        "tests/test_claim_granularity.py",
+        "tests/test_config.py",
+        "tests/test_deps.py",
+        "tests/test_derive.py",
+        "tests/test_fingerprint.py",
+        "tests/test_gitio.py",
+        "tests/test_hooks.py",
+        "tests/test_hosts.py",
+        "tests/test_impact.py",
+        "tests/test_impact_scope.py",
+        "tests/test_instructions.py",
+        "tests/test_ledger.py",
+        "tests/test_lifecycle.py",
+        "tests/test_lifecycle_repairs.py",
+        "tests/test_reconcile.py",
+        "tests/test_report.py",
+        "tests/test_scaffold.py",
+        "tests/test_schema.py",
+        "tests/test_skill_companions.py",
+        "tests/test_skills.py",
+        "tests/test_spec.py",
+        "tests/test_trace.py",
+        "tests/test_validate.py",
+        "tools/perturb_anchors.py",
+        "tools/pressure_test.py"
       ],
       "src/forge/anchor.py": [
         "src/forge/bootstrap.py",
@@ -173,10 +406,18 @@
         "src/forge/impact.py",
         "src/forge/ledger.py",
         "src/forge/reconcile.py",
-        "src/forge/validate.py"
+        "src/forge/validate.py",
+        "tests/test_anchor_classify.py",
+        "tests/test_anchor_parse.py",
+        "tests/test_anchor_store.py",
+        "tests/test_fingerprint.py",
+        "tests/test_hooks.py",
+        "tests/test_ledger.py",
+        "tools/perturb_anchors.py"
       ],
       "src/forge/bootstrap.py": [
-        "src/forge/cli.py"
+        "src/forge/cli.py",
+        "tests/test_bootstrap.py"
       ],
       "src/forge/change.py": [
         "src/forge/cli.py",
@@ -185,10 +426,39 @@
         "src/forge/instructions.py",
         "src/forge/scaffold.py",
         "src/forge/trace.py",
-        "src/forge/verify.py"
+        "src/forge/verify.py",
+        "tests/test_change.py",
+        "tests/test_claim_granularity.py",
+        "tests/test_hooks.py",
+        "tests/test_impact.py",
+        "tests/test_impact_scope.py",
+        "tests/test_instructions.py",
+        "tests/test_lifecycle.py",
+        "tests/test_lifecycle_repairs.py",
+        "tests/test_spec.py"
       ],
       "src/forge/cli.py": [
-        "src/forge/__main__.py"
+        "src/forge/__main__.py",
+        "tests/test_bootstrap.py",
+        "tests/test_change.py",
+        "tests/test_claim_granularity.py",
+        "tests/test_cli.py",
+        "tests/test_config.py",
+        "tests/test_hooks.py",
+        "tests/test_hosts.py",
+        "tests/test_impact.py",
+        "tests/test_impact_scope.py",
+        "tests/test_instructions.py",
+        "tests/test_ledger.py",
+        "tests/test_lifecycle.py",
+        "tests/test_lifecycle_repairs.py",
+        "tests/test_reconcile.py",
+        "tests/test_report.py",
+        "tests/test_scaffold.py",
+        "tests/test_skill_companions.py",
+        "tests/test_skills.py",
+        "tests/test_spec.py",
+        "tests/test_validate.py"
       ],
       "src/forge/config.py": [
         "src/forge/bootstrap.py",
@@ -199,7 +469,9 @@
         "src/forge/instructions.py",
         "src/forge/scaffold.py",
         "src/forge/validate.py",
-        "src/forge/verify.py"
+        "src/forge/verify.py",
+        "tests/test_config.py",
+        "tests/test_derive.py"
       ],
       "src/forge/derive.py": [
         "src/forge/bootstrap.py",
@@ -210,21 +482,40 @@
         "src/forge/scaffold.py",
         "src/forge/trace.py",
         "src/forge/validate.py",
-        "src/forge/verify.py"
+        "src/forge/verify.py",
+        "tests/test_bootstrap.py",
+        "tests/test_deps.py",
+        "tests/test_derive.py",
+        "tests/test_impact.py",
+        "tests/test_impact_scope.py",
+        "tests/test_instructions.py",
+        "tests/test_lifecycle.py",
+        "tests/test_lifecycle_repairs.py",
+        "tests/test_scaffold.py",
+        "tests/test_skills.py",
+        "tests/test_trace.py",
+        "tests/test_validate.py"
       ],
       "src/forge/evidence.py": [
         "src/forge/cli.py",
-        "src/forge/ledger.py"
+        "src/forge/ledger.py",
+        "tests/test_evidence.py"
       ],
       "src/forge/fingerprint.py": [
         "src/forge/anchor.py",
         "src/forge/cli.py",
         "src/forge/derive.py",
         "src/forge/impact.py",
-        "src/forge/validate.py"
+        "src/forge/validate.py",
+        "tests/test_fingerprint.py",
+        "tests/test_perturbations.py",
+        "tools/perturb_anchors.py"
       ],
       "src/forge/gates.py": [
-        "src/forge/cli.py"
+        "src/forge/cli.py",
+        "tests/test_impact_scope.py",
+        "tests/test_lifecycle.py",
+        "tests/test_lifecycle_repairs.py"
       ],
       "src/forge/gitio.py": [
         "src/forge/anchor.py",
@@ -238,37 +529,77 @@
         "src/forge/reconcile.py",
         "src/forge/trace.py",
         "src/forge/validate.py",
-        "src/forge/verify.py"
+        "src/forge/verify.py",
+        "tests/test_anchor_classify.py",
+        "tests/test_claim_granularity.py",
+        "tests/test_gitio.py",
+        "tests/test_hooks.py",
+        "tests/test_reconcile.py",
+        "tools/perturb_anchors.py"
       ],
       "src/forge/hooks.py": [
-        "src/forge/cli.py"
+        "src/forge/cli.py",
+        "tests/test_hooks.py"
       ],
       "src/forge/hosts.py": [
-        "src/forge/cli.py"
+        "src/forge/cli.py",
+        "tests/test_hosts.py",
+        "tests/test_skill_companions.py"
       ],
       "src/forge/impact.py": [
         "src/forge/cli.py",
         "src/forge/gates.py",
         "src/forge/instructions.py",
-        "src/forge/verify.py"
+        "src/forge/verify.py",
+        "tests/test_claim_granularity.py",
+        "tests/test_impact.py",
+        "tests/test_impact_scope.py"
+      ],
+      "src/forge/instructions.py": [
+        "tests/test_instructions.py"
       ],
       "src/forge/ledger.py": [
         "src/forge/reconcile.py",
-        "src/forge/verify.py"
+        "src/forge/verify.py",
+        "tests/test_hooks.py",
+        "tests/test_ledger.py",
+        "tests/test_reconcile.py"
+      ],
+      "src/forge/reconcile.py": [
+        "tests/test_reconcile.py"
+      ],
+      "src/forge/report.py": [
+        "tests/test_report.py"
+      ],
+      "src/forge/scaffold.py": [
+        "tests/test_lifecycle_repairs.py",
+        "tests/test_scaffold.py",
+        "tests/test_skill_companions.py"
       ],
       "src/forge/schema.py": [
         "src/forge/change.py",
         "src/forge/instructions.py",
-        "src/forge/scaffold.py"
+        "src/forge/scaffold.py",
+        "tests/test_change.py",
+        "tests/test_instructions.py",
+        "tests/test_lifecycle_repairs.py",
+        "tests/test_schema.py"
       ],
       "src/forge/skills.py": [
         "src/forge/hosts.py",
-        "src/forge/scaffold.py"
+        "src/forge/scaffold.py",
+        "tests/test_hosts.py",
+        "tests/test_skill_companions.py",
+        "tests/test_skills.py",
+        "tools/pressure_test.py"
       ],
       "src/forge/spec.py": [
         "src/forge/gates.py",
         "src/forge/trace.py",
-        "src/forge/verify.py"
+        "src/forge/verify.py",
+        "tests/test_lifecycle.py",
+        "tests/test_lifecycle_repairs.py",
+        "tests/test_spec.py"
       ],
       "src/forge/store.py": [
         "src/forge/anchor.py",
@@ -279,25 +610,44 @@
         "src/forge/ledger.py",
         "src/forge/scaffold.py",
         "src/forge/trace.py",
-        "src/forge/validate.py"
+        "src/forge/validate.py",
+        "tests/test_bootstrap.py",
+        "tests/test_claim_granularity.py",
+        "tests/test_evidence.py",
+        "tests/test_ledger.py",
+        "tests/test_scaffold.py",
+        "tests/test_trace.py",
+        "tests/test_validate.py"
       ],
       "src/forge/trace.py": [
         "src/forge/derive.py",
-        "src/forge/validate.py"
+        "src/forge/validate.py",
+        "tests/test_lifecycle_repairs.py",
+        "tests/test_trace.py"
       ],
       "src/forge/validate.py": [
         "src/forge/cli.py",
         "src/forge/gates.py",
-        "src/forge/verify.py"
+        "src/forge/verify.py",
+        "tests/test_bootstrap.py",
+        "tests/test_config.py",
+        "tests/test_impact.py",
+        "tests/test_impact_scope.py",
+        "tests/test_scaffold.py",
+        "tests/test_skills.py",
+        "tests/test_spec.py",
+        "tests/test_validate.py"
       ],
       "src/forge/verify.py": [
-        "src/forge/gates.py"
+        "src/forge/gates.py",
+        "tests/test_lifecycle.py",
+        "tests/test_lifecycle_repairs.py"
       ]
     },
     "tool": "forge",
     "unresolved_imports": 0
   },
-  "generated_from_commit": "d6dfba8c6b143460aa031d7de9f287e0a7757ba3",
+  "generated_from_commit": "535f1633b7a891efceee642967a33e4838027bea",
   "generator": "forge sync derived",
   "tool": "forge"
 }

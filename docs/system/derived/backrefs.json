@@ -1,9 +1,13 @@
 {
   "$schema": "forge/derived/v1",
   "data": {
-    "by_id": {}
+    "by_id": {
+      "PIT-bullet-continuation-lines": [
+        "src/forge/change.py:246"
+      ]
+    }
   },
-  "generated_from_commit": "6d75c8334235d73916b055ba98b4fc8d26455418",
+  "generated_from_commit": "68da17aaa781588c72f9304d2dbab69aaaed0b20",
   "generator": "forge sync derived",
   "tool": "forge"
 }

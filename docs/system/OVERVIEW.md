@@ -6,8 +6,12 @@
 
 ## What this system is for
 
-Unwritten. One paragraph: who uses this, and what would break for them
-if it stopped.
+Software engineers and coding agents working in long-lived repositories use
+Forge to keep system knowledge, capability specifications, and code changes
+mechanically synchronized. Without it, architectural claims and pitfalls
+silently rot as the code beneath them moves, agents optimise for passing
+tests while breaking unrecorded invariants, and reviewers lose a deterministic
+account of which system guarantees a diff reaches.
 
 ## Shape
 

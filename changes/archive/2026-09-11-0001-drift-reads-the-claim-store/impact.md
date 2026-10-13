@@ -34,17 +34,12 @@ anchor paths the forecast intersects, accounted for by hand.
 > written and because it is worth seeing a refusal survive long enough to be overtaken
 > by the thing it refused to pretend had happened.
 
-- CON-claim - the change reads `Claim` objects through the existing loader and adds no
-  field, so the shape this claim describes is untouched.
-- INV-regeneration-is-a-no-op - retired, and anchored to `derive.py#write_json`, which
-  this change does not reach; a drift scan writes nothing, so the derived tier is not
-  involved at all.
+`CON-claim` (`src/forge/store.py#Claim`) and `CON-anchor` (`src/forge/anchor.py#parse_anchor`)
+are nearby rather than touched because the diff leaves those symbols unchanged, and
+`INV-regeneration-is-a-no-op` is retired.
 
 ### Updated
 
-- CON-anchor - anchored to `src/forge/anchor.py#parse_anchor`. The file is edited and
-  the claim's prose gains nothing new, but the anchor's SHA must be restamped once the
-  edit lands, and the claim is the natural home for the store-wide scan's existence.
 - PIT-regex-across-newlines - the rule it states is untouched and still holds. It moved
   here from `Unaffected` because this change's own ledger flagged it: its anchor is
   whole-file on `src/forge/impact.py`, the G14 edit made it stale, and

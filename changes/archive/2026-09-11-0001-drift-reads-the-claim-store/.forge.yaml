@@ -1,0 +1,6 @@
+created: '2026-09-11'
+title: drift reads the claim store
+track: C
+workflow: feature
+skip_flow: no user-facing screen; the change adds CLI flags (--store, --changed) and stdout reporting
+

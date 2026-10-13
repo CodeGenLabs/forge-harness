@@ -243,9 +243,10 @@ class Change:
                 items.append((match.group("mark").lower() == "x",
                               match.group("text")))
             elif items and line.strip() and line[:1] in " \t":
-                # Indented, non-blank, and following an item: a wrapped line.
-                # The indent requirement is what keeps an unindented paragraph
-                # after the list from being swallowed into the last task.
+                # forge:PIT-bullet-continuation-lines - indented, non-blank, and
+                # following an item: a wrapped line. The indent requirement is
+                # what keeps an unindented paragraph after the list from being
+                # swallowed into the last task.
                 done, prior = items[-1]
                 items[-1] = (done, f"{prior} {line.strip()}")
         return items

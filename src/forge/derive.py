@@ -690,9 +690,12 @@ def _python_targets(module: str, source: str, index: set[str]) -> str | None:
     else:
         stem = parts.replace(".", "/")
         candidates = [stem]
-        root = source.split("/", 1)[0]
-        if root and root != stem.split("/", 1)[0]:
-            candidates.append(f"{root}/{stem}")
+        first_part = stem.split("/", 1)[0]
+        for root in (source.split("/", 1)[0], "src"):
+            if root and root != first_part:
+                candidate = f"{root}/{stem}"
+                if candidate not in candidates:
+                    candidates.append(candidate)
 
     for candidate in candidates:
         for suffix in (".py", "/__init__.py"):

@@ -55,6 +55,18 @@ def test_a_src_layout_resolves_an_absolute_import(repo):
     assert deps(repo)["edges"]["src/pkg/api.py"] == ["src/pkg/store.py"]
 
 
+def test_a_test_file_importing_from_a_src_layout_is_an_edge(repo):
+    repo.write("src/pkg/__init__.py", "")
+    repo.write("src/pkg/store.py", "")
+    repo.write("tests/test_store.py", "from pkg import store\n")
+    repo.commit("a test importing a src-layout package")
+    result = deps(repo)
+    assert result["edges"]["tests/test_store.py"] == [
+        "src/pkg/__init__.py", "src/pkg/store.py",
+    ]
+    assert "tests/test_store.py" in result["reverse"]["src/pkg/store.py"]
+
+
 def test_an_import_that_leaves_the_repository_is_not_an_edge(repo):
     """The graph is about *this* repository's coupling; `yaml` is a fact of
     the lockfile that inventory.json already reports."""
@@ -328,3 +340,30 @@ def test_a_call_that_is_not_a_test_is_not_counted(repo):
     repo.commit("one test and two things that are not")
 
     assert derive.build_tests(repo.root)["total_tests"] == 1
+
+
+def test_runner_resolves_prefix_and_derived_targets(repo):
+    import importlib.util
+    from pathlib import Path
+
+    runner_path = Path(__file__).resolve().parent.parent / "scripts" / "test_runner.py"
+    spec = importlib.util.spec_from_file_location("test_runner", runner_path)
+    runner = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(runner)
+
+    repo.write("src/forge/__init__.py", "")
+    repo.write("src/forge/anchor.py", "def classify(): pass\n")
+    repo.write("src/forge/helper.py", "def help_fn(): pass\n")
+    repo.write("tests/test_anchor_parse.py", "from forge import anchor\n")
+    repo.write("tests/test_anchor_store.py", "from forge import anchor\n")
+    repo.write("tests/test_custom.py", "from forge import helper\n")
+    repo.commit("src and split tests")
+    derive.derive_all(repo.root)
+
+    # Prefix matching finds test_anchor_*.py for src/forge/anchor.py
+    anchor_targets = runner.resolve_test_targets(repo.root, {"src/forge/anchor.py"})
+    assert anchor_targets == ["tests/test_anchor_parse.py", "tests/test_anchor_store.py"]
+
+    # Reverse dependency graph in deps.json finds test_custom.py for src/forge/helper.py
+    helper_targets = runner.resolve_test_targets(repo.root, {"src/forge/helper.py"})
+    assert helper_targets == ["tests/test_custom.py"]
