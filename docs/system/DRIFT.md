@@ -79,5 +79,5 @@ proposed_reasoning: The signature changed, so the code this claim describes is n
 status: resolved
 verdict: confirmed
 resolved: '2026-10-14'
-evidence: re-confirmed at 33de3fc5d6; anchors restamped, prose unchanged
+evidence: re-confirmed at 1611053ed7; anchors restamped, prose unchanged
 ```

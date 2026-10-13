@@ -24,7 +24,7 @@ evidence-from: two corrections recorded in SYSTEM_KNOWLEDGE.md section 2.3.
 kind:     pitfall
 status:   asserted
 truth-source: decision
-anchors:  ["src/forge/impact.py@33de3fc5d6"]
+anchors:  ["src/forge/impact.py@1611053ed7"]
 evidence:
   - test: tests/test_impact.py::test_the_reason_never_swallows_the_next_line
 reviewed: 2026-10-14

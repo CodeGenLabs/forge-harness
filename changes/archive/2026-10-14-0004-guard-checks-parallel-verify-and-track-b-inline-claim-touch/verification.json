@@ -1,0 +1,79 @@
+{
+  "base": "91df90c4e370b9ced573a5206bc8b98948e00b1d",
+  "change": "0004-guard-checks-parallel-verify-and-track-b-inline-claim-touch",
+  "commit": "63be8556b181d3fb1de654cbfac79392fdbca7e7",
+  "failing": [],
+  "gates": {
+    "build": {
+      "reason": "`commands.build: none` - this project has no build step",
+      "status": "skipped"
+    },
+    "claim_evidence": {
+      "enforced_claims": 0,
+      "failing": [],
+      "status": "pass"
+    },
+    "claim_touch": {
+      "status": "pass",
+      "unaccounted": []
+    },
+    "debt": {
+      "fix": "until the ledger exists, look for stubs and TODOs added by this change",
+      "reason": "DEBT.md is not built yet",
+      "status": "pending"
+    },
+    "derived_fresh": {
+      "commits_behind": 3,
+      "dirty": [],
+      "status": "pass"
+    },
+    "drift": {
+      "claims": [],
+      "open": [],
+      "reason": "every claim this change touches is either fresh or has a recorded verdict",
+      "status": "pass"
+    },
+    "lint": {
+      "reason": "`commands.lint: none` - this project has no lint step",
+      "status": "skipped"
+    },
+    "no_new_skips": {
+      "fix": "until the runner records per-test results, check the suite output for newly skipped tests",
+      "reason": "no baseline test run to compare against",
+      "status": "pending"
+    },
+    "requirement_cover": {
+      "discharged": 4,
+      "requirements": 4,
+      "status": "pass",
+      "undischarged": []
+    },
+    "tests": {
+      "cmd": ".venv\\Scripts\\python.exe scripts/test_runner.py -n auto",
+      "duration_ms": 540524,
+      "exit": 0,
+      "status": "pass"
+    },
+    "typecheck": {
+      "reason": "`commands.typecheck: none` - this project has no typecheck step",
+      "status": "skipped"
+    },
+    "ui": {
+      "reason": "`commands.ui: none` - this project has no ui step",
+      "status": "skipped"
+    }
+  },
+  "pending": [
+    "debt",
+    "no_new_skips"
+  ],
+  "skipped": [
+    "build",
+    "lint",
+    "typecheck",
+    "ui"
+  ],
+  "unproven": [],
+  "verdict": "pass",
+  "waived": []
+}

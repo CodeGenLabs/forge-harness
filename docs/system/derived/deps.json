@@ -39,6 +39,7 @@
         "src/forge/fingerprint.py",
         "src/forge/gates.py",
         "src/forge/gitio.py",
+        "src/forge/guard.py",
         "src/forge/hooks.py",
         "src/forge/hosts.py",
         "src/forge/impact.py",
@@ -64,6 +65,12 @@
         "src/forge/spec.py",
         "src/forge/validate.py",
         "src/forge/verify.py"
+      ],
+      "src/forge/guard.py": [
+        "src/forge/__init__.py",
+        "src/forge/change.py",
+        "src/forge/config.py",
+        "src/forge/gitio.py"
       ],
       "src/forge/hooks.py": [
         "src/forge/__init__.py",
@@ -211,6 +218,11 @@
         "src/forge/__init__.py",
         "src/forge/gitio.py"
       ],
+      "tests/test_guard.py": [
+        "src/forge/__init__.py",
+        "src/forge/change.py",
+        "src/forge/cli.py"
+      ],
       "tests/test_hooks.py": [
         "src/forge/__init__.py",
         "src/forge/anchor.py",
@@ -232,7 +244,8 @@
         "src/forge/cli.py",
         "src/forge/derive.py",
         "src/forge/impact.py",
-        "src/forge/validate.py"
+        "src/forge/validate.py",
+        "src/forge/verify.py"
       ],
       "tests/test_impact_scope.py": [
         "src/forge/__init__.py",
@@ -351,7 +364,7 @@
         "src/forge/skills.py"
       ]
     },
-    "files_with_imports": 52,
+    "files_with_imports": 54,
     "reverse": {
       "src/forge/__init__.py": [
         "src/forge/anchor.py",
@@ -359,6 +372,7 @@
         "src/forge/cli.py",
         "src/forge/derive.py",
         "src/forge/gates.py",
+        "src/forge/guard.py",
         "src/forge/hooks.py",
         "src/forge/hosts.py",
         "src/forge/impact.py",
@@ -380,6 +394,7 @@
         "tests/test_derive.py",
         "tests/test_fingerprint.py",
         "tests/test_gitio.py",
+        "tests/test_guard.py",
         "tests/test_hooks.py",
         "tests/test_hosts.py",
         "tests/test_impact.py",
@@ -422,6 +437,7 @@
       "src/forge/change.py": [
         "src/forge/cli.py",
         "src/forge/gates.py",
+        "src/forge/guard.py",
         "src/forge/impact.py",
         "src/forge/instructions.py",
         "src/forge/scaffold.py",
@@ -429,6 +445,7 @@
         "src/forge/verify.py",
         "tests/test_change.py",
         "tests/test_claim_granularity.py",
+        "tests/test_guard.py",
         "tests/test_hooks.py",
         "tests/test_impact.py",
         "tests/test_impact_scope.py",
@@ -444,6 +461,7 @@
         "tests/test_claim_granularity.py",
         "tests/test_cli.py",
         "tests/test_config.py",
+        "tests/test_guard.py",
         "tests/test_hooks.py",
         "tests/test_hosts.py",
         "tests/test_impact.py",
@@ -465,6 +483,7 @@
         "src/forge/cli.py",
         "src/forge/derive.py",
         "src/forge/gates.py",
+        "src/forge/guard.py",
         "src/forge/impact.py",
         "src/forge/instructions.py",
         "src/forge/scaffold.py",
@@ -523,6 +542,7 @@
         "src/forge/cli.py",
         "src/forge/derive.py",
         "src/forge/gates.py",
+        "src/forge/guard.py",
         "src/forge/hooks.py",
         "src/forge/impact.py",
         "src/forge/ledger.py",
@@ -536,6 +556,9 @@
         "tests/test_hooks.py",
         "tests/test_reconcile.py",
         "tools/perturb_anchors.py"
+      ],
+      "src/forge/guard.py": [
+        "src/forge/cli.py"
       ],
       "src/forge/hooks.py": [
         "src/forge/cli.py",
@@ -640,6 +663,7 @@
       ],
       "src/forge/verify.py": [
         "src/forge/gates.py",
+        "tests/test_impact.py",
         "tests/test_lifecycle.py",
         "tests/test_lifecycle_repairs.py"
       ]
@@ -647,7 +671,7 @@
     "tool": "forge",
     "unresolved_imports": 0
   },
-  "generated_from_commit": "535f1633b7a891efceee642967a33e4838027bea",
+  "generated_from_commit": "63be8556b181d3fb1de654cbfac79392fdbca7e7",
   "generator": "forge sync derived",
   "tool": "forge"
 }

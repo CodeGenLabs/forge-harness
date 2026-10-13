@@ -11,8 +11,19 @@
       "REQ-drift-store-scan": [
         "tests/test_anchor_store.py::test_a_fresh_store_reports_every_claim_fresh"
       ],
+      "REQ-guard-command-safety": [
+        "tests/test_guard.py::test_commit_on_protected_main_branch_is_blocked",
+        "tests/test_guard.py::test_destructive_git_and_fs_commands_are_blocked",
+        "tests/test_guard.py::test_safe_commands_pass"
+      ],
+      "REQ-guard-task-scope": [
+        "tests/test_guard.py::test_path_guard_enforces_declared_task_scopes"
+      ],
       "REQ-host-antigravity-rules": [
         "tests/test_hosts.py::test_antigravity_host_writes_rules"
+      ],
+      "REQ-impact-track-b-inline": [
+        "tests/test_impact.py::test_track_b_change_reads_claims_touched_from_proposal_md"
       ],
       "REQ-interface-points-to-ui-ux": [
         "tests/test_skills.py::test_interface_skill_points_to_ui_ux_and_probe"
@@ -37,6 +48,9 @@
       ],
       "REQ-ui-ux-skill": [
         "tests/test_skills.py::test_ui_ux_skill_properties"
+      ],
+      "REQ-verify-parallel-commands": [
+        "tests/test_lifecycle.py::test_verify_runs_commands_and_records_duration_ms"
       ]
     },
     "files": {
@@ -1764,6 +1778,40 @@
         ],
         "untagged": 26
       },
+      "tests/test_guard.py": {
+        "language": "python",
+        "tests": [
+          {
+            "covers": [
+              "REQ-guard-command-safety"
+            ],
+            "line": 29,
+            "name": "test_destructive_git_and_fs_commands_are_blocked"
+          },
+          {
+            "covers": [
+              "REQ-guard-command-safety"
+            ],
+            "line": 49,
+            "name": "test_safe_commands_pass"
+          },
+          {
+            "covers": [
+              "REQ-guard-command-safety"
+            ],
+            "line": 60,
+            "name": "test_commit_on_protected_main_branch_is_blocked"
+          },
+          {
+            "covers": [
+              "REQ-guard-task-scope"
+            ],
+            "line": 83,
+            "name": "test_path_guard_enforces_declared_task_scopes"
+          }
+        ],
+        "untagged": 0
+      },
       "tests/test_hooks.py": {
         "language": "python",
         "tests": [
@@ -2135,6 +2183,13 @@
             "covers": [],
             "line": 430,
             "name": "test_an_unknown_change_is_reported_not_ignored"
+          },
+          {
+            "covers": [
+              "REQ-impact-track-b-inline"
+            ],
+            "line": 439,
+            "name": "test_track_b_change_reads_claims_touched_from_proposal_md"
           }
         ],
         "untagged": 32
@@ -2674,6 +2729,13 @@
             "covers": [],
             "line": 629,
             "name": "test_archive_with_amend"
+          },
+          {
+            "covers": [
+              "REQ-verify-parallel-commands"
+            ],
+            "line": 645,
+            "name": "test_verify_runs_commands_and_records_duration_ms"
           }
         ],
         "untagged": 43
@@ -4189,10 +4251,10 @@
         "untagged": 64
       }
     },
-    "tagged_tests": 16,
-    "total_tests": 786
+    "tagged_tests": 22,
+    "total_tests": 792
   },
-  "generated_from_commit": "68da17aaa781588c72f9304d2dbab69aaaed0b20",
+  "generated_from_commit": "63be8556b181d3fb1de654cbfac79392fdbca7e7",
   "generator": "forge sync derived",
   "tool": "forge"
 }
