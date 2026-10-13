@@ -62,3 +62,22 @@ verdict: confirmed
 resolved: '2026-09-12'
 evidence: re-confirmed at ec22a88bdd; anchors restamped, prose unchanged
 ```
+
+## D-004 - PIT-regex-across-newlines stale
+
+```drift
+claim: PIT-regex-across-newlines
+detected: '2026-10-14'
+detected_by: forge drift
+signal: stale
+anchors_changed:
+- src/forge/impact.py@00ac35f233 (stale)
+proposed_verdict: V1
+proposed_reasoning: The signature changed, so the code this claim describes is not in the
+  shape a human confirmed. Proposed V1 because that is the only reading the fingerprint supports
+  on its own; the other three are judgements.
+status: resolved
+verdict: confirmed
+resolved: '2026-10-14'
+evidence: re-confirmed at 33de3fc5d6; anchors restamped, prose unchanged
+```

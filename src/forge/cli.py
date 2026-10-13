@@ -25,7 +25,7 @@ import shutil as _shutil
 import sys
 from pathlib import Path
 
-from . import (anchor, bootstrap, change, config, derive, gates, gitio, hooks, hosts, impact,
+from . import (anchor, bootstrap, change, config, derive, gates, gitio, guard, hooks, hosts, impact,
                instructions, ledger, reconcile as reconcile_mod, report, scaffold,
                schema, skills, spec, store, trace, validate, verify)
 from .anchor import (AnchorError, Status, classify, classify_store,
@@ -2365,7 +2365,60 @@ def build_parser() -> argparse.ArgumentParser:
     rep.add_argument("--no-browser", action="store_true", help="print the issue URL instead of opening browser")
     rep.set_defaults(func=report.cmd_report)
 
+    grd = sub.add_parser(
+        "guard",
+        help="pre-execution command safety and active task file-scope guard",
+        description="Exits 1 when a command is destructive, commits directly to a "
+                    "protected main branch, or edits files outside the active task scope.",
+    )
+    grd.add_argument("--cmd", help="shell command string to inspect before execution")
+    grd.add_argument("--paths", nargs="*", default=None,
+                     help="target file paths to check against active task scopes")
+    grd.add_argument("--change", help="change number or slug for task scope checking")
+    grd.add_argument("--repo", type=Path, default=Path.cwd())
+    grd.add_argument("--json", action="store_true")
+    grd.set_defaults(func=_cmd_guard)
+
     return parser
+
+
+def _cmd_guard(args: argparse.Namespace) -> int:
+    repo = args.repo.resolve()
+    issues: list[Issue] = []
+
+    if args.cmd:
+        issues.extend(guard.check_command(repo, args.cmd, Issue))
+
+    if args.paths is not None:
+        item = None
+        if args.change:
+            try:
+                item = change.find_change(repo, args.change)
+            except change.ChangeError as exc:
+                print(f"forge: {exc}", file=sys.stderr)
+                return _EXIT_USAGE
+        else:
+            open_changes = change.list_changes(repo)
+            if len(open_changes) == 1:
+                item = open_changes[0]
+        issues.extend(guard.check_paths(repo, args.paths, item, Issue))
+
+    errors = [i for i in issues if i.level == "ERROR"]
+    if args.json:
+        print(json.dumps({
+            "ok": not errors,
+            "command": "forge guard",
+            "issues": [i.to_dict() for i in issues],
+        }, indent=2))
+        return _EXIT_CHANGED if errors else _EXIT_OK
+
+    for issue in issues:
+        where = issue.path + (f":{issue.line}" if issue.line else "")
+        print(f"{issue.level:7} {issue.code:28} {where}\n"
+              f"        {issue.message}\n        fix: {issue.fix}")
+    if not issues:
+        print("ok - guard passed.")
+    return _EXIT_CHANGED if errors else _EXIT_OK
 
 
 def _survive_the_console() -> None:

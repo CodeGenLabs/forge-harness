@@ -26,10 +26,12 @@ to prevent.
 
 from __future__ import annotations
 
+import concurrent.futures
 import json
 import re
 import shutil as _shutil
 import subprocess
+import time
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -157,6 +159,7 @@ def _run(repo: Path, name: str, line: str, timeout: int) -> dict:
             "correct `commands` in .forge/config.yaml, or activate the "
             "environment the command needs",
         ), "cmd": line}
+    t0 = time.perf_counter()
     try:
         completed = subprocess.run(
             line, cwd=repo, shell=True, capture_output=True, timeout=timeout,
@@ -172,10 +175,12 @@ def _run(repo: Path, name: str, line: str, timeout: int) -> dict:
         ), "cmd": line}
     except OSError as exc:
         return {"status": "fail", "cmd": line, "error": str(exc)}
+    duration_ms = max(0, int(round((time.perf_counter() - t0) * 1000)))
     out = {
         "status": "pass" if completed.returncode == 0 else "fail",
         "cmd": line,
         "exit": completed.returncode,
+        "duration_ms": duration_ms,
     }
     if completed.returncode != 0:
         out.update(_failure_lines(completed))
@@ -275,6 +280,7 @@ def verify(repo: Path, item: Change, *, waived: tuple[str, ...] = (),
     # The kernel renders nothing and gains no dependency: it runs the line the
     # project declared, which is expected to be that project's own Playwright
     # and axe suite. Evidence, not opinion, exactly as for `tests`.
+    runnable: list[tuple[str, str]] = []
     for name in ("build", "typecheck", "lint", "tests", "ui"):
         key = "test" if name == "tests" else name
         line = commands.get(key)
@@ -300,7 +306,16 @@ def verify(repo: Path, item: Change, *, waived: tuple[str, ...] = (),
             gates[name] = _unavailable("commands were not run (--no-run)",
                                        "re-run without --no-run before syncing")
         else:
-            gates[name] = _run(repo, name, line, timeout)
+            runnable.append((name, line))
+
+    if runnable:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=len(runnable)) as pool:
+            futures = {
+                name: pool.submit(_run, repo, name, line, timeout)
+                for name, line in runnable
+            }
+            for name, fut in futures.items():
+                gates[name] = fut.result()
 
     deltas = _deltas(repo, item)
     promised = spec.promised_requirements(deltas)
@@ -337,7 +352,7 @@ def verify(repo: Path, item: Change, *, waived: tuple[str, ...] = (),
     # one case where every claim is unaccounted.
     touch_issues = [i for i in impact.check_claim_touch(repo, item, computed, Issue)
                     if i.level == "ERROR"]
-    account_file = item.root / "impact.md"
+    account_file = impact.account_path(repo, item)
     accounted = set(impact.parse_account(
         account_file.read_text(encoding="utf-8", errors="replace")
     ).by_id) if account_file.is_file() else set()

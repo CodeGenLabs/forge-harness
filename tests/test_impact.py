@@ -433,3 +433,26 @@ def test_an_unknown_change_is_reported_not_ignored(worked, capsys):
     assert main(["check", "--scope", "change", "--change", "99",
                  "--repo", str(worked.root)]) == 1
     assert "change.unknown" in capsys.readouterr().out
+
+
+# @covers REQ-impact-track-b-inline
+def test_track_b_change_reads_claims_touched_from_proposal_md(worked):
+    from forge import verify
+
+    item = change.new_change(worked.root, "track b inline", track="B", today=TODAY)
+    worked.commit("open track B change")
+    worked.write("src/pay.py", PAY.replace("captured_minor - settled_minor",
+                                           "max(0, captured_minor - settled_minor)"))
+    (item.root / "proposal.md").write_text(
+        "# Proposal\n\n## Intent\nClamp refunds on Track B.\n\n" + ACCOUNT,
+        encoding="utf-8",
+    )
+    comp = impact.compute_impact(worked.root, item)
+    assert set(comp.touched) == {"CMP-payments", "INV-refund-cap"}
+    found = impact.check_claim_touch(worked.root, item, comp, Issue)
+    assert [i for i in found if i.level == "ERROR"] == []
+
+    report = verify.verify(worked.root, item, run_commands=False)
+    assert report["gates"]["claim_touch"]["status"] == "pass"
+    assert report["gates"]["claim_touch"]["unaccounted"] == []
+

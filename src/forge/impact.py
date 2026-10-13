@@ -45,6 +45,7 @@ __all__ = [
     "ClaimTouch",
     "Account",
     "HEADINGS",
+    "account_path",
     "compute_impact",
     "parse_account",
     "check_claim_touch",
@@ -400,12 +401,24 @@ def parse_account(text: str) -> Account:
 # R5 / R6 - the check
 # ---------------------------------------------------------------------------
 
+def account_path(repo: Path, item: Change) -> Path:
+    """The file carrying `## Claims touched`: `impact.md`, or `proposal.md` on Track B."""
+    impact_file = repo / item.relative / "impact.md"
+    if impact_file.is_file():
+        return impact_file
+    if item.track == "B":
+        proposal_file = repo / item.relative / "proposal.md"
+        if proposal_file.is_file():
+            return proposal_file
+    return impact_file
+
+
 def check_claim_touch(repo: Path, item: Change, impact: Impact,
                       issue) -> list:
     """R5 and R6. `issue` is the `Issue` constructor, injected to keep this
     module free of a dependency on the CLI's reporting shape."""
-    relative = f"{item.relative}/impact.md"
-    target = repo / item.relative / "impact.md"
+    target = account_path(repo, item)
+    relative = target.relative_to(repo).as_posix()
     issues = []
 
     if not target.is_file():
@@ -422,9 +435,11 @@ def check_claim_touch(repo: Path, item: Change, impact: Impact,
     text = target.read_text(encoding="utf-8", errors="replace")
     account = parse_account(text)
     if not account.present:
+        if target.name == "proposal.md" and not impact.touched:
+            return []
         return [issue(
             "ERROR", "trace.claim_touch_complete", relative,
-            "impact.md has no `## Claims touched` section",
+            f"{target.name} has no `## Claims touched` section",
             "add `## Claims touched` with a `### Unaffected` / `### Updated` / "
             "`### Superseded` breakdown",
         )]

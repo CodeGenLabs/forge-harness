@@ -24,10 +24,10 @@ evidence-from: two corrections recorded in SYSTEM_KNOWLEDGE.md section 2.3.
 kind:     pitfall
 status:   asserted
 truth-source: decision
-anchors:  ["src/forge/impact.py@00ac35f233"]
+anchors:  ["src/forge/impact.py@33de3fc5d6"]
 evidence:
   - test: tests/test_impact.py::test_the_reason_never_swallows_the_next_line
-reviewed: 2026-09-12
+reviewed: 2026-10-14
 ```
 
 Using `\s*` between a captured id and its trailing text swallows the

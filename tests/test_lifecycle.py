@@ -640,3 +640,16 @@ def test_archive_with_amend(project, capsys):
     dirty = project._git("status", "--porcelain").strip()
     assert dirty == ""
 
+
+# @covers REQ-verify-parallel-commands
+def test_verify_runs_commands_and_records_duration_ms(project):
+    _complete(project)
+    item = change.find_change(project.root, "1")
+    report = verify.verify(project.root, item, run_commands=True)
+    for gate_name in ("build", "typecheck", "lint", "tests"):
+        gate = report["gates"][gate_name]
+        assert gate["status"] == "pass"
+        assert isinstance(gate.get("duration_ms"), int)
+        assert gate["duration_ms"] >= 0
+
+
