@@ -499,7 +499,7 @@
         "back_references": [],
         "candidate": false,
         "changes": [],
-        "defined_in": "docs/system/specs/skills/spec.md:10",
+        "defined_in": "docs/system/specs/skills/spec.md:12",
         "evidence": [],
         "governed_by": [],
         "governs": [],
@@ -551,7 +551,7 @@
         "back_references": [],
         "candidate": false,
         "changes": [],
-        "defined_in": "docs/system/specs/skills/spec.md:47",
+        "defined_in": "docs/system/specs/skills/spec.md:49",
         "evidence": [],
         "governed_by": [],
         "governs": [],
@@ -601,7 +601,7 @@
         "back_references": [],
         "candidate": false,
         "changes": [],
-        "defined_in": "docs/system/specs/skills/spec.md:65",
+        "defined_in": "docs/system/specs/skills/spec.md:67",
         "evidence": [],
         "governed_by": [],
         "governs": [],
@@ -618,6 +618,78 @@
           "tests/test_skills.py::test_ui_ux_skill_properties"
         ],
         "title": "forge ships a ui-ux design procedure"
+      },
+      "REQ-ui-ux-studio-workflows": {
+        "anchor_paths": [],
+        "anchors": [],
+        "back_references": [],
+        "candidate": false,
+        "changes": [],
+        "defined_in": "docs/system/specs/skills/spec.md:132",
+        "evidence": [],
+        "governed_by": [],
+        "governs": [],
+        "id": "REQ-ui-ux-studio-workflows",
+        "justifies": [],
+        "kind": "requirement",
+        "provisional": false,
+        "referenced_by_adr": [],
+        "references": [],
+        "since": null,
+        "status": null,
+        "supersedes": null,
+        "tests": [
+          "tests/test_skills.py::test_ui_ux_studio_workflows_and_notices"
+        ],
+        "title": "The ui-ux skill routes studio and harness actions"
+      },
+      "REQ-ui-ux-ten-source-kb": {
+        "anchor_paths": [],
+        "anchors": [],
+        "back_references": [],
+        "candidate": false,
+        "changes": [],
+        "defined_in": "docs/system/specs/skills/spec.md:103",
+        "evidence": [],
+        "governed_by": [],
+        "governs": [],
+        "id": "REQ-ui-ux-ten-source-kb",
+        "justifies": [],
+        "kind": "requirement",
+        "provisional": false,
+        "referenced_by_adr": [],
+        "references": [],
+        "since": null,
+        "status": null,
+        "supersedes": null,
+        "tests": [
+          "tests/test_skills.py::test_ui_ux_ten_source_knowledge_base"
+        ],
+        "title": "The ui-ux skill ships the distilled 10-source knowledge base"
+      },
+      "REQ-ui-ux-theme-i18n-mobile-gates": {
+        "anchor_paths": [],
+        "anchors": [],
+        "back_references": [],
+        "candidate": false,
+        "changes": [],
+        "defined_in": "docs/system/specs/skills/spec.md:151",
+        "evidence": [],
+        "governed_by": [],
+        "governs": [],
+        "id": "REQ-ui-ux-theme-i18n-mobile-gates",
+        "justifies": [],
+        "kind": "requirement",
+        "provisional": false,
+        "referenced_by_adr": [],
+        "references": [],
+        "since": null,
+        "status": null,
+        "supersedes": null,
+        "tests": [
+          "tests/test_skills.py::test_ui_ux_theme_i18n_mobile_gates"
+        ],
+        "title": "The harness enforces 6-axis theme reactivity, zero-literal i18n, and 3-pillar mobile optimization"
       },
       "REQ-verify-parallel-commands": {
         "anchor_paths": [],
@@ -649,13 +721,13 @@
       "claims": 7,
       "dangling_references": [],
       "decisions": 1,
-      "ids_indexed": 24,
+      "ids_indexed": 27,
       "invariants_without_tests": [],
-      "tests_tagged": 22,
-      "tests_total": 792
+      "tests_tagged": 25,
+      "tests_total": 795
     }
   },
-  "generated_from_commit": "d60c5cb1313ba541f704547c6b8ad9074bc594a7",
+  "generated_from_commit": "d7302034095a5aed4e7669ede1519144c5e2441e",
   "generator": "forge sync derived",
   "tool": "forge"
 }

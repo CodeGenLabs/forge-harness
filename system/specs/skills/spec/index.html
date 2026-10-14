@@ -1867,6 +1867,134 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#requirement-req-ui-ux-ten-source-kb-the-ui-ux-skill-ships-the-distilled-10-source-knowledge-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirement: REQ-ui-ux-ten-source-kb - The ui-ux skill ships the distilled 10-source knowledge base
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Requirement: REQ-ui-ux-ten-source-kb - The ui-ux skill ships the distilled 10-source knowledge base">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-core-knowledge-base-files-exist-and-cite-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario: Core knowledge base files exist and cite sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-every-layout-primitives-and-oklch-tokens-are-shipped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario: Every Layout primitives and OKLCH tokens are shipped
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-laws-of-ux-heuristics-japanese-typography-and-vuenuxt-stack-guides-are-present" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario: Laws of UX heuristics, Japanese typography, and Vue/Nuxt stack guides are present
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requirement-req-ui-ux-studio-workflows-the-ui-ux-skill-routes-studio-and-harness-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirement: REQ-ui-ux-studio-workflows - The ui-ux skill routes studio and harness actions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Requirement: REQ-ui-ux-studio-workflows - The ui-ux skill routes studio and harness actions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-skillmd-routes-all-seven-studio-actions-and-passes-skill-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario: SKILL.md routes all seven studio actions and passes skill check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-companion-files-are-self-contained-and-free-of-external-repository-branding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario: Companion files are self-contained and free of external repository branding
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requirement-req-ui-ux-theme-i18n-mobile-gates-the-harness-enforces-6-axis-theme-reactivity-zero-literal-i18n-and-3-pillar-mobile-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirement: REQ-ui-ux-theme-i18n-mobile-gates - The harness enforces 6-axis theme reactivity, zero-literal i18n, and 3-pillar mobile optimization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Requirement: REQ-ui-ux-theme-i18n-mobile-gates - The harness enforces 6-axis theme reactivity, zero-literal i18n, and 3-pillar mobile optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-theme-i18n-and-mobile-rules-are-documented-and-linked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario: Theme, i18n, and mobile rules are documented and linked
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-probemjs-supports-theme-mutation-i18n-leakage-and-mobile-3-pillar-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario: probe.mjs supports theme mutation, i18n leakage, and mobile 3-pillar checks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1918,7 +2046,9 @@
 <p>A packaged skill is more than one markdown file when its procedure leans on
 reference material and helper scripts. This capability lets a skill carry those
 files, ships them everywhere the skill itself is shipped, and adds a design
-procedure - <code>ui-ux</code> - that uses them to build better front ends.</p>
+procedure - <code>ui-ux</code> - that uses them to build better front ends with a
+distilled 10-source knowledge base, 6-axis theme reactivity, zero-literal
+frontend/backend localization (<code>i18n</code>), and 3-pillar mobile optimization.</p>
 <h3 id="requirement-req-skill-companions-ship-companion-files-travel-with-their-skill">Requirement: REQ-skill-companions-ship - Companion files travel with their skill</h3>
 <p>The system SHALL treat every file under a packaged skill's directory other than
 <code>SKILL.md</code> as a companion file of that skill, and SHALL write each companion file,
@@ -1975,9 +2105,8 @@ directory.</p>
 <h3 id="requirement-req-ui-ux-skill-forge-ships-a-ui-ux-design-procedure">Requirement: REQ-ui-ux-skill - forge ships a ui-ux design procedure</h3>
 <p>The system SHALL ship a skill named <code>ui-ux</code> that obeys every rule <code>forge skill check</code>
 enforces, is written in English, and routes a front-end request to one of its
-modes - design with brief and wireframes, build directly, design system first,
-review, rebuild keeping the brand, refactor keeping the look, logo, and small
-component fix - each backed by an English companion reference.</p>
+actions - <code>design-system</code>, <code>wireframe</code>, <code>mockup</code>, <code>refine-block</code>, <code>critique</code>,
+<code>polish</code>, and <code>document</code> - each backed by an English companion reference.</p>
 <h4 id="scenario-the-skill-passes-the-skill-rules">Scenario: The skill passes the skill rules</h4>
 <ul>
 <li>Given the packaged skills</li>
@@ -1987,9 +2116,8 @@ component fix - each backed by an English companion reference.</p>
 <h4 id="scenario-the-skill-reads-as-part-of-the-harness">Scenario: The skill reads as part of the harness</h4>
 <ul>
 <li>Given every markdown, HTML and CSS file under the packaged <code>ui-ux</code> skill</li>
-<li>When it is scanned for Vietnamese-specific letters and for the names <code>evondevKit</code> or <code>evon</code></li>
+<li>When it is scanned for Vietnamese-specific letters and external repository branding</li>
 <li>Then none is found</li>
-<li>And the upstream copyright notice exists only in the repository's <code>THIRD_PARTY_NOTICES.md</code></li>
 </ul>
 <h4 id="scenario-the-skill-is-pressure-tested">Scenario: The skill is pressure-tested</h4>
 <ul>
@@ -2007,6 +2135,79 @@ component fix - each backed by an English companion reference.</p>
 <li>When its body is read</li>
 <li>Then it names <code>ui-ux</code> as the procedure for designing and building a screen</li>
 <li>And it names <code>scripts/probe.mjs</code> of <code>ui-ux</code> as one possible <code>commands.ui</code></li>
+</ul>
+<h3 id="requirement-req-ui-ux-ten-source-kb-the-ui-ux-skill-ships-the-distilled-10-source-knowledge-base">Requirement: REQ-ui-ux-ten-source-kb - The ui-ux skill ships the distilled 10-source knowledge base</h3>
+<p>The packaged <code>ui-ux</code> skill SHALL ship English companion files under <code>references/</code> that
+cover all ten canonical UI/UX design domains and standards (<code>IMP</code>, <code>FD</code>, <code>UPM</code>, <code>UIS</code>,
+<code>WIG</code>, <code>ADM</code>, <code>ADMJ</code>, <code>EL</code>, <code>RUI</code>, <code>LUX</code>, and <code>WCAG</code>), where every rule is written in
+original English prose, specifies a concrete checkable condition, and cites its domain
+code.</p>
+<h4 id="scenario-core-knowledge-base-files-exist-and-cite-sources">Scenario: Core knowledge base files exist and cite sources</h4>
+<ul>
+<li>Given the packaged <code>ui-ux</code> skill directory <code>src/forge/_skills/ui-ux</code></li>
+<li>When its <code>references/</code> directory is inspected</li>
+<li>Then <code>principles.md</code>, <code>anti-patterns.md</code>, <code>layout-primitives.md</code>, <code>ux-heuristics.md</code>, <code>audit-checklist.md</code>, <code>typography-ja.md</code>, <code>design-system.md</code>, <code>workflows.md</code>, <code>stacks-vue-nuxt.md</code>, <code>theme-i18n-mobile.md</code>, <code>sources.md</code>, <code>primitives.css</code>, and <code>tokens.css</code> all exist</li>
+<li>And <code>sources.md</code> documents all domain citation codes (<code>RUI</code>, <code>EL</code>, <code>LUX</code>, <code>IMP</code>, <code>UPM</code>, <code>WIG</code>, <code>UIS</code>, <code>FD</code>, <code>ADM</code>, <code>ADMJ</code>, <code>WCAG</code>)</li>
+</ul>
+<h4 id="scenario-every-layout-primitives-and-oklch-tokens-are-shipped">Scenario: Every Layout primitives and OKLCH tokens are shipped</h4>
+<ul>
+<li>Given <code>references/layout-primitives.md</code>, <code>references/primitives.css</code>, and <code>references/tokens.css</code> under <code>ui-ux</code></li>
+<li>When their contents are inspected</li>
+<li>Then <code>primitives.css</code> defines all twelve intrinsic layout primitives (<code>.l-stack</code>, <code>.l-box</code>, <code>.l-center</code>, <code>.l-cluster</code>, <code>.l-sidebar</code>, <code>.l-switcher</code>, <code>.l-cover</code>, <code>.l-grid</code>, <code>.l-frame</code>, <code>.l-reel</code>, <code>.l-imposter</code>, <code>.l-icon</code>) without viewport <code>@media</code> queries</li>
+<li>And <code>tokens.css</code> defines parameterized 6-axis tokens (<code>--primary-hue</code>, <code>--neutral-hue</code>, <code>--radius-scale</code>, <code>--icon-stroke</code>, <code>--font-sans</code>, and <code>[data-theme="dark"]</code>) in <code>oklch(...)</code></li>
+</ul>
+<h4 id="scenario-laws-of-ux-heuristics-japanese-typography-and-vuenuxt-stack-guides-are-present">Scenario: Laws of UX heuristics, Japanese typography, and Vue/Nuxt stack guides are present</h4>
+<ul>
+<li>Given <code>references/ux-heuristics.md</code>, <code>references/typography-ja.md</code>, and <code>references/stacks-vue-nuxt.md</code></li>
+<li>When their contents are inspected</li>
+<li>Then <code>ux-heuristics.md</code> defines <code>LUX-01</code> through <code>LUX-10</code> and the 100-point wireframe review rubric (<code>R1</code> through <code>R8</code>)</li>
+<li>And <code>typography-ja.md</code> defines Japanese kinsoku (<code>line-break: strict</code>), mixed-script, and OpenType <code>palt</code>/<code>tnum</code> rules (<code>JA-01</code> through <code>JA-61</code>)</li>
+<li>And <code>stacks-vue-nuxt.md</code> maps semantic tokens to Vue 3, Nuxt, Nuxt UI v4 (<code>@nuxt/ui</code>), shadcn-vue, and Tailwind CSS v4 (<code>@theme</code>)</li>
+</ul>
+<h3 id="requirement-req-ui-ux-studio-workflows-the-ui-ux-skill-routes-studio-and-harness-actions">Requirement: REQ-ui-ux-studio-workflows - The ui-ux skill routes studio and harness actions</h3>
+<p>The <code>ui-ux</code> skill's <code>SKILL.md</code> and <code>references/workflows.md</code> SHALL define actionable
+procedures for <code>design-system</code>, <code>wireframe</code>, <code>mockup</code>, <code>refine-block</code>, <code>critique</code>,
+<code>polish</code>, and <code>document</code>, obeying all five <code>forge skill check</code> rules and containing
+zero Vietnamese-specific letters or external repository branding across all companion files.</p>
+<h4 id="scenario-skillmd-routes-all-seven-studio-actions-and-passes-skill-check">Scenario: SKILL.md routes all seven studio actions and passes skill check</h4>
+<ul>
+<li>Given the packaged <code>ui-ux</code> skill</li>
+<li>When <code>forge skill check</code> runs</li>
+<li>Then zero errors are reported for <code>ui-ux</code></li>
+<li>And <code>SKILL.md</code> names <code>design-system</code>, <code>wireframe</code>, <code>mockup</code>, <code>refine-block</code>, <code>critique</code>, <code>polish</code>, and <code>document</code> along with <code>scripts/probe.mjs</code> and <code>forge verify</code></li>
+</ul>
+<h4 id="scenario-companion-files-are-self-contained-and-free-of-external-repository-branding">Scenario: Companion files are self-contained and free of external repository branding</h4>
+<ul>
+<li>Given every markdown, HTML, and CSS file under <code>src/forge/_skills/ui-ux</code></li>
+<li>When its contents are scanned</li>
+<li>Then it contains zero Vietnamese characters and zero external repository names</li>
+</ul>
+<h3 id="requirement-req-ui-ux-theme-i18n-mobile-gates-the-harness-enforces-6-axis-theme-reactivity-zero-literal-i18n-and-3-pillar-mobile-optimization">Requirement: REQ-ui-ux-theme-i18n-mobile-gates - The harness enforces 6-axis theme reactivity, zero-literal i18n, and 3-pillar mobile optimization</h3>
+<p>The <code>ui-ux</code> skill (<code>SKILL.md</code>, <code>references/theme-i18n-mobile.md</code>, <code>references/audit-checklist.md</code>,
+and <code>scripts/probe.mjs</code>) and the <code>interface</code> skill (<code>src/forge/_skills/interface/SKILL.md</code>)
+SHALL enforce:
+1. Full-page 6-axis theme reactivity (<code>Primary</code>, <code>Neutral</code>, <code>Font</code>, <code>Icons</code>, <code>Radius</code>,
+   <code>Light/Dark mode</code>, rules <code>TH-01</code>..<code>TH-10</code>) so theme changes leave zero hardcoded elements behind;
+2. Zero-literal frontend and backend localization (<code>I18N-01</code>..<code>I18N-10</code>) so language
+   switching leaves zero untranslated strings, attributes, or raw translation keys; and
+3. Mandatory 3-pillar mobile responsiveness at <code>320px-375px</code> across Layout (<code>MOB-LY-01</code>..<code>08</code>:
+   zero wrapped buttons/badges, zero orphan word drops, zero crushed flex text columns,
+   zero horizontal overflow), Performance (<code>MOB-PERF-01</code>..<code>06</code>: zero CLS, lazy media,
+   compositor-only motion, single blur cap), and Touch UX (<code>MOB-UX-01</code>..<code>08</code>: <code>&gt;= 44x44px</code>
+   targets, <code>&gt;= 16px</code> input font against iOS auto-zoom, <code>inputmode</code>, <code>100dvh</code> + safe-area).</p>
+<h4 id="scenario-theme-i18n-and-mobile-rules-are-documented-and-linked">Scenario: Theme, i18n, and mobile rules are documented and linked</h4>
+<ul>
+<li>Given <code>src/forge/_skills/ui-ux/references/theme-i18n-mobile.md</code> and <code>src/forge/_skills/interface/SKILL.md</code></li>
+<li>When their contents are inspected</li>
+<li>Then <code>theme-i18n-mobile.md</code> defines <code>TH-01</code>..<code>TH-10</code>, <code>I18N-01</code>..<code>I18N-10</code>, <code>MOB-LY-01</code>..<code>MOB-LY-08</code>, <code>MOB-PERF-01</code>..<code>MOB-PERF-06</code>, and <code>MOB-UX-01</code>..<code>MOB-UX-08</code></li>
+<li>And both <code>ui-ux/SKILL.md</code> and <code>interface/SKILL.md</code> require 6-axis theme reactivity, zero-literal i18n, and 3-pillar mobile verification</li>
+</ul>
+<h4 id="scenario-probemjs-supports-theme-mutation-i18n-leakage-and-mobile-3-pillar-checks">Scenario: probe.mjs supports theme mutation, i18n leakage, and mobile 3-pillar checks</h4>
+<ul>
+<li>Given <code>src/forge/_skills/ui-ux/scripts/probe.mjs</code></li>
+<li>When its source is checked with <code>node --check</code> and inspected</li>
+<li>Then it supports <code>--check-theme</code> and <code>--check-i18n</code> CLI flags</li>
+<li>And it detects <code>iosZoomInputs</code>, <code>crushedTextColumns</code>, <code>orphanLastLineWords</code>, <code>mobilePerfIssues</code>, <code>i18nIssues</code>, and <code>unthemedElements</code></li>
 </ul>
 
 

@@ -49,6 +49,15 @@
       "REQ-ui-ux-skill": [
         "tests/test_skills.py::test_ui_ux_skill_properties"
       ],
+      "REQ-ui-ux-studio-workflows": [
+        "tests/test_skills.py::test_ui_ux_studio_workflows_and_notices"
+      ],
+      "REQ-ui-ux-ten-source-kb": [
+        "tests/test_skills.py::test_ui_ux_ten_source_knowledge_base"
+      ],
+      "REQ-ui-ux-theme-i18n-mobile-gates": [
+        "tests/test_skills.py::test_ui_ux_theme_i18n_mobile_gates"
+      ],
       "REQ-verify-parallel-commands": [
         "tests/test_lifecycle.py::test_verify_runs_commands_and_records_duration_ms"
       ]
@@ -3432,201 +3441,222 @@
           },
           {
             "covers": [
-              "REQ-skill-router-batch"
+              "REQ-ui-ux-ten-source-kb"
             ],
             "line": 123,
+            "name": "test_ui_ux_ten_source_knowledge_base"
+          },
+          {
+            "covers": [
+              "REQ-ui-ux-studio-workflows"
+            ],
+            "line": 185,
+            "name": "test_ui_ux_studio_workflows_and_notices"
+          },
+          {
+            "covers": [
+              "REQ-ui-ux-theme-i18n-mobile-gates"
+            ],
+            "line": 203,
+            "name": "test_ui_ux_theme_i18n_mobile_gates"
+          },
+          {
+            "covers": [
+              "REQ-skill-router-batch"
+            ],
+            "line": 245,
             "name": "test_forge_router_batch_preparation_section"
           },
           {
             "covers": [
               "REQ-skill-implement-autonomous"
             ],
-            "line": 134,
+            "line": 256,
             "name": "test_implement_skill_autonomous_batch_execution_section"
           },
           {
             "covers": [],
-            "line": 140,
+            "line": 262,
             "name": "test_every_shipped_skill_is_pressure_tested"
           },
           {
             "covers": [],
-            "line": 145,
+            "line": 267,
             "name": "test_every_shipped_scenario_is_well_formed"
           },
           {
             "covers": [],
-            "line": 149,
+            "line": 271,
             "name": "test_every_skill_has_at_least_two_scenarios"
           },
           {
             "covers": [],
-            "line": 159,
+            "line": 281,
             "name": "test_the_uncaught_scenarios_are_a_minority"
           },
           {
             "covers": [],
-            "line": 170,
+            "line": 292,
             "name": "test_every_declared_signal_is_one_the_kernel_emits"
           },
           {
             "covers": [],
-            "line": 190,
+            "line": 312,
             "name": "test_a_long_skill_is_rejected"
           },
           {
             "covers": [],
-            "line": 195,
+            "line": 317,
             "name": "test_the_shipped_skills_are_well_under_budget"
           },
           {
             "covers": [],
-            "line": 205,
+            "line": 327,
             "name": "test_a_declared_command_that_is_never_used_is_rejected"
           },
           {
             "covers": [],
-            "line": 212,
+            "line": 334,
             "name": "test_a_command_the_kernel_does_not_have_is_rejected"
           },
           {
             "covers": [],
-            "line": 219,
+            "line": 341,
             "name": "test_every_shipped_requires_kernel_entry_is_real"
           },
           {
             "covers": [],
-            "line": 231,
+            "line": 353,
             "name": "test_shouting_is_rejected"
           },
           {
             "covers": [],
-            "line": 244,
+            "line": 366,
             "name": "test_compulsion_phrases_are_rejected"
           },
           {
             "covers": [],
-            "line": 248,
+            "line": 370,
             "name": "test_the_delta_verbs_are_not_shouting"
           },
           {
             "covers": [],
-            "line": 256,
+            "line": 378,
             "name": "test_compulsion_inside_a_code_fence_is_not_compulsion"
           },
           {
             "covers": [],
-            "line": 266,
+            "line": 388,
             "name": "test_a_skill_with_no_announce_is_rejected"
           },
           {
             "covers": [],
-            "line": 276,
+            "line": 398,
             "name": "test_a_skill_with_no_scenarios_is_a_warning"
           },
           {
             "covers": [],
-            "line": 290,
+            "line": 412,
             "name": "test_a_skill_with_no_frontmatter_is_rejected"
           },
           {
             "covers": [],
-            "line": 294,
+            "line": 416,
             "name": "test_a_name_that_disagrees_with_its_directory_is_rejected"
           },
           {
             "covers": [],
-            "line": 300,
+            "line": 422,
             "name": "test_a_skill_with_no_description_is_rejected"
           },
           {
             "covers": [],
-            "line": 311,
+            "line": 433,
             "name": "test_a_scenario_must_name_a_signal"
           },
           {
             "covers": [],
-            "line": 319,
+            "line": 441,
             "name": "test_an_invented_signal_is_rejected"
           },
           {
             "covers": [],
-            "line": 327,
+            "line": 449,
             "name": "test_a_scenario_for_a_skill_that_does_not_exist_is_rejected"
           },
           {
             "covers": [],
-            "line": 335,
+            "line": 457,
             "name": "test_a_scenario_with_no_body_is_rejected"
           },
           {
             "covers": [],
-            "line": 348,
+            "line": 470,
             "name": "test_skill_list"
           },
           {
             "covers": [],
-            "line": 352,
+            "line": 474,
             "name": "test_skill_show"
           },
           {
             "covers": [],
-            "line": 357,
+            "line": 479,
             "name": "test_skill_show_of_an_unknown_name_lists_what_exists"
           },
           {
             "covers": [],
-            "line": 362,
+            "line": 484,
             "name": "test_check_scope_skills"
           },
           {
             "covers": [],
-            "line": 369,
+            "line": 491,
             "name": "test_a_repository_with_no_skills_is_not_an_error"
           },
           {
             "covers": [],
-            "line": 380,
+            "line": 502,
             "name": "test_the_pressure_runner_says_it_did_nothing_without_a_model"
           },
           {
             "covers": [],
-            "line": 393,
+            "line": 515,
             "name": "test_the_pressure_note_exists_and_says_what_does_not_run"
           },
           {
             "covers": [],
-            "line": 419,
+            "line": 541,
             "name": "test_every_command_a_skill_tells_you_to_run_exists"
           },
           {
             "covers": [],
-            "line": 460,
+            "line": 582,
             "name": "test_a_track_b_change_runs_end_to_end_through_the_skills"
           },
           {
             "covers": [],
-            "line": 540,
+            "line": 662,
             "name": "test_a_project_with_no_skills_gets_the_packaged_set"
           },
           {
             "covers": [],
-            "line": 547,
+            "line": 669,
             "name": "test_a_project_copy_wins_whole"
           },
           {
             "covers": [],
-            "line": 554,
+            "line": 676,
             "name": "test_an_unmodified_copy_needs_no_local_scenarios"
           },
           {
             "covers": [],
-            "line": 566,
+            "line": 688,
             "name": "test_an_edited_copy_owes_its_own_scenarios"
           },
           {
             "covers": [],
-            "line": 580,
+            "line": 702,
             "name": "test_this_repository_is_not_exempt_from_testing_its_own_skills"
           }
         ],
@@ -4251,10 +4281,10 @@
         "untagged": 64
       }
     },
-    "tagged_tests": 22,
-    "total_tests": 792
+    "tagged_tests": 25,
+    "total_tests": 795
   },
-  "generated_from_commit": "63be8556b181d3fb1de654cbfac79392fdbca7e7",
+  "generated_from_commit": "d7302034095a5aed4e7669ede1519144c5e2441e",
   "generator": "forge sync derived",
   "tool": "forge"
 }
