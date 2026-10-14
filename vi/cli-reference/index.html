@@ -1901,7 +1901,7 @@
 
 <h2 id="english-tieng-viet">[ <a href="../../en/cli-reference/">English</a> | 🌐 <strong>Tiếng Việt</strong> | <a href="../../ja/cli-reference/">日本語</a> ]</h2>
 <h1 id="tra-cuu-cau-lenh-cli">Tra cứu câu lệnh CLI</h1>
-<p>Danh mục hướng dẫn đầy đủ cho toàn bộ 11 câu lệnh của Forge CLI.</p>
+<p>Danh mục hướng dẫn đầy đủ cho toàn bộ các câu lệnh của Forge CLI.</p>
 <hr />
 <h2 id="bang-tong-hop-cau-lenh">Bảng tổng hợp câu lệnh</h2>
 <table>
@@ -1916,57 +1916,112 @@
 <tr>
 <td style="text-align: left;"><code>forge init</code></td>
 <td style="text-align: left;">Khởi tạo cấu trúc Forge trong dự án</td>
-<td style="text-align: left;"><code>--repo &lt;path&gt;</code>, <code>--dry-run</code></td>
+<td style="text-align: left;"><code>--repo &lt;path&gt;</code>, <code>--no-skills</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge install</code></td>
+<td style="text-align: left;">Cài đặt bộ 9 kỹ năng cho AI Coding Agent (toàn cục hoặc theo dự án)</td>
+<td style="text-align: left;"><code>--global</code>, <code>--host &lt;claude\|antigravity\|codex\|all&gt;</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge doctor</code></td>
-<td style="text-align: left;">Chẩn đoán môi trường Python, Git, Tree-sitter</td>
-<td style="text-align: left;"><code>--json</code></td>
+<td style="text-align: left;">Chẩn đoán môi trường Python, Git, Tree-sitter và lệnh test/build</td>
+<td style="text-align: left;"><code>--repo &lt;path&gt;</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge status</code></td>
+<td style="text-align: left;">Tóm tắt 1 màn hình: trạng thái kho tri thức, drift và change đang mở</td>
+<td style="text-align: left;"><code>--repo &lt;path&gt;</code>, <code>--json</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge check</code></td>
-<td style="text-align: left;">Kiểm tra toàn diện claim, neo AST và gate</td>
-<td style="text-align: left;"><code>--repo &lt;path&gt;</code>, <code>--scope &lt;all\|claims\|trace&gt;</code></td>
+<td style="text-align: left;">Kiểm tra toàn diện claim (S1–S18), neo AST, trace và luật skills</td>
+<td style="text-align: left;"><code>--repo &lt;path&gt;</code>, <code>--scope &lt;all\|store\|derived\|trace\|change\|skills\|candidates&gt;</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge sync</code></td>
 <td style="text-align: left;">Đồng bộ tầng dữ liệu máy (derived tier)</td>
-<td style="text-align: left;"><code>derived</code>, <code>--repo &lt;path&gt;</code></td>
+<td style="text-align: left;"><code>derived</code>, <code>--only &lt;file&gt;</code>, <code>--amend</code></td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>forge anchor</code></td>
-<td style="text-align: left;">Phân tích và kiểm tra các điểm neo AST</td>
-<td style="text-align: left;"><code>classify &lt;anchor&gt;</code>, <code>find &lt;file&gt;</code></td>
+<td style="text-align: left;"><code>forge bootstrap</code></td>
+<td style="text-align: left;">Tiếp quản dự án có sẵn theo quy trình 3 bước</td>
+<td style="text-align: left;"><code>derive</code>, <code>review</code>, <code>seal</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge claim</code></td>
-<td style="text-align: left;">Liệt kê và kiểm tra trạng thái claim</td>
-<td style="text-align: left;"><code>list</code>, <code>show &lt;id&gt;</code>, <code>stale</code></td>
+<td style="text-align: left;">Tạo mẫu, xem và đóng dấu commit cho claim</td>
+<td style="text-align: left;"><code>new &lt;kind&gt;</code>, <code>show &lt;id&gt;</code>, <code>stamp &lt;id\|--all&gt;</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge change</code></td>
-<td style="text-align: left;">Quản lý vòng đời tính năng</td>
-<td style="text-align: left;"><code>new</code>, <code>list</code>, <code>show</code>, <code>archive</code></td>
+<td style="text-align: left;">Quản lý vòng đời thay đổi / tính năng</td>
+<td style="text-align: left;"><code>new</code>, <code>list</code>, <code>show</code>, <code>track</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge instructions</code></td>
+<td style="text-align: left;">Xem quyền đọc ngữ cảnh và tạo file mẫu cho từng giai đoạn</td>
+<td style="text-align: left;"><code>&lt;artifact&gt;</code>, <code>--change &lt;id&gt;</code>, <code>--write [name]</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge spec</code></td>
+<td style="text-align: left;">Gập đặc tả delta vào kho đặc tả hệ thống</td>
+<td style="text-align: left;"><code>fold</code>, <code>--change &lt;id&gt;</code>, <code>--dry-run</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge gate</code></td>
-<td style="text-align: left;">Đánh giá các cổng kiểm soát</td>
+<td style="text-align: left;">Đánh giá các cổng kiểm soát chuyển pha</td>
 <td style="text-align: left;"><code>&lt;point&gt;</code>, <code>--change &lt;id&gt;</code></td>
 </tr>
 <tr>
+<td style="text-align: left;"><code>forge impact</code></td>
+<td style="text-align: left;">Tính toán bán kính ảnh hưởng (blast radius) và tập claim bị chạm</td>
+<td style="text-align: left;"><code>--change &lt;id&gt;</code>, <code>--base &lt;rev&gt;</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge guard</code></td>
+<td style="text-align: left;">Chặn lệnh nguy hiểm trước khi chạy và kiểm tra phạm vi file (<code>scope</code>) theo task</td>
+<td style="text-align: left;"><code>--cmd &lt;cmd&gt;</code>, <code>--paths &lt;path&gt;...</code>, <code>--change &lt;id&gt;</code></td>
+</tr>
+<tr>
 <td style="text-align: left;"><code>forge verify</code></td>
-<td style="text-align: left;">Chạy bộ test và kiểm tra chạm claim</td>
-<td style="text-align: left;"><code>--change &lt;id&gt;</code>, <code>--fast</code></td>
+<td style="text-align: left;">Chạy bộ test, UI probe và kiểm tra giải trình claim-touch</td>
+<td style="text-align: left;"><code>--change &lt;id&gt;</code>, <code>--sync</code>, <code>--amend</code>, <code>--waive &lt;cond&gt;</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge archive</code></td>
+<td style="text-align: left;">Gập spec delta, restamp claim và lưu trữ change hoàn tất</td>
+<td style="text-align: left;"><code>--change &lt;id&gt;</code>, <code>--amend</code>, <code>--dry-run</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge drift</code></td>
+<td style="text-align: left;">Phát hiện neo AST lỗi thời và quản lý sổ cái drift</td>
+<td style="text-align: left;"><code>--store</code>, <code>--changed</code>, <code>--staged</code>, <code>record</code>, <code>resolve</code>, <code>waive</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge fingerprint</code></td>
+<td style="text-align: left;">In dấu vân tay AST chuẩn hóa của file/symbol</td>
+<td style="text-align: left;"><code>&lt;path&gt;...</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge reconcile</code></td>
-<td style="text-align: left;">Định vị tác giả gây trôi lệch và gợi ý sửa</td>
-<td style="text-align: left;"><code>--repo &lt;path&gt;</code>, <code>--auto-retire</code></td>
+<td style="text-align: left;">Đối soát các commit ngoài luồng gây trôi lệch và mở mục ledger</td>
+<td style="text-align: left;"><code>--since &lt;rev&gt;</code>, <code>--head &lt;rev&gt;</code>, <code>--record</code></td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>forge host</code></td>
-<td style="text-align: left;">Khởi chạy máy chủ giao tiếp MCP hoặc Agent</td>
-<td style="text-align: left;"><code>--port &lt;port&gt;</code></td>
+<td style="text-align: left;"><code>forge hooks</code></td>
+<td style="text-align: left;">Quản lý Git pre-commit hook chặn lỗi store &amp; drift</td>
+<td style="text-align: left;"><code>status</code>, <code>install</code>, <code>uninstall</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge trace</code></td>
+<td style="text-align: left;">Truy vết hai chiều cho mã Claim hoặc Requirement</td>
+<td style="text-align: left;"><code>&lt;id&gt;</code>, <code>--json</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge skill</code></td>
+<td style="text-align: left;">Liệt kê, đọc và xuất bộ kỹ năng AI Agent</td>
+<td style="text-align: left;"><code>list</code>, <code>show &lt;name&gt;</code>, <code>export [--global] [--host &lt;h&gt;]</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge report</code></td>

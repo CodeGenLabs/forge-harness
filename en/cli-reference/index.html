@@ -638,6 +638,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#forge-install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        forge install
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#forge-doctor" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -671,6 +682,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#forge-guard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        forge guard
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#forge-claim" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -682,10 +704,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#forge-change" class="md-nav__link">
+  <a href="#forge-change-forge-archive" class="md-nav__link">
     <span class="md-ellipsis">
       
-        forge change
+        forge change &amp; forge archive
       
     </span>
   </a>
@@ -708,28 +730,6 @@
     <span class="md-ellipsis">
       
         forge verify
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#forge-reconcile" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        forge reconcile
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#forge-report" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        forge report
       
     </span>
   </a>
@@ -1953,6 +1953,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#forge-install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        forge install
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#forge-doctor" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1986,6 +1997,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#forge-guard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        forge guard
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#forge-claim" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1997,10 +2019,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#forge-change" class="md-nav__link">
+  <a href="#forge-change-forge-archive" class="md-nav__link">
     <span class="md-ellipsis">
       
-        forge change
+        forge change &amp; forge archive
       
     </span>
   </a>
@@ -2023,28 +2045,6 @@
     <span class="md-ellipsis">
       
         forge verify
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#forge-reconcile" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        forge reconcile
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#forge-report" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        forge report
       
     </span>
   </a>
@@ -2155,7 +2155,7 @@
 
 <h2 id="english-tieng-viet">[ 🌐 <strong>English</strong> | <a href="../../vi/cli-reference/">Tiếng Việt</a> | <a href="../../ja/cli-reference/">日本語</a> ]</h2>
 <h1 id="cli-reference">CLI Reference</h1>
-<p>Comprehensive documentation for all 11 subcommands available in the <code>forge</code> command-line interface.</p>
+<p>Comprehensive documentation for all subcommands available in the <code>forge</code> command-line interface.</p>
 <hr />
 <h2 id="command-summary">Command Summary</h2>
 <table>
@@ -2170,37 +2170,57 @@
 <tr>
 <td style="text-align: left;"><code>forge init</code></td>
 <td style="text-align: left;">Initialize Forge structure in a project</td>
-<td style="text-align: left;"><code>--repo &lt;path&gt;</code>, <code>--dry-run</code></td>
+<td style="text-align: left;"><code>--repo &lt;path&gt;</code>, <code>--no-skills</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge install</code></td>
+<td style="text-align: left;">Install packaged skills into AI agent hosts</td>
+<td style="text-align: left;"><code>--global</code>, <code>--host &lt;claude\|antigravity\|codex\|all&gt;</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge doctor</code></td>
 <td style="text-align: left;">Diagnose environment and tool dependencies</td>
-<td style="text-align: left;"><code>--json</code></td>
+<td style="text-align: left;"><code>--repo &lt;path&gt;</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge status</code></td>
+<td style="text-align: left;">One-screen summary of store, drift, and active changes</td>
+<td style="text-align: left;"><code>--repo &lt;path&gt;</code>, <code>--json</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge check</code></td>
-<td style="text-align: left;">Validate repository integrity, claims &amp; gates</td>
-<td style="text-align: left;"><code>--repo &lt;path&gt;</code>, <code>--scope &lt;all\|claims\|trace&gt;</code></td>
+<td style="text-align: left;">Validate repository integrity, claims, skills &amp; trace</td>
+<td style="text-align: left;"><code>--repo &lt;path&gt;</code>, <code>--scope &lt;store\|derived\|trace\|change\|skills\|candidates&gt;</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge sync</code></td>
 <td style="text-align: left;">Synchronize derived machine-truth tier</td>
-<td style="text-align: left;"><code>derived</code>, <code>--repo &lt;path&gt;</code></td>
+<td style="text-align: left;"><code>derived</code>, <code>--only &lt;file&gt;</code>, <code>--amend</code></td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>forge anchor</code></td>
-<td style="text-align: left;">Classify and inspect AST code anchors</td>
-<td style="text-align: left;"><code>classify &lt;anchor&gt;</code>, <code>find &lt;file&gt;</code></td>
+<td style="text-align: left;"><code>forge bootstrap</code></td>
+<td style="text-align: left;">3-pass brownfield repository onboarding</td>
+<td style="text-align: left;"><code>derive</code>, <code>review</code>, <code>seal</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge claim</code></td>
 <td style="text-align: left;">Query, scaffold, and stamp claims</td>
-<td style="text-align: left;"><code>new</code>, <code>show &lt;id&gt;</code>, <code>stamp &lt;id&gt;</code></td>
+<td style="text-align: left;"><code>new &lt;kind&gt;</code>, <code>show &lt;id&gt;</code>, <code>stamp &lt;id\|--all&gt;</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge change</code></td>
 <td style="text-align: left;">Manage structured change lifecycle</td>
-<td style="text-align: left;"><code>new</code>, <code>list</code>, <code>show</code>, <code>archive</code></td>
+<td style="text-align: left;"><code>new</code>, <code>list</code>, <code>show</code>, <code>track</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge instructions</code></td>
+<td style="text-align: left;">Resolve a phase artifact's read contract and template</td>
+<td style="text-align: left;"><code>&lt;artifact&gt;</code>, <code>--change &lt;id&gt;</code>, <code>--write [name]</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge spec</code></td>
+<td style="text-align: left;">Fold delta specifications into system store</td>
+<td style="text-align: left;"><code>fold</code>, <code>--change &lt;id&gt;</code>, <code>--dry-run</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge gate</code></td>
@@ -2208,19 +2228,54 @@
 <td style="text-align: left;"><code>&lt;point&gt;</code>, <code>--change &lt;id&gt;</code></td>
 </tr>
 <tr>
+<td style="text-align: left;"><code>forge impact</code></td>
+<td style="text-align: left;">Compute blast radius and claim-touch set</td>
+<td style="text-align: left;"><code>--change &lt;id&gt;</code>, <code>--base &lt;rev&gt;</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge guard</code></td>
+<td style="text-align: left;">Pre-execution command safety and task file-scope guard</td>
+<td style="text-align: left;"><code>--cmd &lt;cmd&gt;</code>, <code>--paths &lt;path&gt;...</code>, <code>--change &lt;id&gt;</code></td>
+</tr>
+<tr>
 <td style="text-align: left;"><code>forge verify</code></td>
-<td style="text-align: left;">Execute tests and claim-touch accounting</td>
-<td style="text-align: left;"><code>--change &lt;id&gt;</code>, <code>--fast</code></td>
+<td style="text-align: left;">Execute tests, UI probe, and claim-touch accounting</td>
+<td style="text-align: left;"><code>--change &lt;id&gt;</code>, <code>--sync</code>, <code>--amend</code>, <code>--waive &lt;cond&gt;</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge archive</code></td>
+<td style="text-align: left;">Fold spec deltas, restamp claims, and archive change</td>
+<td style="text-align: left;"><code>--change &lt;id&gt;</code>, <code>--amend</code>, <code>--dry-run</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge drift</code></td>
+<td style="text-align: left;">Detect AST anchor staleness and manage drift ledger</td>
+<td style="text-align: left;"><code>--store</code>, <code>--changed</code>, <code>--staged</code>, <code>record</code>, <code>resolve</code>, <code>waive</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge fingerprint</code></td>
+<td style="text-align: left;">Print normalized AST fingerprint of a file/symbol</td>
+<td style="text-align: left;"><code>&lt;path&gt;...</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge reconcile</code></td>
-<td style="text-align: left;">Attribute drift and suggest repairs</td>
-<td style="text-align: left;"><code>--repo &lt;path&gt;</code>, <code>--auto-retire</code></td>
+<td style="text-align: left;">Attribute unmanaged drift to commits and open ledger entries</td>
+<td style="text-align: left;"><code>--since &lt;rev&gt;</code>, <code>--head &lt;rev&gt;</code>, <code>--record</code></td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>forge host</code></td>
-<td style="text-align: left;">Run MCP server or agent host adapters</td>
-<td style="text-align: left;"><code>--port &lt;port&gt;</code></td>
+<td style="text-align: left;"><code>forge hooks</code></td>
+<td style="text-align: left;">Manage the pre-commit drift &amp; store check hook</td>
+<td style="text-align: left;"><code>status</code>, <code>install</code>, <code>uninstall</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge trace</code></td>
+<td style="text-align: left;">Bidirectional traceability lookup for any claim/req ID</td>
+<td style="text-align: left;"><code>&lt;id&gt;</code>, <code>--json</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge skill</code></td>
+<td style="text-align: left;">List, inspect, and export packaged AI agent skills</td>
+<td style="text-align: left;"><code>list</code>, <code>show &lt;name&gt;</code>, <code>export [--global] [--host &lt;h&gt;]</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge report</code></td>
@@ -2232,77 +2287,79 @@
 <hr />
 <h2 id="detailed-command-documentation">Detailed Command Documentation</h2>
 <h3 id="forge-init"><code>forge init</code></h3>
-<p>Initializes <code>.forge/config.yaml</code> and standard <code>docs/system/</code> scaffolding.
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>forge<span class="w"> </span>init<span class="w"> </span><span class="o">[</span>--repo<span class="w"> </span>&lt;path&gt;<span class="o">]</span><span class="w"> </span><span class="o">[</span>--dry-run<span class="o">]</span>
+<p>Initializes <code>.forge/config.yaml</code>, workflow schemas, and standard <code>docs/system/</code> scaffolding.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>forge<span class="w"> </span>init<span class="w"> </span><span class="o">[</span>--repo<span class="w"> </span>&lt;path&gt;<span class="o">]</span><span class="w"> </span><span class="o">[</span>--no-skills<span class="o">]</span>
 </span></code></pre></div>
 * <code>--repo</code>: Target directory (defaults to current directory).
-* <code>--dry-run</code>: Print actions without creating files.</p>
+* <code>--no-skills</code>: Skip copying <code>.forge/skills/</code> into the repository (uses packaged or global skills instead).</p>
+<h3 id="forge-install"><code>forge install</code></h3>
+<p>Installs all 9 packaged skills (<code>forge</code>, <code>investigate</code>, <code>specify</code>, <code>plan-tasks</code>, <code>implement</code>, <code>curate-knowledge</code>, <code>bootstrap</code>, <code>interface</code>, <code>ui-ux</code> + companion references and <code>scripts/probe.mjs</code>) for AI coding agents:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Install ONCE globally into ~/.gemini/config/skills, ~/.claude/skills, ~/.codex/AGENTS.md:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>forge<span class="w"> </span>install<span class="w"> </span>--global
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Or install into the current project workspace (.agent/skills, .claude/skills, AGENTS.md):</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>forge<span class="w"> </span>install<span class="w"> </span><span class="o">[</span>--host<span class="w"> </span>&lt;claude<span class="p">|</span>antigravity<span class="p">|</span>codex<span class="p">|</span>all&gt;<span class="o">]</span>
+</span></code></pre></div></p>
 <h3 id="forge-doctor"><code>forge doctor</code></h3>
-<p>Checks Python runtime, Git binary, Tree-sitter parsers, and terminal console compatibility.
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>forge<span class="w"> </span>doctor
+<p>Checks Python runtime, Git binary, Tree-sitter parsers, and declared project commands.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>forge<span class="w"> </span>doctor
 </span></code></pre></div></p>
 <h3 id="forge-check"><code>forge check</code></h3>
-<p>Verifies claim freshness, AST anchor resolution, derived tier freshness, and gate integrity.
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>forge<span class="w"> </span>check<span class="w"> </span><span class="o">[</span>--repo<span class="w"> </span>&lt;path&gt;<span class="o">]</span><span class="w"> </span><span class="o">[</span>--scope<span class="w"> </span>&lt;scope&gt;<span class="o">]</span>
+<p>Verifies claim freshness (S1–S18), AST anchor resolution, derived tier freshness, trace integrity, and skill rules.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>forge<span class="w"> </span>check<span class="w"> </span><span class="o">[</span>--repo<span class="w"> </span>&lt;path&gt;<span class="o">]</span><span class="w"> </span><span class="o">[</span>--scope<span class="w"> </span>&lt;scope&gt;<span class="o">]</span>
 </span></code></pre></div>
 <strong>Exit Codes:</strong>
-* <code>0</code>: All claims fresh, 0 errors.
-* <code>1</code>: Stale claims, broken anchors, or gate violations detected.</p>
+* <code>0</code>: All checks passed, 0 errors.
+* <code>1</code>: Stale claims, broken anchors, or skill/trace violations detected.</p>
 <h3 id="forge-sync-derived"><code>forge sync derived</code></h3>
 <p>Recomputes AST dependencies, test mappings, and inventory from Git HEAD.
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>forge<span class="w"> </span>sync<span class="w"> </span>derived<span class="w"> </span><span class="o">[</span>--repo<span class="w"> </span>&lt;path&gt;<span class="o">]</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>forge<span class="w"> </span>sync<span class="w"> </span>derived<span class="w"> </span><span class="o">[</span>--repo<span class="w"> </span>&lt;path&gt;<span class="o">]</span><span class="w"> </span><span class="o">[</span>--amend<span class="o">]</span>
 </span></code></pre></div></p>
 <blockquote>
 <p>[!IMPORTANT]
-Always commit your source code changes <em>first</em>, then run <code>forge sync derived</code> and commit the updated <code>docs/system/derived/</code> files.</p>
+Always commit your source code changes <em>first</em>, then run <code>forge sync derived</code> and commit (or <code>--amend</code>) the updated <code>docs/system/derived/</code> files.</p>
 </blockquote>
+<h3 id="forge-guard"><code>forge guard</code></h3>
+<p>Checks shell commands for destructive actions or protected branch commits, and checks target file paths against active task <code>[scope: ...]</code> declarations in <code>tasks.md</code>:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>forge<span class="w"> </span>guard<span class="w"> </span>--cmd<span class="w"> </span><span class="s2">"pytest -q"</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>forge<span class="w"> </span>guard<span class="w"> </span>--change<span class="w"> </span><span class="m">1</span><span class="w"> </span>--paths<span class="w"> </span>src/app.py<span class="w"> </span>tests/test_app.py
+</span></code></pre></div></p>
 <h3 id="forge-claim"><code>forge claim</code></h3>
 <p>Scaffolds, inspects, and stamps claims in the system store:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Print a claim template for a given kind</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>forge<span class="w"> </span>claim<span class="w"> </span>new<span class="w"> </span>invariant<span class="w"> </span>--id<span class="w"> </span>INV-refund-cap<span class="w"> </span>--title<span class="w"> </span><span class="s2">"Refund never exceeds capture"</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># View one claim as written</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>forge<span class="w"> </span>claim<span class="w"> </span>show<span class="w"> </span>INV-refund-cap
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># Stamp unstamped anchors of a claim at HEAD (or specified commit)</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>forge<span class="w"> </span>claim<span class="w"> </span>stamp<span class="w"> </span>INV-refund-cap
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>forge<span class="w"> </span>claim<span class="w"> </span>stamp<span class="w"> </span>--all
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Print or append a claim template for a given kind</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>forge<span class="w"> </span>claim<span class="w"> </span>new<span class="w"> </span>invariant<span class="w"> </span>--id<span class="w"> </span>INV-refund-cap<span class="w"> </span>--title<span class="w"> </span><span class="s2">"Refund never exceeds capture"</span><span class="w"> </span>--append
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># View one claim as written</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>forge<span class="w"> </span>claim<span class="w"> </span>show<span class="w"> </span>INV-refund-cap
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1"># Stamp unstamped anchors of a claim at HEAD</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>forge<span class="w"> </span>claim<span class="w"> </span>stamp<span class="w"> </span>INV-refund-cap
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>forge<span class="w"> </span>claim<span class="w"> </span>stamp<span class="w"> </span>--all
 </span></code></pre></div></p>
-<h3 id="forge-change"><code>forge change</code></h3>
+<h3 id="forge-change-forge-archive"><code>forge change</code> &amp; <code>forge archive</code></h3>
 <p>Manages changes in <code>changes/XXXX-name/</code>:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Create a new change workspace</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>forge<span class="w"> </span>change<span class="w"> </span>new<span class="w"> </span><span class="s2">"add-jwt-validation"</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># List active changes</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>forge<span class="w"> </span>change<span class="w"> </span>list
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1"># Show change status and open gates</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>forge<span class="w"> </span>change<span class="w"> </span>show<span class="w"> </span><span class="m">0001</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="c1"># Archive a completed change (a top-level command, not a `change` subcommand)</span>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>forge<span class="w"> </span>archive<span class="w"> </span>--change<span class="w"> </span><span class="m">0001</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Create a new change workspace on a dedicated branch</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>forge<span class="w"> </span>change<span class="w"> </span>new<span class="w"> </span><span class="s2">"add-jwt-validation"</span><span class="w"> </span>--track<span class="w"> </span>B<span class="w"> </span>--branch
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># List active changes</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>forge<span class="w"> </span>change<span class="w"> </span>list
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="c1"># Show change status and open gates</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>forge<span class="w"> </span>change<span class="w"> </span>show<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="c1"># Archive a completed change</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>forge<span class="w"> </span>archive<span class="w"> </span>--change<span class="w"> </span><span class="m">1</span><span class="w"> </span>--amend
 </span></code></pre></div></p>
 <h3 id="forge-gate-checkpoint"><code>forge gate &lt;checkpoint&gt;</code></h3>
 <p>Evaluates whether a change satisfies prerequisites to advance to the next development phase:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>forge<span class="w"> </span>gate<span class="w"> </span>spec:post<span class="w"> </span>--change<span class="w"> </span><span class="m">0001</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>forge<span class="w"> </span>gate<span class="w"> </span>impact:post<span class="w"> </span>--change<span class="w"> </span><span class="m">0001</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>forge<span class="w"> </span>gate<span class="w"> </span>analyze:post<span class="w"> </span>--change<span class="w"> </span><span class="m">0001</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>forge<span class="w"> </span>gate<span class="w"> </span>implement:pre<span class="w"> </span>--change<span class="w"> </span><span class="m">0001</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>forge<span class="w"> </span>gate<span class="w"> </span>spec:post<span class="w"> </span>--change<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>forge<span class="w"> </span>gate<span class="w"> </span>impact:post<span class="w"> </span>--change<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>forge<span class="w"> </span>gate<span class="w"> </span>analyze:post<span class="w"> </span>--change<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>forge<span class="w"> </span>gate<span class="w"> </span>implement:pre<span class="w"> </span>--change<span class="w"> </span><span class="m">1</span>
 </span></code></pre></div></p>
-<p>The points are fixed by the kernel: <code>investigate:pre</code>, <code>spec:post</code>, <code>impact:post</code>, <code>analyze:post</code>, <code>implement:pre</code>,
-<code>implement:task:post</code>, <code>verify:post</code>, <code>sync:pre</code>, <code>converge:post</code> (<code>forge gate --help</code> prints the current list).
-There is no gate after <code>proposal</code> or <code>design</code>: those artifacts are checked by the DAG, not by a gate.</p>
 <h3 id="forge-verify"><code>forge verify</code></h3>
-<p>Runs test commands configured in <code>.forge/config.yaml</code> and reconciles touched claims against git diff:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>forge<span class="w"> </span>verify<span class="w"> </span>--change<span class="w"> </span><span class="m">0001</span>
-</span></code></pre></div></p>
-<h3 id="forge-reconcile"><code>forge reconcile</code></h3>
-<p>Inspects all drift events in <code>docs/system/DRIFT.md</code> and attributes blame/resolution:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>forge<span class="w"> </span>reconcile<span class="w"> </span><span class="o">[</span>--repo<span class="w"> </span>&lt;path&gt;<span class="o">]</span>
-</span></code></pre></div></p>
-<h3 id="forge-report"><code>forge report</code></h3>
-<p>Opens a pre-filled, sanitized issue template in your browser to report a bug or request a feature:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>forge<span class="w"> </span>report<span class="w"> </span><span class="o">[</span>--feature<span class="o">]</span><span class="w"> </span><span class="o">[</span>--no-browser<span class="o">]</span>
+<p>Runs build, lint, typecheck, test, and UI probe commands configured in <code>.forge/config.yaml</code> and reconciles touched claims against git diff:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>forge<span class="w"> </span>verify<span class="w"> </span>--change<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">[</span>--sync<span class="o">]</span><span class="w"> </span><span class="o">[</span>--amend<span class="o">]</span>
 </span></code></pre></div></p>
 <hr />
 <h2 id="privacy-telemetry-policy">🔒 Privacy &amp; Telemetry Policy</h2>

@@ -521,6 +521,30 @@
         ],
         "title": "Companion files travel with their skill"
       },
+      "REQ-skill-global-install": {
+        "anchor_paths": [],
+        "anchors": [],
+        "back_references": [],
+        "candidate": false,
+        "changes": [],
+        "defined_in": "docs/system/specs/skills/spec.md:179",
+        "evidence": [],
+        "governed_by": [],
+        "governs": [],
+        "id": "REQ-skill-global-install",
+        "justifies": [],
+        "kind": "requirement",
+        "provisional": false,
+        "referenced_by_adr": [],
+        "references": [],
+        "since": null,
+        "status": null,
+        "supersedes": null,
+        "tests": [
+          "tests/test_hosts.py::test_forge_install_global_and_init_no_skills"
+        ],
+        "title": "Skills can be installed once globally and omitted from per-project scaffolds"
+      },
       "REQ-skill-implement-autonomous": {
         "anchor_paths": [],
         "anchors": [],
@@ -721,13 +745,13 @@
       "claims": 7,
       "dangling_references": [],
       "decisions": 1,
-      "ids_indexed": 27,
+      "ids_indexed": 28,
       "invariants_without_tests": [],
-      "tests_tagged": 25,
-      "tests_total": 795
+      "tests_tagged": 26,
+      "tests_total": 796
     }
   },
-  "generated_from_commit": "d7302034095a5aed4e7669ede1519144c5e2441e",
+  "generated_from_commit": "bea8bff86df876bfd1b2c36ff1879297d4c97668",
   "generator": "forge sync derived",
   "tool": "forge"
 }

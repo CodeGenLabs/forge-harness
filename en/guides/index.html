@@ -1982,20 +1982,24 @@
 <p>Practical guides for integrating Forge into your engineering workflows, CI/CD pipelines, and AI agent platforms.</p>
 <hr />
 <h2 id="1-working-with-ai-coding-agents">1. Working with AI Coding Agents</h2>
-<p>Forge includes built-in agent <strong>Skills</strong> located in <code>src/forge/_skills/</code>. These skills give AI models like Claude, Gemini, ChatGPT, Cursor, and Antigravity precise operational instructions:</p>
+<p>Forge includes 9 built-in agent <strong>Skills</strong> located in <code>src/forge/_skills/</code>. Install them <strong>once globally</strong> via <code>forge install --global</code> (into <code>~/.gemini/config/skills</code>, <code>~/.claude/skills</code>, <code>~/.codex/AGENTS.md</code>) so every project on your machine has them automatically without per-folder skill copies, or per-repo via <code>forge install</code>:</p>
 <ul>
-<li><code>forge</code>: Orchestrates the overall change lifecycle.</li>
-<li><code>specify</code>: Crafts airtight requirements without leaving boundaries ambiguous.</li>
-<li><code>plan-tasks</code>: Breaks designs into atomic, testable tasks.</li>
-<li><code>implement</code>: Test-driven development with scope enforcement.</li>
-<li><code>curate-knowledge</code>: Discovers candidates and manages drift.</li>
+<li><code>forge</code>: Orchestrates the overall change lifecycle and track routing.</li>
+<li><code>investigate</code>: Reads the codebase and proposes candidate claims before modification.</li>
+<li><code>specify</code>: Crafts delta requirements, scenarios, and Track C design/ADR.</li>
+<li><code>plan-tasks</code>: Breaks designs into atomic, testable tasks discharging <code>REQ-</code> IDs.</li>
+<li><code>implement</code>: Test-driven development with scope and guard enforcement (<code>forge guard</code>).</li>
+<li><code>curate-knowledge</code>: Accounts for touched claims, ratifies candidates, and manages drift.</li>
+<li><code>bootstrap</code>: 3-pass brownfield repository onboarding and claim ratification.</li>
+<li><code>interface</code>: Enforces the <code>ui</code> verification contract, 6-axis theme reactivity, zero-literal <code>i18n</code>, and 3-pillar mobile responsiveness.</li>
+<li><code>ui-ux</code>: Full front-end design &amp; verification studio (<code>design-system</code>, <code>wireframe</code>, <code>mockup</code>, <code>refine-block</code>, <code>critique</code>, <code>polish</code>, <code>document</code>) backed by the 10-source knowledge base and <code>scripts/probe.mjs</code>.</li>
 </ul>
 <h3 id="recommended-system-prompt-addition">Recommended System Prompt Addition</h3>
-<p>Add this snippet to your AI agent instructions (e.g. <code>CLAUDE.md</code>, <code>.cursorrules</code>, or custom agent prompt):
+<p>Add this snippet to your AI agent instructions (e.g. <code>CLAUDE.md</code>, <code>AGENTS.md</code>, or custom agent prompt):
 <div class="language-markdown highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>This repository is governed by Forge Harness.
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">1.</span> Before implementing non-trivial changes, run <span class="sb">`forge change new &lt;name&gt;`</span> and follow the change gates.
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">1.</span> Before implementing non-trivial changes, run <span class="sb">`forge change new "&lt;name&gt;" --track &lt;A|B|C&gt; --branch`</span> and follow the change gates.
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">2.</span> Ensure all constitutional invariants in <span class="sb">`docs/system/pitfalls.md`</span> are respected.
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">3.</span> Before submitting changes, run <span class="sb">`forge check`</span> and ensure 0 errors.
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">3.</span> Before submitting changes, run <span class="sb">`forge verify --change &lt;N&gt;`</span> and <span class="sb">`forge check`</span> and ensure 0 errors.
 </span></code></pre></div></p>
 <hr />
 <h2 id="2-github-actions-cicd-integration">2. GitHub Actions CI/CD Integration</h2>

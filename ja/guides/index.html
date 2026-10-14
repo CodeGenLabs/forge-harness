@@ -1904,7 +1904,7 @@
 <p>実務環境へのForgeの導入方法について解説します。</p>
 <hr />
 <h2 id="1-ai">1. AIエージェントとの協調</h2>
-<p>Forge は <code>src/forge/_skills/</code> に標準スキルを備えており、Claude、Gemini、ChatGPT などのモデルが正確にタスクを実行できるようガイドします。</p>
+<p>Forge は <code>src/forge/_skills/</code> に全9種類の標準スキル（<code>forge</code>, <code>investigate</code>, <code>specify</code>, <code>plan-tasks</code>, <code>implement</code>, <code>curate-knowledge</code>, <code>bootstrap</code>, <code>interface</code>, <code>ui-ux</code>）を備えています。<code>forge install --global</code> を1回実行するだけで、ユーザーのグローバル領域（<code>~/.gemini/config/skills</code>, <code>~/.claude/skills</code>, <code>~/.codex/AGENTS.md</code>）に導入され、各プロジェクトフォルダへスキルファイルをコピーすることなく全プロジェクトで利用できます。</p>
 <hr />
 <h2 id="2-github-actions-ci">2. GitHub Actions CI連携</h2>
 <p><code>.github/workflows/forge.yml</code>:

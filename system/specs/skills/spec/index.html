@@ -1995,6 +1995,45 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#requirement-req-skill-global-install-skills-can-be-installed-once-globally-and-omitted-from-per-project-scaffolds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirement: REQ-skill-global-install - Skills can be installed once globally and omitted from per-project scaffolds
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Requirement: REQ-skill-global-install - Skills can be installed once globally and omitted from per-project scaffolds">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-global-install-writes-packaged-skills-and-companions-to-user-home" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario: Global install writes packaged skills and companions to user home
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-forge-init-no-skills-skips-copying-forgeskills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario: forge init --no-skills skips copying .forge/skills
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2208,6 +2247,25 @@ SHALL enforce:
 <li>When its source is checked with <code>node --check</code> and inspected</li>
 <li>Then it supports <code>--check-theme</code> and <code>--check-i18n</code> CLI flags</li>
 <li>And it detects <code>iosZoomInputs</code>, <code>crushedTextColumns</code>, <code>orphanLastLineWords</code>, <code>mobilePerfIssues</code>, <code>i18nIssues</code>, and <code>unthemedElements</code></li>
+</ul>
+<h3 id="requirement-req-skill-global-install-skills-can-be-installed-once-globally-and-omitted-from-per-project-scaffolds">Requirement: REQ-skill-global-install - Skills can be installed once globally and omitted from per-project scaffolds</h3>
+<p>The system SHALL support <code>forge install --global</code> (and <code>forge skill export --global</code>)
+to write packaged skills and companion files into user-level global host directories
+(<code>~/.gemini/config/skills</code>, <code>~/.claude/skills</code>, <code>~/.codex/AGENTS.md</code>) and SHALL
+support <code>forge init --no-skills</code> to scaffold <code>.forge/</code> and <code>docs/system/</code> without
+copying <code>.forge/skills/</code> into the project directory.</p>
+<h4 id="scenario-global-install-writes-packaged-skills-and-companions-to-user-home">Scenario: Global install writes packaged skills and companions to user home</h4>
+<ul>
+<li>Given a user home directory</li>
+<li>When <code>forge install --global</code> runs</li>
+<li>Then packaged skills and their companion files exist under <code>~/.gemini/config/skills/</code>, <code>~/.claude/skills/</code>, and <code>~/.codex/AGENTS.md</code></li>
+</ul>
+<h4 id="scenario-forge-init-no-skills-skips-copying-forgeskills">Scenario: forge init --no-skills skips copying .forge/skills</h4>
+<ul>
+<li>Given an empty git repository</li>
+<li>When <code>forge init --no-skills</code> runs</li>
+<li>Then <code>.forge/config.yaml</code> and <code>docs/system/OVERVIEW.md</code> are created</li>
+<li>And <code>.forge/skills/</code> is not created, while <code>forge skill list</code> still resolves the packaged skills</li>
 </ul>
 
 

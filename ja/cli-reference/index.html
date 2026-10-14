@@ -1879,62 +1879,130 @@
 
 <h2 id="english-tieng-viet">[ <a href="../../en/cli-reference/">English</a> | <a href="../../vi/cli-reference/">Tiếng Việt</a> | 🌐 <strong>日本語</strong> ]</h2>
 <h1 id="cli">CLI リファレンス</h1>
-<p>Forge が提供する全11のサブコマンドのリファレンスです。</p>
+<p>Forge が提供する全サブコマンドのリファレンスです。</p>
 <table>
 <thead>
 <tr>
 <th style="text-align: left;">コマンド</th>
 <th style="text-align: left;">用途</th>
+<th style="text-align: left;">主なオプション</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;"><code>forge init</code></td>
 <td style="text-align: left;">リポジトリにForgeハーネスを初期化</td>
+<td style="text-align: left;"><code>--repo &lt;path&gt;</code>, <code>--no-skills</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge install</code></td>
+<td style="text-align: left;">AIエージェント向けスキルをインストール（グローバルまたはプロジェクト単位）</td>
+<td style="text-align: left;"><code>--global</code>, <code>--host &lt;claude\|antigravity\|codex\|all&gt;</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge doctor</code></td>
 <td style="text-align: left;">実行環境（Python、Git、Tree-sitter）の診断</td>
+<td style="text-align: left;"><code>--repo &lt;path&gt;</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge status</code></td>
+<td style="text-align: left;">ストア・ドリフト・変更状態の1画面サマリー</td>
+<td style="text-align: left;"><code>--repo &lt;path&gt;</code>, <code>--json</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge check</code></td>
-<td style="text-align: left;">クレームの鮮度と整合性の検証</td>
+<td style="text-align: left;">クレーム（S1〜S18）、ASTアンカー、スキル規約の検証</td>
+<td style="text-align: left;"><code>--repo &lt;path&gt;</code>, <code>--scope &lt;scope&gt;</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge sync</code></td>
 <td style="text-align: left;">マシン導出層（derived tier）の同期</td>
+<td style="text-align: left;"><code>derived</code>, <code>--only &lt;file&gt;</code>, <code>--amend</code></td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>forge anchor</code></td>
-<td style="text-align: left;">ASTアンカーの解析と分類</td>
+<td style="text-align: left;"><code>forge bootstrap</code></td>
+<td style="text-align: left;">既存リポジトリの3パス・オンボーディング</td>
+<td style="text-align: left;"><code>derive</code>, <code>review</code>, <code>seal</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge claim</code></td>
-<td style="text-align: left;">クレームの一覧表示と検証</td>
+<td style="text-align: left;">クレームの作成・表示・スタンプ更新</td>
+<td style="text-align: left;"><code>new &lt;kind&gt;</code>, <code>show &lt;id&gt;</code>, <code>stamp &lt;id\|--all&gt;</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge change</code></td>
 <td style="text-align: left;">変更ワークスペースのライフサイクル管理</td>
+<td style="text-align: left;"><code>new</code>, <code>list</code>, <code>show</code>, <code>track</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge instructions</code></td>
+<td style="text-align: left;">各フェーズ成果物の読み取り契約とテンプレート生成</td>
+<td style="text-align: left;"><code>&lt;artifact&gt;</code>, <code>--change &lt;id&gt;</code>, <code>--write [name]</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge spec</code></td>
+<td style="text-align: left;">仕様デルタをシステム仕様へ統合</td>
+<td style="text-align: left;"><code>fold</code>, <code>--change &lt;id&gt;</code>, <code>--dry-run</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge gate</code></td>
 <td style="text-align: left;">フェーズごとのチェックポイントゲート評価</td>
+<td style="text-align: left;"><code>&lt;point&gt;</code>, <code>--change &lt;id&gt;</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge impact</code></td>
+<td style="text-align: left;">影響範囲（ブラスト半径）と接触クレームの計算</td>
+<td style="text-align: left;"><code>--change &lt;id&gt;</code>, <code>--base &lt;rev&gt;</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge guard</code></td>
+<td style="text-align: left;">実行前コマンド安全性およびタスクスコープ検証ガード</td>
+<td style="text-align: left;"><code>--cmd &lt;cmd&gt;</code>, <code>--paths &lt;path&gt;...</code>, <code>--change &lt;id&gt;</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge verify</code></td>
-<td style="text-align: left;">テスト実行とクレーム影響範囲の照合</td>
+<td style="text-align: left;">テスト実行・UIプローブ・クレーム影響範囲の照合</td>
+<td style="text-align: left;"><code>--change &lt;id&gt;</code>, <code>--sync</code>, <code>--amend</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge archive</code></td>
+<td style="text-align: left;">仕様デルタ統合・クレーム再スタンプ・変更のアーカイブ</td>
+<td style="text-align: left;"><code>--change &lt;id&gt;</code>, <code>--amend</code>, <code>--dry-run</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge drift</code></td>
+<td style="text-align: left;">ASTアンカー陳腐化検出とドリフト台帳管理</td>
+<td style="text-align: left;"><code>--store</code>, <code>--changed</code>, <code>--staged</code>, <code>record</code>, <code>resolve</code>, <code>waive</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge fingerprint</code></td>
+<td style="text-align: left;">正規化ASTフィンガープリントの出力</td>
+<td style="text-align: left;"><code>&lt;path&gt;...</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge reconcile</code></td>
-<td style="text-align: left;">ドリフトの発生原因を特定して修正支援</td>
+<td style="text-align: left;">管理外コミットのドリフト原因特定と台帳記録</td>
+<td style="text-align: left;"><code>--since &lt;rev&gt;</code>, <code>--head &lt;rev&gt;</code>, <code>--record</code></td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>forge host</code></td>
-<td style="text-align: left;">MCPサーバーまたはエージェントアダプターの起動</td>
+<td style="text-align: left;"><code>forge hooks</code></td>
+<td style="text-align: left;">Git pre-commit フックの管理</td>
+<td style="text-align: left;"><code>status</code>, <code>install</code>, <code>uninstall</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge trace</code></td>
+<td style="text-align: left;">クレームID・要件IDの双方向トレーサビリティ検索</td>
+<td style="text-align: left;"><code>&lt;id&gt;</code>, <code>--json</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forge skill</code></td>
+<td style="text-align: left;">標準AIスキルの一覧・表示・エクスポート</td>
+<td style="text-align: left;"><code>list</code>, <code>show &lt;name&gt;</code>, <code>export [--global] [--host &lt;h&gt;]</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>forge report</code></td>
 <td style="text-align: left;">不具合報告や機能提案（個人情報匿名化済み）</td>
+<td style="text-align: left;"><code>--feature</code>, <code>--no-browser</code></td>
 </tr>
 </tbody>
 </table>

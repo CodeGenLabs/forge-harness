@@ -1904,12 +1904,16 @@
 <p>Hướng dẫn tích hợp Forge vào quy trình phát triển thực tế, CI/CD và AI Agent.</p>
 <hr />
 <h2 id="1-tich-hop-ai-coding-agent">1. Tích hợp AI Coding Agent</h2>
-<p>Forge tích hợp sẵn bộ kỹ năng Agent Skill tại <code>src/forge/_skills/</code>:
-* <code>forge</code>: Điều phối toàn bộ quy trình thay đổi.
-* <code>specify</code>: Định nghĩa yêu cầu chính xác, không mập mờ ranh giới.
-* <code>plan-tasks</code>: Lập kế hoạch công việc theo từng bước kiểm thử được.
-* <code>implement</code>: Triển khai code theo TDD và đúng phạm vi quy định.
-* <code>curate-knowledge</code>: Khám phá các cạm bẫy mới và bảo trì tri thức.</p>
+<p>Forge tích hợp sẵn bộ 9 kỹ năng Agent Skill tại <code>src/forge/_skills/</code>. Bạn chỉ cần chạy <code>forge install --global</code> <strong>1 lần duy nhất</strong> (cài vào <code>~/.gemini/config/skills</code>, <code>~/.claude/skills</code>, <code>~/.codex/AGENTS.md</code>) để sử dụng cho mọi dự án mà không cần chép file skill vào từng thư mục:
+* <code>forge</code>: Điều phối toàn bộ quy trình thay đổi và định tuyến Track.
+* <code>investigate</code>: Khảo sát codebase và đề xuất candidate claims trước khi sửa code.
+* <code>specify</code>: Định nghĩa yêu cầu delta, kịch bản kiểm thử và thiết kế/ADR (Track C).
+* <code>plan-tasks</code>: Lập kế hoạch công việc theo từng bước kiểm thử được gắn mã <code>REQ-</code>.
+* <code>implement</code>: Triển khai code theo TDD và đúng phạm vi quy định (<code>forge guard</code>).
+* <code>curate-knowledge</code>: Giải trình claim-touch, phê chuẩn candidate và bảo trì tri thức.
+* <code>bootstrap</code>: Tiếp quản codebase có sẵn qua quy trình 3 bước.
+* <code>interface</code>: Ràng buộc hợp đồng giao diện (<code>commands.ui</code>), 6 trục Theme động, đa ngôn ngữ <code>i18n</code> không hardcode và 3 trụ cột tối ưu Mobile (<code>320px-375px</code>).
+* <code>ui-ux</code>: Quy trình thiết kế &amp; kiểm định UI/UX (<code>design-system</code>, <code>wireframe</code>, <code>mockup</code>, <code>refine-block</code>, <code>critique</code>, <code>polish</code>, <code>document</code>) kèm kho tri thức 10 nguồn và <code>scripts/probe.mjs</code>.</p>
 <hr />
 <h2 id="2-cau-hinh-cicd-tren-github-actions">2. Cấu hình CI/CD trên GitHub Actions</h2>
 <p>Tạo file <code>.github/workflows/forge.yml</code>:

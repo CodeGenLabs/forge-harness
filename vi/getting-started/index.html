@@ -2034,32 +2034,39 @@
 <hr />
 <h2 id="cac-phuong-phap-cai-at">Các phương pháp cài đặt</h2>
 <h3 id="cach-1-cai-at-toan-cuc-qua-uv-tool-hoac-pipx-khuyen-nghi">Cách 1: Cài đặt toàn cục qua <code>uv tool</code> hoặc <code>pipx</code> (Khuyến nghị)</h3>
+<p>Chạy kèm <code>forge install --global</code> một lần duy nhất để cài toàn bộ 9 kỹ năng vào thư mục người dùng (<code>~/.gemini/config/skills</code>, <code>~/.claude/skills</code>, <code>~/.codex/AGENTS.md</code>), không cần chép file skill vào từng dự án:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Cài đặt bằng uv (cực nhanh):</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>uv<span class="w"> </span>tool<span class="w"> </span>install<span class="w"> </span>git+https://github.com/CodeGenLabs/forge-harness.git
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Hoặc sử dụng pipx:</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>pipx<span class="w"> </span>install<span class="w"> </span>git+https://github.com/CodeGenLabs/forge-harness.git
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>pipx<span class="w"> </span>ensurepath
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>forge<span class="w"> </span>install<span class="w"> </span>--global
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># Hoặc sử dụng pipx:</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>pipx<span class="w"> </span>install<span class="w"> </span>git+https://github.com/CodeGenLabs/forge-harness.git
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>pipx<span class="w"> </span>ensurepath
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>forge<span class="w"> </span>install<span class="w"> </span>--global
 </span></code></pre></div>
 <h3 id="cach-2-su-dung-script-cai-at-tu-ong-1-click">Cách 2: Sử dụng Script cài đặt tự động 1-Click</h3>
-<p>Nếu bạn đã clone mã nguồn về máy:</p>
+<p>Tự động cài <code>forge</code> CLI, cấu hình <code>PATH</code> và chạy <code>forge install --global</code>:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Windows (PowerShell)</label><label for="__tabbed_1_2">Linux / macOS (Bash)</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">://</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">CodeGenLabs</span><span class="p">/</span><span class="n">forge-harness</span><span class="p">.</span><span class="n">git</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">cd </span><span class="n">forge-harness</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">powershell</span> <span class="n">-ExecutionPolicy</span> <span class="n">Bypass</span> <span class="o">-File</span> <span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">install</span><span class="p">.</span><span class="n">ps1</span>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c"># Chạy trực tiếp 1 dòng:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">irm </span><span class="n">https</span><span class="p">://</span><span class="n">raw</span><span class="p">.</span><span class="n">githubusercontent</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">CodeGenLabs</span><span class="p">/</span><span class="n">forge-harness</span><span class="p">/</span><span class="n">main</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">install</span><span class="p">.</span><span class="n">ps1</span> <span class="p">|</span> <span class="nb">iex</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c"># Hoặc từ thư mục đã clone:</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">powershell</span> <span class="n">-ExecutionPolicy</span> <span class="n">Bypass</span> <span class="o">-File</span> <span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">install</span><span class="p">.</span><span class="n">ps1</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/CodeGenLabs/forge-harness.git
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">cd</span><span class="w"> </span>forge-harness
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>bash<span class="w"> </span>./scripts/install.sh
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Chạy trực tiếp 1 dòng:</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.githubusercontent.com/CodeGenLabs/forge-harness/main/scripts/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Hoặc từ thư mục đã clone:</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>bash<span class="w"> </span>./scripts/install.sh
 </span></code></pre></div>
 </div>
 </div>
 </div>
-<p>Script sẽ tự động tạo môi trường ảo riêng biệt tại <code>~/.forge-harness/venv</code>, tạo shim vào <code>~/.local/bin</code> và đăng ký vĩnh viễn vào biến môi trường <strong>User PATH</strong>.</p>
+<p>Script sẽ tự động tạo môi trường ảo riêng biệt tại <code>~/.forge-harness/venv</code>, tạo shim vào <code>~/.local/bin</code>, đăng ký vĩnh viễn vào <strong>User PATH</strong> và cài đặt toàn bộ 9 skills ở cấp global.</p>
 <h3 id="cach-3-cai-at-phat-trien-local-editable">Cách 3: Cài đặt phát triển (Local Editable)</h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/CodeGenLabs/forge-harness.git
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">cd</span><span class="w"> </span>forge-harness
@@ -2085,9 +2092,9 @@ Kết quả hiển thị:
 </span></code></pre></div></p>
 <hr />
 <h2 id="khoi-tao-tren-mot-repository-bat-ky">Khởi tạo trên một Repository bất kỳ</h2>
-<p>Di chuyển đến repository dự án của bạn và chạy:
+<p>Di chuyển đến repository dự án của bạn và chạy <code>forge init --no-skills</code> (hoặc <code>forge init</code> nếu muốn chép bản sao <code>.forge/skills/</code> vào repo):
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">cd</span><span class="w"> </span>/path/to/my-project
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>forge<span class="w"> </span>init
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>forge<span class="w"> </span>init<span class="w"> </span>--no-skills
 </span></code></pre></div></p>
 <p>Thao tác này sẽ thiết lập cấu trúc harness chuẩn:
 <div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>my-project/
