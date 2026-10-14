@@ -42,9 +42,7 @@
         ],
         "back_references": [],
         "candidate": false,
-        "changes": [
-          "0001-drift-reads-the-claim-store"
-        ],
+        "changes": [],
         "defined_in": "docs/system/domain.md:17",
         "evidence": [],
         "governed_by": [],
@@ -72,9 +70,7 @@
         ],
         "back_references": [],
         "candidate": false,
-        "changes": [
-          "0001-drift-reads-the-claim-store"
-        ],
+        "changes": [],
         "defined_in": "docs/system/domain.md:3",
         "evidence": [],
         "governed_by": [],
@@ -160,9 +156,7 @@
         ],
         "back_references": [],
         "candidate": false,
-        "changes": [
-          "0001-drift-reads-the-claim-store"
-        ],
+        "changes": [],
         "defined_in": "docs/system/domain.md:33",
         "evidence": [
           "test:tests/test_deps.py::test_regeneration_is_a_no_op"
@@ -190,14 +184,15 @@
         "anchors": [
           "src/forge/bootstrap.py#_bullets@cd62b56feb"
         ],
-        "back_references": [],
-        "candidate": false,
-        "changes": [
-          "0001-drift-reads-the-claim-store"
+        "back_references": [
+          "src/forge/change.py:246"
         ],
-        "defined_in": "docs/system/pitfalls.md:61",
+        "candidate": false,
+        "changes": [],
+        "defined_in": "docs/system/pitfalls.md:55",
         "evidence": [
-          "test:tests/test_bootstrap.py::test_a_wrapped_question_is_not_truncated"
+          "test:tests/test_bootstrap.py::test_a_wrapped_question_is_not_truncated",
+          "test:tests/test_lifecycle_repairs.py::test_a_wrapped_task_keeps_its_continuation"
         ],
         "governed_by": [],
         "governs": [],
@@ -222,9 +217,7 @@
         ],
         "back_references": [],
         "candidate": false,
-        "changes": [
-          "0001-drift-reads-the-claim-store"
-        ],
+        "changes": [],
         "defined_in": "docs/system/pitfalls.md:3",
         "evidence": [
           "test:tests/test_derive.py::test_the_derived_tier_does_not_describe_itself",
@@ -255,9 +248,7 @@
         ],
         "back_references": [],
         "candidate": false,
-        "changes": [
-          "0001-drift-reads-the-claim-store"
-        ],
+        "changes": [],
         "defined_in": "docs/system/pitfalls.md:38",
         "evidence": [
           "test:tests/test_spec.py::test_markdown_bullets_are_not_diff_markers"
@@ -283,13 +274,11 @@
           "src/forge/impact.py"
         ],
         "anchors": [
-          "src/forge/impact.py@00ac35f233"
+          "src/forge/impact.py@1611053ed7"
         ],
         "back_references": [],
         "candidate": false,
-        "changes": [
-          "0001-drift-reads-the-claim-store"
-        ],
+        "changes": [],
         "defined_in": "docs/system/pitfalls.md:21",
         "evidence": [
           "test:tests/test_impact.py::test_the_reason_never_swallows_the_next_line"
@@ -315,23 +304,23 @@
         "anchors": [],
         "back_references": [],
         "candidate": false,
-        "changes": [
-          "0001-drift-reads-the-claim-store"
-        ],
-        "defined_in": "changes/0001-drift-reads-the-claim-store/spec/drift.md:44",
+        "changes": [],
+        "defined_in": "docs/system/specs/drift/spec.md:41",
         "evidence": [],
         "governed_by": [],
         "governs": [],
         "id": "REQ-drift-changed-only",
         "justifies": [],
         "kind": "requirement",
-        "provisional": true,
+        "provisional": false,
         "referenced_by_adr": [],
         "references": [],
         "since": null,
         "status": null,
         "supersedes": null,
-        "tests": [],
+        "tests": [
+          "tests/test_anchor_store.py::test_the_filter_keeps_claims_anchoring_a_changed_file"
+        ],
         "title": "Drift can be narrowed to the current diff"
       },
       "REQ-drift-never-rewrites": {
@@ -339,23 +328,23 @@
         "anchors": [],
         "back_references": [],
         "candidate": false,
-        "changes": [
-          "0001-drift-reads-the-claim-store"
-        ],
-        "defined_in": "changes/0001-drift-reads-the-claim-store/spec/drift.md:63",
+        "changes": [],
+        "defined_in": "docs/system/specs/drift/spec.md:59",
         "evidence": [],
         "governed_by": [],
         "governs": [],
         "id": "REQ-drift-never-rewrites",
         "justifies": [],
         "kind": "requirement",
-        "provisional": true,
+        "provisional": false,
         "referenced_by_adr": [],
         "references": [],
         "since": null,
         "status": null,
         "supersedes": null,
-        "tests": [],
+        "tests": [
+          "tests/test_anchor_store.py::test_a_scan_over_a_stale_store_writes_nothing"
+        ],
         "title": "A drift scan never edits a claim"
       },
       "REQ-drift-store-scan": {
@@ -363,41 +352,89 @@
         "anchors": [],
         "back_references": [],
         "candidate": false,
-        "changes": [
-          "0001-drift-reads-the-claim-store"
-        ],
-        "defined_in": "changes/0001-drift-reads-the-claim-store/spec/drift.md:11",
+        "changes": [],
+        "defined_in": "docs/system/specs/drift/spec.md:9",
         "evidence": [],
         "governed_by": [],
         "governs": [],
         "id": "REQ-drift-store-scan",
         "justifies": [],
         "kind": "requirement",
-        "provisional": true,
+        "provisional": false,
         "referenced_by_adr": [],
         "references": [],
         "since": null,
         "status": null,
         "supersedes": null,
-        "tests": [],
+        "tests": [
+          "tests/test_anchor_store.py::test_a_fresh_store_reports_every_claim_fresh"
+        ],
         "title": "Drift can be asked of the whole claim store"
+      },
+      "REQ-guard-command-safety": {
+        "anchor_paths": [],
+        "anchors": [],
+        "back_references": [],
+        "candidate": false,
+        "changes": [],
+        "defined_in": "docs/system/specs/guard/spec.md:7",
+        "evidence": [],
+        "governed_by": [],
+        "governs": [],
+        "id": "REQ-guard-command-safety",
+        "justifies": [],
+        "kind": "requirement",
+        "provisional": false,
+        "referenced_by_adr": [],
+        "references": [],
+        "since": null,
+        "status": null,
+        "supersedes": null,
+        "tests": [
+          "tests/test_guard.py::test_commit_on_protected_main_branch_is_blocked",
+          "tests/test_guard.py::test_destructive_git_and_fs_commands_are_blocked",
+          "tests/test_guard.py::test_safe_commands_pass"
+        ],
+        "title": "Pre-execution guard blocks destructive commands and protected branch commits"
+      },
+      "REQ-guard-task-scope": {
+        "anchor_paths": [],
+        "anchors": [],
+        "back_references": [],
+        "candidate": false,
+        "changes": [],
+        "defined_in": "docs/system/specs/guard/spec.md:26",
+        "evidence": [],
+        "governed_by": [],
+        "governs": [],
+        "id": "REQ-guard-task-scope",
+        "justifies": [],
+        "kind": "requirement",
+        "provisional": false,
+        "referenced_by_adr": [],
+        "references": [],
+        "since": null,
+        "status": null,
+        "supersedes": null,
+        "tests": [
+          "tests/test_guard.py::test_path_guard_enforces_declared_task_scopes"
+        ],
+        "title": "Path guard enforces declared task file scopes"
       },
       "REQ-host-antigravity-rules": {
         "anchor_paths": [],
         "anchors": [],
         "back_references": [],
         "candidate": false,
-        "changes": [
-          "0002-autonomous-unified-forge-workflow"
-        ],
-        "defined_in": "changes/0002-autonomous-unified-forge-workflow/spec/workflow.md:13",
+        "changes": [],
+        "defined_in": "docs/system/specs/workflow/spec.md:11",
         "evidence": [],
         "governed_by": [],
         "governs": [],
         "id": "REQ-host-antigravity-rules",
         "justifies": [],
         "kind": "requirement",
-        "provisional": true,
+        "provisional": false,
         "referenced_by_adr": [],
         "references": [],
         "since": null,
@@ -408,22 +445,44 @@
         ],
         "title": "Antigravity host export installs autonomous operating rules"
       },
+      "REQ-impact-track-b-inline": {
+        "anchor_paths": [],
+        "anchors": [],
+        "back_references": [],
+        "candidate": false,
+        "changes": [],
+        "defined_in": "docs/system/specs/guard/spec.md:50",
+        "evidence": [],
+        "governed_by": [],
+        "governs": [],
+        "id": "REQ-impact-track-b-inline",
+        "justifies": [],
+        "kind": "requirement",
+        "provisional": false,
+        "referenced_by_adr": [],
+        "references": [],
+        "since": null,
+        "status": null,
+        "supersedes": null,
+        "tests": [
+          "tests/test_impact.py::test_track_b_change_reads_claims_touched_from_proposal_md"
+        ],
+        "title": "Track B changes can account for touched claims inline in proposal.md"
+      },
       "REQ-interface-points-to-ui-ux": {
         "anchor_paths": [],
         "anchors": [],
         "back_references": [],
         "candidate": false,
-        "changes": [
-          "0003-ship-ui-ux-design-skill-with-companion-files"
-        ],
-        "defined_in": "changes/0003-ship-ui-ux-design-skill-with-companion-files/spec/skills.md:96",
+        "changes": [],
+        "defined_in": "docs/system/specs/skills/spec.md:91",
         "evidence": [],
         "governed_by": [],
         "governs": [],
         "id": "REQ-interface-points-to-ui-ux",
         "justifies": [],
         "kind": "requirement",
-        "provisional": true,
+        "provisional": false,
         "referenced_by_adr": [],
         "references": [],
         "since": null,
@@ -439,17 +498,15 @@
         "anchors": [],
         "back_references": [],
         "candidate": false,
-        "changes": [
-          "0003-ship-ui-ux-design-skill-with-companion-files"
-        ],
-        "defined_in": "changes/0003-ship-ui-ux-design-skill-with-companion-files/spec/skills.md:12",
+        "changes": [],
+        "defined_in": "docs/system/specs/skills/spec.md:10",
         "evidence": [],
         "governed_by": [],
         "governs": [],
         "id": "REQ-skill-companions-ship",
         "justifies": [],
         "kind": "requirement",
-        "provisional": true,
+        "provisional": false,
         "referenced_by_adr": [],
         "references": [],
         "since": null,
@@ -469,17 +526,15 @@
         "anchors": [],
         "back_references": [],
         "candidate": false,
-        "changes": [
-          "0002-autonomous-unified-forge-workflow"
-        ],
-        "defined_in": "changes/0002-autonomous-unified-forge-workflow/spec/workflow.md:51",
+        "changes": [],
+        "defined_in": "docs/system/specs/workflow/spec.md:47",
         "evidence": [],
         "governed_by": [],
         "governs": [],
         "id": "REQ-skill-implement-autonomous",
         "justifies": [],
         "kind": "requirement",
-        "provisional": true,
+        "provisional": false,
         "referenced_by_adr": [],
         "references": [],
         "since": null,
@@ -495,17 +550,15 @@
         "anchors": [],
         "back_references": [],
         "candidate": false,
-        "changes": [
-          "0003-ship-ui-ux-design-skill-with-companion-files"
-        ],
-        "defined_in": "changes/0003-ship-ui-ux-design-skill-with-companion-files/spec/skills.md:50",
+        "changes": [],
+        "defined_in": "docs/system/specs/skills/spec.md:47",
         "evidence": [],
         "governed_by": [],
         "governs": [],
         "id": "REQ-skill-reference-resolves",
         "justifies": [],
         "kind": "requirement",
-        "provisional": true,
+        "provisional": false,
         "referenced_by_adr": [],
         "references": [],
         "since": null,
@@ -523,17 +576,15 @@
         "anchors": [],
         "back_references": [],
         "candidate": false,
-        "changes": [
-          "0002-autonomous-unified-forge-workflow"
-        ],
-        "defined_in": "changes/0002-autonomous-unified-forge-workflow/spec/workflow.md:36",
+        "changes": [],
+        "defined_in": "docs/system/specs/workflow/spec.md:33",
         "evidence": [],
         "governed_by": [],
         "governs": [],
         "id": "REQ-skill-router-batch",
         "justifies": [],
         "kind": "requirement",
-        "provisional": true,
+        "provisional": false,
         "referenced_by_adr": [],
         "references": [],
         "since": null,
@@ -549,17 +600,15 @@
         "anchors": [],
         "back_references": [],
         "candidate": false,
-        "changes": [
-          "0003-ship-ui-ux-design-skill-with-companion-files"
-        ],
-        "defined_in": "changes/0003-ship-ui-ux-design-skill-with-companion-files/spec/skills.md:69",
+        "changes": [],
+        "defined_in": "docs/system/specs/skills/spec.md:65",
         "evidence": [],
         "governed_by": [],
         "governs": [],
         "id": "REQ-ui-ux-skill",
         "justifies": [],
         "kind": "requirement",
-        "provisional": true,
+        "provisional": false,
         "referenced_by_adr": [],
         "references": [],
         "since": null,
@@ -569,6 +618,30 @@
           "tests/test_skills.py::test_ui_ux_skill_properties"
         ],
         "title": "forge ships a ui-ux design procedure"
+      },
+      "REQ-verify-parallel-commands": {
+        "anchor_paths": [],
+        "anchors": [],
+        "back_references": [],
+        "candidate": false,
+        "changes": [],
+        "defined_in": "docs/system/specs/guard/spec.md:41",
+        "evidence": [],
+        "governed_by": [],
+        "governs": [],
+        "id": "REQ-verify-parallel-commands",
+        "justifies": [],
+        "kind": "requirement",
+        "provisional": false,
+        "referenced_by_adr": [],
+        "references": [],
+        "since": null,
+        "status": null,
+        "supersedes": null,
+        "tests": [
+          "tests/test_lifecycle.py::test_verify_runs_commands_and_records_duration_ms"
+        ],
+        "title": "Verification runs independent commands concurrently and records duration"
       }
     },
     "summary": {
@@ -576,13 +649,13 @@
       "claims": 7,
       "dangling_references": [],
       "decisions": 1,
-      "ids_indexed": 20,
+      "ids_indexed": 24,
       "invariants_without_tests": [],
-      "tests_tagged": 13,
-      "tests_total": 784
+      "tests_tagged": 22,
+      "tests_total": 792
     }
   },
-  "generated_from_commit": "67c6e0832a5437be1666ba058b1fbb06cbe3fd43",
+  "generated_from_commit": "d60c5cb1313ba541f704547c6b8ad9074bc594a7",
   "generator": "forge sync derived",
   "tool": "forge"
 }

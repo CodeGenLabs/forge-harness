@@ -1700,18 +1700,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#uncertain" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Uncertain
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Uncertain">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#pit-bullet-continuation-lines-a-wrapped-bullet-is-one-item-not-one-line" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1721,9 +1709,15 @@
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#uncertain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Uncertain
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1787,10 +1781,10 @@ evidence-from: two corrections recorded in SYSTEM_KNOWLEDGE.md section 2.3.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>kind:     pitfall
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>status:   asserted
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>truth-source: decision
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>anchors:  ["src/forge/impact.py@00ac35f233"]
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>anchors:  ["src/forge/impact.py@1611053ed7"]
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>evidence:
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  - test: tests/test_impact.py::test_the_reason_never_swallows_the_next_line
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>reviewed: 2026-09-12
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>reviewed: 2026-10-14
 </span></code></pre></div>
 <p>Using <code>\s*</code> between a captured id and its trailing text swallows the
 following line, so "you gave no reason" silently became "the next heading is
@@ -1809,12 +1803,6 @@ evidence-from: the bug found by the claim-touch reason test.</p>
 diff-fragment check on <code>^[+-]</code> rejects every correct MODIFIED block. Key on
 <code>+</code> and hunk headers instead. evidence-from: the check firing on its own
 fixture during M3.</p>
-<h2 id="uncertain">Uncertain</h2>
-<ul>
-<li>Are there pitfalls from using the harness, as opposed to from building it?
-  Every candidate here was earned while writing the tool, which is not the
-  same population as using it.</li>
-</ul>
 <h3 id="pit-bullet-continuation-lines-a-wrapped-bullet-is-one-item-not-one-line">PIT-bullet-continuation-lines - A wrapped bullet is one item, not one line</h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kind:     pitfall
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>status:   asserted
@@ -1822,7 +1810,8 @@ fixture during M3.</p>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>anchors:  ["src/forge/bootstrap.py#_bullets@cd62b56feb"]
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>evidence:
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  - test: tests/test_bootstrap.py::test_a_wrapped_question_is_not_truncated
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>reviewed: 2026-09-11
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  - test: tests/test_lifecycle_repairs.py::test_a_wrapped_task_keeps_its_continuation
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>reviewed: 2026-10-14
 </span></code></pre></div>
 <p>Markdown authors wrap long bullets. A parser that matches <code>^[-*] (.*)$</code> keeps the
 first physical line and silently discards the rest, so an item reads as a shorter,
@@ -1830,10 +1819,17 @@ different item - never as an error. This has now been hit twice in this kernel, 
 two unrelated parsers: <code>## Uncertain</code> questions were truncated at their first line
 during M5, and <code>tasks.md</code> entries lose any <code>REQ-</code> id written on a continuation line,
 which makes <code>trace.requirement_task_coverage</code> block with a page of errors that are
-all wrong. <code>_bullets</code> is the join; <code>Change.tasks()</code> has not adopted it.</p>
+all wrong. Both <code>bootstrap.py#_bullets</code> and <code>Change.tasks()</code> now join indented
+continuation lines before matching.</p>
 <p>The second occurrence is the reason this is written down. The first was found,
 fixed, and never recorded, so nothing stopped the same line-based match being
 written again three days later in a different file.</p>
+<h2 id="uncertain">Uncertain</h2>
+<ul>
+<li>Are there pitfalls from using the harness, as opposed to from building it?
+  Every candidate here was earned while writing the tool, which is not the
+  same population as using it.</li>
+</ul>
 
 
 

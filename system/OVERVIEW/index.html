@@ -1736,8 +1736,12 @@ below are derived and true; the <em>purpose</em> is not something a scan can
 know, and the first paragraph is the one a human has to replace.</p>
 </blockquote>
 <h2 id="what-this-system-is-for">What this system is for</h2>
-<p>Unwritten. One paragraph: who uses this, and what would break for them
-if it stopped.</p>
+<p>Software engineers and coding agents working in long-lived repositories use
+Forge to keep system knowledge, capability specifications, and code changes
+mechanically synchronized. Without it, architectural claims and pitfalls
+silently rot as the code beneath them moves, agents optimise for passing
+tests while breaking unrecorded invariants, and reviewers lose a deterministic
+account of which system guarantees a diff reaches.</p>
 <h2 id="shape">Shape</h2>
 <ul>
 <li>97 files the harness describes, mostly python (41 files), markdown (46 files), json (6 files)</li>

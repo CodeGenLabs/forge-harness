@@ -2,8 +2,28 @@
   "$schema": "forge/derived/v1",
   "data": {
     "covers_index": {
+      "REQ-drift-changed-only": [
+        "tests/test_anchor_store.py::test_the_filter_keeps_claims_anchoring_a_changed_file"
+      ],
+      "REQ-drift-never-rewrites": [
+        "tests/test_anchor_store.py::test_a_scan_over_a_stale_store_writes_nothing"
+      ],
+      "REQ-drift-store-scan": [
+        "tests/test_anchor_store.py::test_a_fresh_store_reports_every_claim_fresh"
+      ],
+      "REQ-guard-command-safety": [
+        "tests/test_guard.py::test_commit_on_protected_main_branch_is_blocked",
+        "tests/test_guard.py::test_destructive_git_and_fs_commands_are_blocked",
+        "tests/test_guard.py::test_safe_commands_pass"
+      ],
+      "REQ-guard-task-scope": [
+        "tests/test_guard.py::test_path_guard_enforces_declared_task_scopes"
+      ],
       "REQ-host-antigravity-rules": [
         "tests/test_hosts.py::test_antigravity_host_writes_rules"
+      ],
+      "REQ-impact-track-b-inline": [
+        "tests/test_impact.py::test_track_b_change_reads_claims_touched_from_proposal_md"
       ],
       "REQ-interface-points-to-ui-ux": [
         "tests/test_skills.py::test_interface_skill_points_to_ui_ux_and_probe"
@@ -28,6 +48,9 @@
       ],
       "REQ-ui-ux-skill": [
         "tests/test_skills.py::test_ui_ux_skill_properties"
+      ],
+      "REQ-verify-parallel-commands": [
+        "tests/test_lifecycle.py::test_verify_runs_commands_and_records_duration_ms"
       ]
     },
     "files": {
@@ -212,67 +235,73 @@
         "language": "python",
         "tests": [
           {
-            "covers": [],
-            "line": 43,
+            "covers": [
+              "REQ-drift-store-scan"
+            ],
+            "line": 45,
             "name": "test_a_fresh_store_reports_every_claim_fresh"
           },
           {
             "covers": [],
-            "line": 53,
+            "line": 54,
             "name": "test_a_moved_symbol_makes_its_claim_not_fresh"
           },
           {
             "covers": [],
-            "line": 66,
+            "line": 67,
             "name": "test_a_claim_is_as_stale_as_its_worst_anchor"
           },
           {
             "covers": [],
-            "line": 94,
+            "line": 95,
             "name": "test_a_malformed_anchor_does_not_abort_the_walk"
           },
           {
             "covers": [],
-            "line": 117,
+            "line": 118,
             "name": "test_an_anchor_with_no_sha_is_an_error_not_a_crash"
           },
           {
             "covers": [],
-            "line": 142,
+            "line": 143,
             "name": "test_a_candidate_is_scanned_but_does_not_obligate"
           },
           {
             "covers": [],
-            "line": 154,
+            "line": 155,
             "name": "test_a_retired_claim_is_scanned_but_does_not_obligate"
           },
           {
-            "covers": [],
-            "line": 184,
+            "covers": [
+              "REQ-drift-changed-only"
+            ],
+            "line": 187,
             "name": "test_the_filter_keeps_claims_anchoring_a_changed_file"
           },
           {
             "covers": [],
-            "line": 192,
+            "line": 194,
             "name": "test_the_filter_drops_claims_anchoring_untouched_files"
           },
           {
             "covers": [],
-            "line": 202,
+            "line": 204,
             "name": "test_the_filter_matches_inside_a_directory_anchor"
           },
           {
             "covers": [],
-            "line": 219,
+            "line": 221,
             "name": "test_a_malformed_anchor_survives_the_filter"
           },
           {
-            "covers": [],
-            "line": 243,
+            "covers": [
+              "REQ-drift-never-rewrites"
+            ],
+            "line": 247,
             "name": "test_a_scan_over_a_stale_store_writes_nothing"
           }
         ],
-        "untagged": 12
+        "untagged": 9
       },
       "tests/test_bootstrap.py": {
         "language": "python",
@@ -1060,130 +1089,140 @@
           {
             "covers": [],
             "line": 56,
+            "name": "test_a_test_file_importing_from_a_src_layout_is_an_edge"
+          },
+          {
+            "covers": [],
+            "line": 68,
             "name": "test_an_import_that_leaves_the_repository_is_not_an_edge"
           },
           {
             "covers": [],
-            "line": 65,
+            "line": 77,
             "name": "test_a_package_init_import_resolves"
           },
           {
             "covers": [],
-            "line": 78,
+            "line": 90,
             "name": "test_a_relative_typescript_import_resolves_through_extensions"
           },
           {
             "covers": [],
-            "line": 84,
+            "line": 96,
             "name": "test_an_index_file_resolves"
           },
           {
             "covers": [],
-            "line": 91,
+            "line": 103,
             "name": "test_require_and_dynamic_import_count"
           },
           {
             "covers": [],
-            "line": 100,
+            "line": 112,
             "name": "test_a_package_import_is_skipped_and_not_counted_unresolved"
           },
           {
             "covers": [],
-            "line": 108,
+            "line": 120,
             "name": "test_a_dangling_relative_import_is_counted"
           },
           {
             "covers": [],
-            "line": 122,
+            "line": 134,
             "name": "test_a_go_import_resolves_through_the_module_path"
           },
           {
             "covers": [],
-            "line": 130,
+            "line": 142,
             "name": "test_a_go_import_edges_to_every_file_in_the_package"
           },
           {
             "covers": [],
-            "line": 141,
+            "line": 153,
             "name": "test_a_standard_library_import_is_not_an_edge"
           },
           {
             "covers": [],
-            "line": 153,
+            "line": 165,
             "name": "test_a_cycle_is_found"
           },
           {
             "covers": [],
-            "line": 162,
+            "line": 174,
             "name": "test_a_cycle_is_rotated_to_a_stable_start"
           },
           {
             "covers": [],
-            "line": 174,
+            "line": 186,
             "name": "test_the_reverse_index_is_the_inverse_of_the_edges"
           },
           {
             "covers": [],
-            "line": 184,
+            "line": 196,
             "name": "test_regeneration_is_a_no_op"
           },
           {
             "covers": [],
-            "line": 193,
+            "line": 205,
             "name": "test_the_derived_tier_does_not_describe_itself"
           },
           {
             "covers": [],
-            "line": 207,
+            "line": 219,
             "name": "test_a_workspace_package_import_is_an_edge"
           },
           {
             "covers": [],
-            "line": 224,
+            "line": 236,
             "name": "test_a_deep_workspace_import_resolves"
           },
           {
             "covers": [],
-            "line": 234,
+            "line": 246,
             "name": "test_a_third_party_import_is_still_skipped"
           },
           {
             "covers": [],
-            "line": 246,
+            "line": 258,
             "name": "test_the_root_manifest_is_not_a_workspace_package"
           },
           {
             "covers": [],
-            "line": 256,
+            "line": 268,
             "name": "test_a_workspace_import_that_resolves_to_nothing_is_counted_unresolved"
           },
           {
             "covers": [],
-            "line": 266,
+            "line": 278,
             "name": "test_a_malformed_manifest_does_not_stop_the_scan"
           },
           {
             "covers": [],
-            "line": 283,
+            "line": 295,
             "name": "test_a_parameterised_test_is_counted"
           },
           {
             "covers": [],
-            "line": 295,
+            "line": 307,
             "name": "test_a_covers_tag_binds_to_the_parameterised_test_below_it"
           },
           {
             "covers": [],
-            "line": 308,
+            "line": 320,
             "name": "test_the_plain_and_modified_forms_still_count"
           },
           {
             "covers": [],
-            "line": 319,
+            "line": 331,
             "name": "test_a_call_that_is_not_a_test_is_not_counted"
+          },
+          {
+            "covers": [],
+            "line": 343,
+            "name": "test_runner_resolves_prefix_and_derived_targets"
           }
         ],
-        "untagged": 29
+        "untagged": 31
       },
       "tests/test_derive.py": {
         "language": "python",
@@ -1739,6 +1778,40 @@
         ],
         "untagged": 26
       },
+      "tests/test_guard.py": {
+        "language": "python",
+        "tests": [
+          {
+            "covers": [
+              "REQ-guard-command-safety"
+            ],
+            "line": 29,
+            "name": "test_destructive_git_and_fs_commands_are_blocked"
+          },
+          {
+            "covers": [
+              "REQ-guard-command-safety"
+            ],
+            "line": 49,
+            "name": "test_safe_commands_pass"
+          },
+          {
+            "covers": [
+              "REQ-guard-command-safety"
+            ],
+            "line": 60,
+            "name": "test_commit_on_protected_main_branch_is_blocked"
+          },
+          {
+            "covers": [
+              "REQ-guard-task-scope"
+            ],
+            "line": 83,
+            "name": "test_path_guard_enforces_declared_task_scopes"
+          }
+        ],
+        "untagged": 0
+      },
       "tests/test_hooks.py": {
         "language": "python",
         "tests": [
@@ -2110,6 +2183,13 @@
             "covers": [],
             "line": 430,
             "name": "test_an_unknown_change_is_reported_not_ignored"
+          },
+          {
+            "covers": [
+              "REQ-impact-track-b-inline"
+            ],
+            "line": 439,
+            "name": "test_track_b_change_reads_claims_touched_from_proposal_md"
           }
         ],
         "untagged": 32
@@ -2649,6 +2729,13 @@
             "covers": [],
             "line": 629,
             "name": "test_archive_with_amend"
+          },
+          {
+            "covers": [
+              "REQ-verify-parallel-commands"
+            ],
+            "line": 645,
+            "name": "test_verify_runs_commands_and_records_duration_ms"
           }
         ],
         "untagged": 43
@@ -4164,10 +4251,10 @@
         "untagged": 64
       }
     },
-    "tagged_tests": 13,
-    "total_tests": 784
+    "tagged_tests": 22,
+    "total_tests": 792
   },
-  "generated_from_commit": "67c6e0832a5437be1666ba058b1fbb06cbe3fd43",
+  "generated_from_commit": "63be8556b181d3fb1de654cbfac79392fdbca7e7",
   "generator": "forge sync derived",
   "tool": "forge"
 }
