@@ -197,6 +197,38 @@ def test_forge_install_all_hosts_default(project, capsys):
     assert (project.root / "AGENTS.md").is_file()
 
 
+# @covers REQ-skill-global-install
+def test_forge_install_global_and_init_no_skills(repo, tmp_path, capsys):
+    fake_home = tmp_path / "home"
+    fake_home.mkdir()
+    rc = main(["install", "--global", "--home", str(fake_home)])
+    assert rc == 0
+    captured = capsys.readouterr()
+    assert "~/.claude/skills" in captured.out
+    assert "~/.gemini/config/skills" in captured.out
+    assert "~/.codex/AGENTS.md" in captured.out
+    assert (fake_home / ".gemini/config/skills/forge/SKILL.md").is_file()
+    assert (fake_home / ".gemini/config/skills/ui-ux/references/principles.md").is_file()
+    assert (fake_home / ".gemini/config/skills/ui-ux/scripts/probe.mjs").is_file()
+    assert (fake_home / ".gemini/config/rules/forge.md").is_file()
+    assert (fake_home / ".claude/skills/forge/SKILL.md").is_file()
+    assert (fake_home / ".claude/skills/ui-ux/references/principles.md").is_file()
+    assert (fake_home / ".codex/AGENTS.md").is_file()
+
+    # Running a second time is idempotent.
+    rc2 = main(["install", "--global", "--home", str(fake_home)])
+    assert rc2 == 0
+    assert "unchanged" in capsys.readouterr().out
+
+    # `forge init --no-skills` scaffolds the store without copying `.forge/skills/`.
+    repo.write("src/app.py", "x = 1\n")
+    rc3 = main(["init", "--no-skills", "--repo", str(repo.root)])
+    assert rc3 == 0
+    assert (repo.root / ".forge/config.yaml").is_file()
+    assert not (repo.root / ".forge/skills").exists()
+    assert len(skills.load_skills(repo.root)) >= 9
+
+
 # ---------------------------------------------------------------------------
 # Knowing a copy has drifted
 # ---------------------------------------------------------------------------

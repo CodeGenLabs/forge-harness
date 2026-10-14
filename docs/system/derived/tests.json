@@ -35,6 +35,9 @@
         "tests/test_skill_companions.py::test_init_never_overwrites_an_edited_companion",
         "tests/test_skill_companions.py::test_package_data_ships_companion_files"
       ],
+      "REQ-skill-global-install": [
+        "tests/test_hosts.py::test_forge_install_global_and_init_no_skills"
+      ],
       "REQ-skill-implement-autonomous": [
         "tests/test_skills.py::test_implement_skill_autonomous_batch_execution_section"
       ],
@@ -2008,23 +2011,30 @@
             "name": "test_forge_install_all_hosts_default"
           },
           {
+            "covers": [
+              "REQ-skill-global-install"
+            ],
+            "line": 201,
+            "name": "test_forge_install_global_and_init_no_skills"
+          },
+          {
             "covers": [],
-            "line": 203,
+            "line": 235,
             "name": "test_an_unedited_copy_reads_as_a_copy"
           },
           {
             "covers": [],
-            "line": 207,
+            "line": 239,
             "name": "test_an_edited_copy_reads_as_stale"
           },
           {
             "covers": [],
-            "line": 216,
+            "line": 248,
             "name": "test_line_endings_alone_are_not_a_difference"
           },
           {
             "covers": [],
-            "line": 227,
+            "line": 259,
             "name": "test_this_repository_owns_its_skills"
           }
         ],
@@ -4281,10 +4291,10 @@
         "untagged": 64
       }
     },
-    "tagged_tests": 25,
-    "total_tests": 795
+    "tagged_tests": 26,
+    "total_tests": 796
   },
-  "generated_from_commit": "d7302034095a5aed4e7669ede1519144c5e2441e",
+  "generated_from_commit": "bea8bff86df876bfd1b2c36ff1879297d4c97668",
   "generator": "forge sync derived",
   "tool": "forge"
 }

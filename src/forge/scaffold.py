@@ -300,7 +300,7 @@ first claims exist - run `forge bootstrap`, or write them as you learn them.
 """
 
 
-def init_files(today: _dt.date | None = None) -> dict[str, str]:
+def init_files(today: _dt.date | None = None, *, include_skills: bool = True) -> dict[str, str]:
     """Relative path -> content for a fresh scaffold. Pure; writes nothing."""
     today = today or _dt.date.today()
     files = {
@@ -321,20 +321,23 @@ def init_files(today: _dt.date | None = None) -> dict[str, str]:
     # The skills are copied out rather than left packaged, for the same reason
     # the workflow schema is: a procedure you cannot see is one you cannot
     # adapt, and the whole point of skills being markdown is that a project
-    # edits them. A project that deletes the copy falls back to the shipped
-    # set, so this is an opt-in fork rather than a commitment.
-    for path in sorted(skills.PACKAGED_SKILLS.glob("*/SKILL.md")):
-        files[f"{skills.SKILLS_DIR}/{path.parent.name}/SKILL.md"] = \
-            path.read_text(encoding="utf-8")
-        # A skill is its directory: references and scripts it links to come
-        # with it, or every link in the copy dangles.
-        for relative in skills.companion_files(path.parent):
-            files[f"{skills.SKILLS_DIR}/{path.parent.name}/{relative}"] = \
-                (path.parent / relative).read_text(encoding="utf-8")
+    # edits them. A project that deletes the copy (or passes `--no-skills`)
+    # falls back to the shipped set, so this is an opt-in fork rather than a
+    # commitment.
+    if include_skills:
+        for path in sorted(skills.PACKAGED_SKILLS.glob("*/SKILL.md")):
+            files[f"{skills.SKILLS_DIR}/{path.parent.name}/SKILL.md"] = \
+                path.read_text(encoding="utf-8")
+            # A skill is its directory: references and scripts it links to come
+            # with it, or every link in the copy dangles.
+            for relative in skills.companion_files(path.parent):
+                files[f"{skills.SKILLS_DIR}/{path.parent.name}/{relative}"] = \
+                    (path.parent / relative).read_text(encoding="utf-8")
     return files
 
 
-def scaffold(repo: Path, *, today: _dt.date | None = None) -> tuple[list[str], list[str]]:
+def scaffold(repo: Path, *, today: _dt.date | None = None,
+             include_skills: bool = True) -> tuple[list[str], list[str]]:
     """Write the scaffold. Returns (created, skipped).
 
     Never overwrites. `forge init` on a repository that already has a store is
@@ -350,7 +353,7 @@ def scaffold(repo: Path, *, today: _dt.date | None = None) -> tuple[list[str], l
 
     created: list[str] = []
     skipped: list[str] = []
-    for relative, content in sorted(init_files(today).items()):
+    for relative, content in sorted(init_files(today, include_skills=include_skills).items()):
         target = repo / relative
         if target.exists():
             skipped.append(relative)

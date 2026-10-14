@@ -27,13 +27,17 @@
 
 > **Bỏ qua lý thuyết dông dài — làm theo 5 bước thực chiến dưới đây để tải về, khởi tạo dự án và ra lệnh cho AI Agent của bạn ngay lập tức:**
 
-### Bước 1: Cài đặt Forge CLI
-Cài đặt `forge` vào máy tính (khuyến nghị dùng `pip` hoặc `uv` / `pipx`):
+### Bước 1: Cài đặt Forge CLI & Kỹ năng Agent toàn cục (Chỉ cài 1 lần cho mọi dự án)
+Cài đặt `forge` vào máy tính và kích hoạt toàn bộ 9 kỹ năng (`forge`, `investigate`, `specify`, `plan-tasks`, `implement`, `curate-knowledge`, `bootstrap`, `interface`, `ui-ux`) **1 lần duy nhất ở cấp người dùng (Global)** để không bao giờ phải chép file skill vào từng thư mục dự án:
 ```bash
-pip install git+https://github.com/CodeGenLabs/forge-harness.git
-
-# Hoặc dùng uv (cực nhanh):
+# Cách A: Dùng uv hoặc pipx (Khuyến nghị)
 uv tool install git+https://github.com/CodeGenLabs/forge-harness.git
+# (hoặc: pip install git+https://github.com/CodeGenLabs/forge-harness.git)
+forge install --global            # Cài skills 1 lần vào ~/.gemini/config/skills, ~/.claude/skills, ~/.codex/AGENTS.md
+
+# Cách B: Chạy Script 1-Click tự động (Tự cài CLI + PATH + Global Skills)
+# Windows (PowerShell):  powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1
+# Linux / macOS (Bash):  bash ./scripts/install.sh
 ```
 Kiểm tra cài đặt:
 ```bash
@@ -44,13 +48,14 @@ forge doctor
 Chuyển vào thư mục dự án của bạn (dự án mới hoặc đã có code) và khởi tạo:
 ```bash
 cd /path/to/my-project
-forge init
+forge init --no-skills   # Khởi tạo gọn nhẹ: không cần chép .forge/skills/ vào từng folder vì đã có bộ skill cài sẵn
+# Hoặc chạy `forge init` nếu muốn chép bản sao .forge/skills/ riêng để tùy biến cho repo đó
 ```
 
-### Bước 3: Kích hoạt Skills cho AI Coding Agent bạn dùng
-Chạy `forge install` để cài đặt skills cho tất cả agent, hoặc chỉ định host cụ thể:
+### Bước 3: (Tùy chọn) Xuất Skills cục bộ theo từng dự án
+Nếu bạn đã chạy `forge install --global` ở Bước 1, AI Coding Agent của bạn đã tự động nhận diện đầy đủ các skill ở mọi thư mục mà không cần chép file. Nếu muốn lưu kèm skill hoặc `AGENTS.md` vào Git của repo cho đồng đội:
 ```bash
-forge install                     # Cài đặt cho tất cả hosts (Claude, Antigravity, Codex)
+forge install                     # Cài đặt vào repo hiện tại (Claude, Antigravity, Codex)
 # Hoặc chỉ định một host:
 forge install --host claude       # Dành cho Claude Code (.claude/skills/)
 forge install --host antigravity  # Dành cho Google Antigravity (.agent/skills/)
@@ -94,7 +99,7 @@ Mở AI Agent (Claude Code, Antigravity, Cursor...) trong thư mục dự án v�
   > *"Dự án này sử dụng Forge harness. Hãy đọc skill `bootstrap` và thực hiện Pass 2: Khảo sát codebase để đề xuất các candidate claims (kiến trúc, components, nghiệp vụ, cạm bẫy pitfalls) vào `docs/system/`."*
 
 * **Kịch bản B: Nếu muốn bắt tay vào code tính năng mới hoặc sửa lỗi ngay**
-  > *"Dự án này sử dụng Forge harness. Hãy dùng skill `forge`, chạy `forge status`, và mở một change mới bằng lệnh `forge change new \"<tên-tính-năng>\" --track B` để triển khai theo chuẩn TDD."*
+  > *"Dự án này sử dụng Forge harness. Hãy dùng skill `forge`, chạy `forge status`, và mở một change mới bằng lệnh `forge change new \"<tên-tính-năng>\" --track B --branch` để triển khai theo chuẩn TDD."*
 
 ---
 
@@ -167,7 +172,7 @@ graph TD
     end
 
     subgraph SkillsLayer["TẦNG TƯ DUY (SKILLS)"]
-        Skills["Markdown Procedures (*.md)<br>• forge router<br>• investigate<br>• specify<br>• plan-tasks<br>• implement (TDD)<br>• curate-knowledge"]
+        Skills["Markdown Procedures (*.md)<br>• forge router<br>• investigate<br>• specify<br>• plan-tasks<br>• implement (TDD)<br>• curate-knowledge<br>• bootstrap<br>• interface & ui-ux"]
     end
 
     subgraph KernelLayer["TẦNG CƠ CHẾ (KERNEL CLI)"]
@@ -272,16 +277,18 @@ graph TD
 
 ### Cách 1: Cài đặt toàn cục qua `pipx` hoặc `uv tool` *(Khuyên dùng hàng đầu)*
 
-`pipx` và `uv tool` là công cụ chuẩn mực của hệ sinh thái Python hiện đại, giúp cài đặt CLI tools vào môi trường cô lập và tự động tạo shim vào thư mục `PATH` của hệ điều hành.
+`pipx` và `uv tool` là công cụ chuẩn mực của hệ sinh thái Python hiện đại, giúp cài đặt CLI tools vào môi trường cô lập và tự động tạo shim vào thư mục `PATH` của hệ điều hành. Kết hợp với `forge install --global`, bạn chỉ cần cài đặt skills **1 lần duy nhất** cho mọi thư mục dự án trên máy.
 
 #### Lựa chọn 1A: Cài trực tiếp từ GitHub *(Không cần clone mã nguồn)*
 ```bash
 # Sử dụng pipx:
 pipx install git+https://github.com/CodeGenLabs/forge-harness.git
 pipx ensurepath
+forge install --global
 
 # Hoặc sử dụng uv (cực nhanh, khuyến nghị):
 uv tool install git+https://github.com/CodeGenLabs/forge-harness.git
+forge install --global
 ```
 
 #### Lựa chọn 1B: Cài đặt sau khi đã clone mã nguồn về máy
@@ -291,36 +298,42 @@ cd forge-harness
 
 # Dùng pipx:
 pipx install .
-
 # Hoặc dùng uv:
 uv tool install .
+
+# Cài đặt toàn bộ 9 skills 1 lần vào thư mục global của AI Agent:
+forge install --global
 ```
-*(Sau khi cài xong, bạn có thể mở bất kỳ terminal nào và gõ lệnh `forge` ngay lập tức).*
+*(Sau khi cài xong, bạn có thể mở bất kỳ terminal hay dự án nào và sử dụng lệnh `forge` cùng bộ skills ngay lập tức mà không cần chép file vào từng folder).*
 
 ---
 
 ### Cách 2: Sử dụng Script cài đặt tự động 1-Click (`install.ps1` / `install.sh`)
 
-Nếu bạn đã clone mã nguồn về máy và muốn một giải pháp "chạy là xong" mà không cần cài thêm `pipx`:
+Giải pháp "chạy 1 lần là xong" tự động cài cả `forge` CLI lẫn bộ Global Skills:
 
 * **Trên Windows (PowerShell):**
   ```powershell
-  git clone https://github.com/CodeGenLabs/forge-harness.git
-  cd forge-harness
+  # Chạy trực tiếp 1 dòng (không cần clone):
+  irm https://raw.githubusercontent.com/CodeGenLabs/forge-harness/main/scripts/install.ps1 | iex
+
+  # Hoặc chạy từ thư mục đã clone:
   powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1
   ```
 * **Trên Linux / macOS (Bash):**
   ```bash
-  git clone https://github.com/CodeGenLabs/forge-harness.git
-  cd forge-harness
+  # Chạy trực tiếp 1 dòng (không cần clone):
+  curl -fsSL https://raw.githubusercontent.com/CodeGenLabs/forge-harness/main/scripts/install.sh | bash
+
+  # Hoặc chạy từ thư mục đã clone:
   bash ./scripts/install.sh
   ```
 
 **Cơ chế hoạt động của script:**
 1. Tự động kiểm tra phiên bản Python >= 3.11.
-2. Thiết lập một môi trường ảo dùng riêng biệt tại `%USERPROFILE%\.forge-harness\venv` (không bao giờ bị mất khi bạn đổi folder).
-3. Tạo file thực thi shim (`forge.cmd`, `forge.ps1` hoặc `forge`) đặt vào thư mục `~/.local/bin`.
-4. Tự động ghi nhận `~/.local/bin` vào biến môi trường **User PATH** vĩnh viễn nếu chưa có.
+2. Thiết lập môi trường ảo riêng biệt tại `%USERPROFILE%\.forge-harness\venv` (không bao giờ bị mất khi bạn đổi folder).
+3. Tạo file thực thi shim (`forge.cmd`, `forge.ps1` hoặc `forge`) đặt vào thư mục `~/.local/bin` và thêm vào **User PATH** vĩnh viễn.
+4. Tự động chạy `forge install --global` để cài toàn bộ 9 skills (`forge`, `investigate`, `specify`, `plan-tasks`, `implement`, `curate-knowledge`, `bootstrap`, `interface`, `ui-ux`) vào thư mục global của AI Agent (`~/.gemini/config/skills`, `~/.claude/skills`, `~/.codex/AGENTS.md`) — không cần chép file skill vào từng dự án.
 5. Chạy kiểm chứng `forge doctor` xác nhận thành công ngay tại chỗ.
 
 ---
@@ -362,19 +375,19 @@ python -m forge.cli check --repo D:\git\my-project
 
 ### 🎯 Hướng dẫn: Áp dụng Forge vào một Repository bất kỳ (`my-project`)
 
-Sau khi đã cài đặt `forge` toàn cục, để áp dụng quy trình kiểm soát của Forge vào một dự án mới:
+Sau khi đã cài đặt `forge` và global skills (`forge install --global`), để áp dụng quy trình kiểm soát của Forge vào một dự án mới mà **không cần chép file skill vào từng folder**:
 
 ```bash
 # 1. Chuyển vào thư mục dự án của bạn
 cd /path/to/my-project
 
-# 2. Khởi tạo cấu trúc Forge (.forge/ và docs/system/)
-forge init
+# 2. Khởi tạo cấu trúc Forge (.forge/ và docs/system/) gọn nhẹ, bỏ qua việc chép .forge/skills/:
+forge init --no-skills
 
-# 3. Cài đặt kỹ năng điều hướng cho Host AI Agent mà bạn sử dụng:
-forge install --host claude       # Nếu dùng Claude Code (chép vào .claude/skills/)
-forge install --host antigravity  # Nếu dùng Antigravity (chép vào .agents/skills/)
-forge install --host codex        # Nếu dùng Cursor / Codex (chèn marker vào AGENTS.md)
+# 3. (Tùy chọn) Chỉ chạy nếu bạn muốn commit bản sao skill cục bộ theo repo cho đồng đội:
+# forge install --host claude       # Chép vào .claude/skills/
+# forge install --host antigravity  # Chép vào .agent/skills/
+# forge install --host codex        # Chèn marker vào AGENTS.md
 
 # 4. Khai báo lệnh build và test trong .forge/config.yaml:
 # commands:
@@ -515,8 +528,9 @@ forge archive --change 2
 | `forge doctor` | Kiểm tra môi trường (Python, Git, Tree-Sitter, Test runner) | 0 / 1 |
 | `forge status` | Báo cáo tổng quan trạng thái hệ thống, claims, tests, change hiện tại | 0 |
 | `forge check` | Chạy 18 bài kiểm tra toàn vẹn tri thức (S1–S18) và tính tươi mới | 0 / 1 |
-| `forge init` | Khởi tạo cấu trúc `.forge/` và `docs/system/` trong repo | 0 |
-| `forge install [--host <host>]` | Cài đặt skills vào host agent (mặc định: tất cả `claude`, `antigravity`, `codex`) | 0 |
+| `forge init [--no-skills]` | Khởi tạo cấu trúc `.forge/` và `docs/system/` trong repo (`--no-skills` bỏ qua việc chép `.forge/skills/`) | 0 |
+| `forge install [--global] [--host <host>]` | Cài đặt skills vào host agent (`--global` cài 1 lần vào `~/.gemini/config/skills`, `~/.claude/skills`, `~/.codex/AGENTS.md`) | 0 |
+| `forge guard [--cmd <cmd>] [--paths <p>...]` | Kiểm tra an toàn lệnh thực thi trước khi chạy và kiểm soát phạm vi file (`scope`) theo task | 0 / 1 |
 | `forge hooks install` | Cài đặt Git pre-commit hook tự động chặn vi phạm drift | 0 |
 | `forge hooks uninstall` | Gỡ bỏ Git pre-commit hook | 0 |
 | `forge reconcile --since <ref>` | Đối soát commit ngoài luồng, mở mục ledger cho các claim bị chạm | 0 / 1 |
@@ -524,17 +538,17 @@ forge archive --change 2
 | `forge bootstrap review` | Pass 3: Mở bảng phê chuẩn candidate claims (mặc định reject) | 0 |
 | `forge bootstrap seal` | Niêm phong kho tri thức sau khi phê chuẩn & tạo Baseline ADR | 0 |
 | `forge sync derived` | Tái tạo lại toàn bộ tầng phái sinh (`inventory`, `deps`, `tests`, `trace`) | 0 |
-| `forge change new "<tên>" --track <A\|B\|C>` | Tạo nhánh thay đổi mới theo track chỉ định (mặc định Track C) | 0 / 2 |
+| `forge change new "<tên>" --track <A\|B\|C> --branch` | Tạo nhánh thay đổi mới theo track chỉ định (mặc định Track C) | 0 / 2 |
 | `forge change show <N>` | Hiển thị tiến độ và các artifact còn thiếu của change | 0 |
 | `forge gate <point> --change <N>` | Chạy cổng kiểm soát tại điểm chuyển giao (`spec:post`, `impact:post`,...) | 0 / 1 |
 | `forge impact --change <N>` | Tính toán bán kính ảnh hưởng và tập claim bị chạm | 0 |
-| `forge verify --change <N>` | Kiểm chứng 11 điều kiện thực tế (chạy test, tính hợp lệ, DAG) | 0 / 1 |
+| `forge verify --change <N>` | Kiểm chứng 11 điều kiện thực tế (chạy test, tính hợp lệ, DAG, UI probe) | 0 / 1 |
 | `forge archive --change <N> [--amend]` | Gập delta spec vào hệ thống chính, restamp claim, auto-sync derived và lưu trữ change | 0 / 1 |
 | `forge drift --store` | Quét toàn bộ kho tri thức tìm các anchor bị lỗi thời (stale) | 0 / 1 |
 | `forge drift --changed` | Quét độ lệch cho các file đang nằm trong git diff hiện tại | 0 / 1 |
 | `forge claim new <kind> [--append]` | Tạo khung mẫu claim mới (invariant, concept, architecture,...) | 0 |
 | `forge trace <ID>` | Truy vết hai chiều cho một mã Claim (code, test, ADR, change) | 0 |
-| `forge skill list` | Liệt kê các quy trình kỹ năng tích hợp sẵn cho AI Agent | 0 |
+| `forge skill list` | Liệt kê 9 kỹ năng tích hợp sẵn cho AI Agent (`forge`, `investigate`, `specify`, `plan-tasks`, `implement`, `curate-knowledge`, `bootstrap`, `interface`, `ui-ux`) | 0 |
 
 ---
 
@@ -569,7 +583,7 @@ Toàn bộ lập luận, và điều gì tính là thất bại của từng m�
       Forge không render gì cả. *Đã ship: `ui` là một điều kiện; khai `commands.ui`, hoặc
       `ui: none` nếu dự án không có giao diện trình duyệt.*
 - [x] **R8 — Cấm cái trung bình, không kê đơn gì.** Chỉ hướng dẫn, không bao giờ là gate.
-      *Đã ship dưới dạng skill `interface`.*
+      *Đã ship dưới dạng skill `interface` và `ui-ux`.*
 
 ---
 
@@ -581,7 +595,7 @@ Tra cứu hệ thống tài liệu hướng dẫn và đặc tả chi tiết:
 | :--- | :--- | :---: |
 | **Bắt đầu nhanh** | Cài đặt toàn cục, chuẩn bị môi trường, chạy thử | [Xem hướng dẫn](getting-started.md) |
 | **Khái niệm cốt lõi** | Mô hình 3 tầng, Claim Store, Neo cú pháp AST | [Xem hướng dẫn](concepts.md) |
-| **Tra cứu CLI** | Cẩm nang tra cứu chi tiết 11 câu lệnh Forge | [Xem hướng dẫn](cli-reference.md) |
+| **Tra cứu CLI** | Cẩm nang tra cứu chi tiết toàn bộ câu lệnh Forge | [Xem hướng dẫn](cli-reference.md) |
 | **Hướng dẫn & CI/CD** | Tích hợp AI Agent, GitHub Actions, Monorepo | [Xem hướng dẫn](guides.md) |
 | **Kiến trúc hệ thống** | Chi tiết nhân Kernel, Tree-sitter AST, dấu vân tay | [Xem hướng dẫn](architecture.md) |
 | **Cấu hình hệ thống** | Đặc tả lược đồ file `.forge/config.yaml` | [Xem hướng dẫn](configuration.md) |

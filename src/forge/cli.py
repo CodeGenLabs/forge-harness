@@ -735,7 +735,8 @@ def _cmd_init(args: argparse.Namespace) -> int:
         print(f"forge: {repo} is not a git repository", file=sys.stderr)
         return _EXIT_USAGE
 
-    created, skipped = scaffold.scaffold(repo)
+    include_skills = not getattr(args, "no_skills", False)
+    created, skipped = scaffold.scaffold(repo, include_skills=include_skills)
     for relative in created:
         print(f"created    {relative}")
     for relative in skipped:
@@ -1750,13 +1751,30 @@ def _cmd_bootstrap_seal(args: argparse.Namespace) -> int:
 
 
 def _cmd_skill_export(args: argparse.Namespace) -> int:
-    repo = args.repo.resolve()
+    is_global = getattr(args, "global_install", False)
     host_arg = getattr(args, "host", None)
     if host_arg is None or host_arg == "all":
         target_hosts = ["claude", "antigravity", "codex"]
     else:
         target_hosts = [host_arg]
 
+    if is_global:
+        user_home = getattr(args, "home", None)
+        for host_name in target_hosts:
+            if host_name not in hosts.GLOBAL_HOSTS:
+                print(f"forge: no global host {host_name!r}. Known: "
+                      + ", ".join(f"{h.name} ({h.note})" for h in hosts.GLOBAL_HOSTS.values()),
+                      file=sys.stderr)
+                return _EXIT_USAGE
+            outcome, written = hosts.export_global(host_name, home=user_home)
+            print(f"{outcome:10} ~/{hosts.GLOBAL_HOSTS[host_name].target}")
+            for path in written[:8]:
+                print(f"           {path}")
+            if len(written) > 8:
+                print(f"           ... and {len(written) - 8} more")
+        return _EXIT_OK
+
+    repo = args.repo.resolve()
     for host_name in target_hosts:
         if host_name not in hosts.HOSTS:
             print(f"forge: no host {host_name!r}. Known: "
@@ -2038,6 +2056,8 @@ def build_parser() -> argparse.ArgumentParser:
                     "overwrites, so running it again after a version bump is safe.",
     )
     init.add_argument("--repo", type=Path, default=Path.cwd())
+    init.add_argument("--no-skills", action="store_true",
+                      help="skip copying .forge/skills/ into this repository (use packaged or global skills instead)")
     init.set_defaults(func=_cmd_init)
 
     claim = sub.add_parser("claim", help="create or read one claim")
@@ -2254,6 +2274,9 @@ def build_parser() -> argparse.ArgumentParser:
     skl_export.add_argument("--host", required=False, default=None,
                             choices=sorted(hosts.HOSTS) + ["all"],
                             help="which host to export manifest for (default: all - claude, antigravity, codex)")
+    skl_export.add_argument("-g", "--global", dest="global_install", action="store_true",
+                            help="install once into user-level global directories (~/.gemini/config/skills, ~/.claude/skills, ~/.codex/AGENTS.md)")
+    skl_export.add_argument("--home", type=Path, default=None, help=argparse.SUPPRESS)
     skl_export.add_argument("--repo", type=Path, default=Path.cwd())
     skl_export.set_defaults(func=_cmd_skill_export)
 
@@ -2333,13 +2356,18 @@ def build_parser() -> argparse.ArgumentParser:
 
     inst = sub.add_parser(
         "install",
-        help="install skills to an agent host runtime",
+        help="install skills to an agent host runtime (workspace or --global)",
         description="Write the packaged skills to where each host reads them "
-                    "(.claude/skills/, AGENTS.md, etc.). A manifest, never a port.",
+                    "(.claude/skills/, .agent/skills/, AGENTS.md, or globally into "
+                    "~/.gemini/config/skills/, ~/.claude/skills/, ~/.codex/AGENTS.md "
+                    "with --global).",
     )
     inst.add_argument("--host", required=False, default=None,
                       choices=sorted(hosts.HOSTS) + ["all"],
                       help="which host runtime to install for (default: all - claude, antigravity, codex)")
+    inst.add_argument("-g", "--global", dest="global_install", action="store_true",
+                      help="install once into user-level global directories so skills work in every project without per-folder copies")
+    inst.add_argument("--home", type=Path, default=None, help=argparse.SUPPRESS)
     inst.add_argument("--repo", type=Path, default=Path.cwd())
     inst.set_defaults(func=_cmd_skill_export)
 

@@ -175,3 +175,24 @@ SHALL enforce:
 - When its source is checked with `node --check` and inspected
 - Then it supports `--check-theme` and `--check-i18n` CLI flags
 - And it detects `iosZoomInputs`, `crushedTextColumns`, `orphanLastLineWords`, `mobilePerfIssues`, `i18nIssues`, and `unthemedElements`
+
+### Requirement: REQ-skill-global-install - Skills can be installed once globally and omitted from per-project scaffolds
+The system SHALL support `forge install --global` (and `forge skill export --global`)
+to write packaged skills and companion files into user-level global host directories
+(`~/.gemini/config/skills`, `~/.claude/skills`, `~/.codex/AGENTS.md`) and SHALL
+support `forge init --no-skills` to scaffold `.forge/` and `docs/system/` without
+copying `.forge/skills/` into the project directory.
+
+#### Scenario: Global install writes packaged skills and companions to user home
+
+- Given a user home directory
+- When `forge install --global` runs
+- Then packaged skills and their companion files exist under `~/.gemini/config/skills/`, `~/.claude/skills/`, and `~/.codex/AGENTS.md`
+
+#### Scenario: forge init --no-skills skips copying .forge/skills
+
+- Given an empty git repository
+- When `forge init --no-skills` runs
+- Then `.forge/config.yaml` and `docs/system/OVERVIEW.md` are created
+- And `.forge/skills/` is not created, while `forge skill list` still resolves the packaged skills
+

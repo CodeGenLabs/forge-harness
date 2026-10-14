@@ -18,36 +18,42 @@ This guide walks you through installing Forge Harness, verifying your environmen
 
 ### Method 1: Global Install via `pipx` or `uv tool` (Recommended)
 
-Modern Python tools install Forge into an isolated environment and place the executable shim into your system `PATH`:
+Modern Python tools install Forge into an isolated environment and place the executable shim into your system `PATH`. Run `forge install --global` once so all 9 skills are installed in your user home (`~/.gemini/config/skills`, `~/.claude/skills`, `~/.codex/AGENTS.md`):
 
 ```bash
 # Using uv (fastest):
 uv tool install git+https://github.com/CodeGenLabs/forge-harness.git
+forge install --global
 
 # Or using pipx:
 pipx install git+https://github.com/CodeGenLabs/forge-harness.git
 pipx ensurepath
+forge install --global
 ```
 
 ### Method 2: 1-Click Automated Installers
 
-If you cloned the repository and want instant setup without installing `pipx`:
+Installs `forge`, configures your user `PATH`, and automatically runs `forge install --global`:
 
 === "Windows (PowerShell)"
     ```powershell
-    git clone https://github.com/CodeGenLabs/forge-harness.git
-    cd forge-harness
+    # Direct 1-liner:
+    irm https://raw.githubusercontent.com/CodeGenLabs/forge-harness/main/scripts/install.ps1 | iex
+
+    # Or from a cloned repository:
     powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1
     ```
 
 === "Linux / macOS (Bash)"
     ```bash
-    git clone https://github.com/CodeGenLabs/forge-harness.git
-    cd forge-harness
+    # Direct 1-liner:
+    curl -fsSL https://raw.githubusercontent.com/CodeGenLabs/forge-harness/main/scripts/install.sh | bash
+
+    # Or from a cloned repository:
     bash ./scripts/install.sh
     ```
 
-These scripts create a dedicated virtualenv at `~/.forge-harness/venv`, generate executable shims in `~/.local/bin`, and permanently register it in your User `PATH`.
+These scripts create a dedicated virtualenv at `~/.forge-harness/venv`, generate executable shims in `~/.local/bin`, permanently register it in your User `PATH`, and install all 9 Forge skills globally once.
 
 ### Method 3: Developer / Editable Installation
 
@@ -85,10 +91,10 @@ Forge is ready.
 
 ## Initializing on a Project
 
-Navigate to any existing repository and run `forge init`:
+Navigate to any existing repository and run `forge init --no-skills` (or `forge init` if you want local skill copies in `.forge/skills/`):
 ```bash
 cd /path/to/my-project
-forge init
+forge init --no-skills
 ```
 
 This creates the default Forge harness structure:

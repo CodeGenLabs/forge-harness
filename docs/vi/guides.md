@@ -9,12 +9,16 @@ Hướng dẫn tích hợp Forge vào quy trình phát triển thực tế, CI/C
 
 ## 1. Tích hợp AI Coding Agent
 
-Forge tích hợp sẵn bộ kỹ năng Agent Skill tại `src/forge/_skills/`:
-* `forge`: Điều phối toàn bộ quy trình thay đổi.
-* `specify`: Định nghĩa yêu cầu chính xác, không mập mờ ranh giới.
-* `plan-tasks`: Lập kế hoạch công việc theo từng bước kiểm thử được.
-* `implement`: Triển khai code theo TDD và đúng phạm vi quy định.
-* `curate-knowledge`: Khám phá các cạm bẫy mới và bảo trì tri thức.
+Forge tích hợp sẵn bộ 9 kỹ năng Agent Skill tại `src/forge/_skills/`. Bạn chỉ cần chạy `forge install --global` **1 lần duy nhất** (cài vào `~/.gemini/config/skills`, `~/.claude/skills`, `~/.codex/AGENTS.md`) để sử dụng cho mọi dự án mà không cần chép file skill vào từng thư mục:
+* `forge`: Điều phối toàn bộ quy trình thay đổi và định tuyến Track.
+* `investigate`: Khảo sát codebase và đề xuất candidate claims trước khi sửa code.
+* `specify`: Định nghĩa yêu cầu delta, kịch bản kiểm thử và thiết kế/ADR (Track C).
+* `plan-tasks`: Lập kế hoạch công việc theo từng bước kiểm thử được gắn mã `REQ-`.
+* `implement`: Triển khai code theo TDD và đúng phạm vi quy định (`forge guard`).
+* `curate-knowledge`: Giải trình claim-touch, phê chuẩn candidate và bảo trì tri thức.
+* `bootstrap`: Tiếp quản codebase có sẵn qua quy trình 3 bước.
+* `interface`: Ràng buộc hợp đồng giao diện (`commands.ui`), 6 trục Theme động, đa ngôn ngữ `i18n` không hardcode và 3 trụ cột tối ưu Mobile (`320px-375px`).
+* `ui-ux`: Quy trình thiết kế & kiểm định UI/UX (`design-system`, `wireframe`, `mockup`, `refine-block`, `critique`, `polish`, `document`) kèm kho tri thức 10 nguồn và `scripts/probe.mjs`.
 
 ---
 

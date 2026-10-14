@@ -69,7 +69,7 @@ graph TD
     end
 
     subgraph SkillsLayer["推論層 (SKILLS)"]
-        Skills["Markdown手順書 (*.md)<br>• forge ルーター<br>• investigate (調査)<br>• specify (仕様定義)<br>• plan-tasks (計画)<br>• implement (TDD実装)<br>• curate-knowledge (知識同期)"]
+        Skills["Markdown手順書 (*.md)<br>• forge ルーター<br>• investigate (調査)<br>• specify (仕様定義)<br>• plan-tasks (計画)<br>• implement (TDD実装)<br>• curate-knowledge (知識同期)<br>• bootstrap / interface / ui-ux"]
     end
 
     subgraph KernelLayer["機構層 (KERNEL CLI)"]
@@ -112,9 +112,11 @@ graph TD
 # pipxを使用する場合 (リポジトリのクローン不要):
 pipx install git+https://github.com/CodeGenLabs/forge-harness.git
 pipx ensurepath
+forge install --global
 
 # または uv を使用する場合 (超高速):
 uv tool install git+https://github.com/CodeGenLabs/forge-harness.git
+forge install --global
 ```
 
 ---
@@ -123,18 +125,22 @@ uv tool install git+https://github.com/CodeGenLabs/forge-harness.git
 
 * **Windows (PowerShell):**
   ```powershell
-  git clone https://github.com/CodeGenLabs/forge-harness.git
-  cd forge-harness
+  # 1行で直接実行（クローン不要）:
+  irm https://raw.githubusercontent.com/CodeGenLabs/forge-harness/main/scripts/install.ps1 | iex
+
+  # またはクローンしたリポジトリから実行:
   powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1
   ```
 * **Linux / macOS (Bash):**
   ```bash
-  git clone https://github.com/CodeGenLabs/forge-harness.git
-  cd forge-harness
+  # 1行で直接実行（クローン不要）:
+  curl -fsSL https://raw.githubusercontent.com/CodeGenLabs/forge-harness/main/scripts/install.sh | bash
+
+  # またはクローンしたリポジトリから実行:
   bash ./scripts/install.sh
   ```
 
-ユーザー環境（`~/.forge-harness/venv`）に隔離された環境を作成し、自動的に環境変数 `PATH` に登録します。
+ユーザー環境（`~/.forge-harness/venv`）に隔離された環境を作成し、環境変数 `PATH` に登録するとともに、`forge install --global` により全9種類のスキルをユーザーのグローバル設定（`~/.gemini/config/skills`, `~/.claude/skills`, `~/.codex/AGENTS.md`）へ1回で導入します。
 
 ---
 
@@ -152,13 +158,13 @@ python -m forge.cli check --repo /path/to/my-project
 ```bash
 cd /path/to/my-project
 
-# 1. Forge構造の初期化
-forge init
+# 1. Forge構造の初期化（--no-skills でフォルダごとのスキル複製を省略）
+forge init --no-skills
 
-# 2. AIエージェント向けスキルのインストール:
-forge install --host claude       # Claude Code向け (.claude/skills/)
-forge install --host antigravity  # Antigravity向け (.agents/skills/)
-forge install --host codex        # Cursor / Codex向け (AGENTS.md)
+# 2. （任意）リポジトリ内にローカルスキルを配置する場合のみ実行:
+# forge install --host claude       # Claude Code向け (.claude/skills/)
+# forge install --host antigravity  # Antigravity向け (.agent/skills/)
+# forge install --host codex        # Cursor / Codex向け (AGENTS.md)
 
 # 3. .forge/config.yaml にビルド/テストコマンドを設定
 
@@ -184,8 +190,9 @@ forge check
 | `forge doctor` | 実行環境の検証（Python, Git, Grammars, テストランナー） | 0 / 1 |
 | `forge status` | システム、クレーム、テスト状況の1画面サマリー | 0 |
 | `forge check` | 18項目の整合性検証（S1〜S18）の実行 | 0 / 1 |
-| `forge init` | `.forge/` および `docs/system/` の初期化 | 0 |
-| `forge install --host <host>` | ホスト環境へのスキル配置 (`claude`, `antigravity`, `codex`) | 0 |
+| `forge init [--no-skills]` | `.forge/` および `docs/system/` の初期化（`--no-skills` でスキル複製を省略） | 0 |
+| `forge install [--global] [--host <host>]` | ホスト環境へのスキル配置（`--global` で1回のみグローバル導入） | 0 |
+| `forge guard [--cmd <cmd>] [--paths <p>...]` | 実行前コマンド安全性およびタスクスコープ検証ガード | 0 / 1 |
 | `forge hooks install` | コミット時のドリフト検出用Gitフックの登録 | 0 |
 | `forge hooks uninstall` | Gitフックの解除 | 0 |
 | `forge reconcile --since <ref>` | 管理外コミットの照合とドリフト台帳の記録 | 0 / 1 |
@@ -193,17 +200,17 @@ forge check
 | `forge bootstrap review` | Pass 3: 候補クレームの対話型レビューシート | 0 |
 | `forge bootstrap seal` | 承認クレームの確定とベースラインADRの生成 | 0 |
 | `forge sync derived` | 派生層（`inventory`, `deps`, `tests`, `trace`）の再生成 | 0 |
-| `forge change new "<name>" --track <A|B|C>` | 新規変更ブランチの作成 | 0 / 2 |
+| `forge change new "<name>" --track <A\|B\|C> --branch` | 新規変更ブランチの作成 | 0 / 2 |
 | `forge change show <N>` | 変更の進捗状況と未完了成果物の表示 | 0 |
 | `forge gate <point> --change <N>` | ライフサイクルゲートの実行 | 0 / 1 |
 | `forge impact --change <N>` | 影響範囲と接触クレームの計算 | 0 |
-| `forge verify --change <N>` | 11項目の客観的条件（テスト通過等）の検証 | 0 / 1 |
+| `forge verify --change <N>` | 11項目の客観的条件（テスト通過、UIプローブ等）の検証 | 0 / 1 |
 | `forge archive --change <N>` | 仕様デルタを本流へ統合しアーカイブ | 0 / 1 |
 | `forge drift --store` | クレームストア全体の陳腐化スキャン | 0 / 1 |
 | `forge drift --changed` | 変更差分に関わるアンカーのみをスキャン | 0 / 1 |
 | `forge claim new <kind> [--append]` | 新規クレームテンプレートの生成 | 0 |
 | `forge trace <ID>` | クレームIDの双方向トレーサビリティ検索 | 0 |
-| `forge skill list` | 利用可能なAIスキルの表示 | 0 |
+| `forge skill list` | 利用可能な全9種類のAIスキルの表示 | 0 |
 
 ---
 
@@ -236,9 +243,9 @@ forge check
           スキルに追加。先送りが想定される回答である。*
 - [x] **R7 — `ui` 検証条件。** プロジェクト自身の Playwright と axe を実行。Forge は
       何もレンダリングしない。*出荷済み：`commands.ui` を宣言する。ブラウザ UI が無ければ
-      `ui: none`。*
+          `ui: none`。*
 - [x] **R8 — 平均を禁じ、何も指定しない。** 助言であり、ゲートにはしない。
-      *`interface` スキルとして出荷済み。*
+      *`interface` および `ui-ux` スキルとして出荷済み。*
 
 ---
 
@@ -250,7 +257,7 @@ forge check
 | :--- | :--- | :---: |
 | **クイックスタート** | インストール、環境確認、初期設定 | [読む](getting-started.md) |
 | **コアコンセプト** | 3層モデル、クレームストア、ASTアンカー | [読む](concepts.md) |
-| **CLIリファレンス** | 全11コマンドの詳細仕様 | [読む](cli-reference.md) |
+| **CLIリファレンス** | 全CLIコマンドの詳細仕様 | [読む](cli-reference.md) |
 | **ガイドとCI/CD** | AIエージェント連携、GitHub Actions、モノレポ | [読む](guides.md) |
 | **アーキテクチャ** | カーネル、Tree-sitter AST、ハッシュ検証 | [読む](architecture.md) |
 | **設定リファレンス** | `.forge/config.yaml` の完全なスキーマ | [読む](configuration.md) |

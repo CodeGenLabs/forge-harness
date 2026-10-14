@@ -9,21 +9,25 @@ Practical guides for integrating Forge into your engineering workflows, CI/CD pi
 
 ## 1. Working with AI Coding Agents
 
-Forge includes built-in agent **Skills** located in `src/forge/_skills/`. These skills give AI models like Claude, Gemini, ChatGPT, Cursor, and Antigravity precise operational instructions:
+Forge includes 9 built-in agent **Skills** located in `src/forge/_skills/`. Install them **once globally** via `forge install --global` (into `~/.gemini/config/skills`, `~/.claude/skills`, `~/.codex/AGENTS.md`) so every project on your machine has them automatically without per-folder skill copies, or per-repo via `forge install`:
 
-* `forge`: Orchestrates the overall change lifecycle.
-* `specify`: Crafts airtight requirements without leaving boundaries ambiguous.
-* `plan-tasks`: Breaks designs into atomic, testable tasks.
-* `implement`: Test-driven development with scope enforcement.
-* `curate-knowledge`: Discovers candidates and manages drift.
+* `forge`: Orchestrates the overall change lifecycle and track routing.
+* `investigate`: Reads the codebase and proposes candidate claims before modification.
+* `specify`: Crafts delta requirements, scenarios, and Track C design/ADR.
+* `plan-tasks`: Breaks designs into atomic, testable tasks discharging `REQ-` IDs.
+* `implement`: Test-driven development with scope and guard enforcement (`forge guard`).
+* `curate-knowledge`: Accounts for touched claims, ratifies candidates, and manages drift.
+* `bootstrap`: 3-pass brownfield repository onboarding and claim ratification.
+* `interface`: Enforces the `ui` verification contract, 6-axis theme reactivity, zero-literal `i18n`, and 3-pillar mobile responsiveness.
+* `ui-ux`: Full front-end design & verification studio (`design-system`, `wireframe`, `mockup`, `refine-block`, `critique`, `polish`, `document`) backed by the 10-source knowledge base and `scripts/probe.mjs`.
 
 ### Recommended System Prompt Addition
-Add this snippet to your AI agent instructions (e.g. `CLAUDE.md`, `.cursorrules`, or custom agent prompt):
+Add this snippet to your AI agent instructions (e.g. `CLAUDE.md`, `AGENTS.md`, or custom agent prompt):
 ```markdown
 This repository is governed by Forge Harness.
-1. Before implementing non-trivial changes, run `forge change new <name>` and follow the change gates.
+1. Before implementing non-trivial changes, run `forge change new "<name>" --track <A|B|C> --branch` and follow the change gates.
 2. Ensure all constitutional invariants in `docs/system/pitfalls.md` are respected.
-3. Before submitting changes, run `forge check` and ensure 0 errors.
+3. Before submitting changes, run `forge verify --change <N>` and `forge check` and ensure 0 errors.
 ```
 
 ---

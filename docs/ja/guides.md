@@ -8,7 +8,7 @@
 ---
 
 ## 1. AIエージェントとの協調
-Forge は `src/forge/_skills/` に標準スキルを備えており、Claude、Gemini、ChatGPT などのモデルが正確にタスクを実行できるようガイドします。
+Forge は `src/forge/_skills/` に全9種類の標準スキル（`forge`, `investigate`, `specify`, `plan-tasks`, `implement`, `curate-knowledge`, `bootstrap`, `interface`, `ui-ux`）を備えています。`forge install --global` を1回実行するだけで、ユーザーのグローバル領域（`~/.gemini/config/skills`, `~/.claude/skills`, `~/.codex/AGENTS.md`）に導入され、各プロジェクトフォルダへスキルファイルをコピーすることなく全プロジェクトで利用できます。
 
 ---
 

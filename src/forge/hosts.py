@@ -29,7 +29,7 @@ from pathlib import Path
 
 from . import skills
 
-__all__ = ["Host", "HOSTS", "export", "MARKER_START", "MARKER_END"]
+__all__ = ["Host", "HOSTS", "GLOBAL_HOSTS", "export", "export_global", "MARKER_START", "MARKER_END"]
 
 MARKER_START = "<!-- forge:skills -->"
 MARKER_END = "<!-- /forge:skills -->"
@@ -72,6 +72,23 @@ HOSTS = {
     "forge": Host(
         name="forge", target=skills.SKILLS_DIR, kind="copy",
         note="the skills copied to .forge/skills/<name>/SKILL.md"),
+}
+
+#: User-level global customization directories so skills can be installed once
+#: per machine instead of copied into every repository folder.
+GLOBAL_HOSTS = {
+    "antigravity": Host(
+        name="antigravity", target=".gemini/config/skills", kind="copy",
+        note="global skills in ~/.gemini/config/skills/<name>/SKILL.md"),
+    "claude": Host(
+        name="claude", target=".claude/skills", kind="copy",
+        note="global skills in ~/.claude/skills/<name>/SKILL.md"),
+    "codex": Host(
+        name="codex", target=".codex/AGENTS.md", kind="pointer",
+        note="global instructions in ~/.codex/AGENTS.md"),
+    "agents-md": Host(
+        name="agents-md", target=".codex/AGENTS.md", kind="pointer",
+        note="global instructions in ~/.codex/AGENTS.md"),
 }
 
 
@@ -198,3 +215,69 @@ def export(repo: Path, host: str) -> tuple[str, list[str]]:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(updated, encoding="utf-8", newline="\n")
     return ("updated" if existing else "written"), [target.target]
+
+
+def _load_packaged_skills() -> list[skills.Skill]:
+    out: list[skills.Skill] = []
+    if not skills.PACKAGED_SKILLS.is_dir():
+        return out
+    for path in sorted(skills.PACKAGED_SKILLS.glob("*/SKILL.md")):
+        skill = skills.parse_skill(
+            path.read_text(encoding="utf-8", errors="replace"),
+            f"<packaged>/{path.parent.name}/SKILL.md",
+        )
+        if not skill.parse_error:
+            out.append(skill)
+    return out
+
+
+def export_global(host: str, home: Path | None = None) -> tuple[str, list[str]]:
+    """Install packaged skills into the user-level global directory for *host*."""
+    if host not in GLOBAL_HOSTS:
+        raise KeyError(host)
+    user_home = (home or Path.home()).resolve()
+    target = GLOBAL_HOSTS[host]
+    found = _load_packaged_skills()
+    if not found:
+        return "no skills", []
+
+    if target.kind == "copy":
+        written: list[str] = []
+        for skill in found:
+            source_dir = skills.PACKAGED_SKILLS / skill.name
+            if not (source_dir / "SKILL.md").is_file():
+                continue
+            for relative in ["SKILL.md", *map(str, skills.companion_files(source_dir))]:
+                destination = user_home / target.target / skill.name / relative
+                body = (source_dir / relative).read_text(encoding="utf-8")
+                if destination.is_file() and destination.read_text(encoding="utf-8") == body:
+                    continue
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                destination.write_text(body, encoding="utf-8", newline="\n")
+                written.append(f"~/{destination.relative_to(user_home).as_posix()}")
+
+        if host == "antigravity":
+            rule_dest = user_home / ".gemini/config/rules/forge.md"
+            rule_body = _antigravity_rules()
+            if not (rule_dest.is_file() and rule_dest.read_text(encoding="utf-8") == rule_body):
+                rule_dest.parent.mkdir(parents=True, exist_ok=True)
+                rule_dest.write_text(rule_body, encoding="utf-8", newline="\n")
+                written.append(f"~/{rule_dest.relative_to(user_home).as_posix()}")
+
+        return ("copied" if written else "unchanged"), written
+
+    section = _section(found, skills.PACKAGED_SKILLS, user_home)
+    path = user_home / target.target
+    existing = path.read_text(encoding="utf-8") if path.is_file() else ""
+    if _SECTION_RE.search(existing):
+        updated = _SECTION_RE.sub(lambda _: section.rstrip("\n"), existing)
+    elif existing.strip():
+        updated = existing.rstrip("\n") + "\n\n" + section
+    else:
+        updated = section
+    if updated == existing:
+        return "unchanged", []
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(updated, encoding="utf-8", newline="\n")
+    return ("updated" if existing else "written"), [f"~/{target.target}"]
+

@@ -27,13 +27,17 @@
 
 > **Skip the theory and start using Forge in your project right away with these 5 steps:**
 
-### Step 1: Install Forge CLI
-Install `forge` onto your machine globally (via `pip` or `uv` / `pipx`):
+### Step 1: Install Forge CLI & Global Agent Skills (1-Time Setup)
+Install `forge` globally and activate all 9 Forge skills (`forge`, `investigate`, `specify`, `plan-tasks`, `implement`, `curate-knowledge`, `bootstrap`, `interface`, `ui-ux`) **once at the user level** so you never have to copy skill files into each project folder:
 ```bash
-pip install git+https://github.com/CodeGenLabs/forge-harness.git
-
-# Or with uv (recommended):
+# Option A: Using uv or pipx (Recommended)
 uv tool install git+https://github.com/CodeGenLabs/forge-harness.git
+# (or: pip install git+https://github.com/CodeGenLabs/forge-harness.git)
+forge install --global            # Installs skills once into ~/.gemini/config/skills, ~/.claude/skills, ~/.codex/AGENTS.md
+
+# Option B: 1-Click Automated Script (installs CLI + PATH + Global Skills automatically)
+# Windows (PowerShell):  powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1
+# Linux / macOS (Bash):  bash ./scripts/install.sh
 ```
 Verify installation:
 ```bash
@@ -44,13 +48,14 @@ forge doctor
 Navigate to your project repository (new or existing codebase) and run:
 ```bash
 cd /path/to/my-project
-forge init
+forge init --no-skills   # Lightweight init: skips copying .forge/skills/ since global/packaged skills are used
+# Or run `forge init` if you want a local copy of skills in .forge/skills/ to customize per-repo
 ```
 
-### Step 3: Activate Skills for Your AI Coding Agent
-Run `forge install` to set up skills for all agents, or specify a host:
+### Step 3: (Optional) Per-Project Agent Manifest
+If you already ran `forge install --global` in Step 1, your AI Coding Agent already has all Forge skills across every folder. If you want to commit repo-local skills or `AGENTS.md` for teammates:
 ```bash
-forge install                     # Install for all hosts (Claude, Antigravity, Codex)
+forge install                     # Install into current repo (.claude/skills/, .agent/skills/, AGENTS.md)
 # Or specify a single host:
 forge install --host claude       # For Claude Code (.claude/skills/)
 forge install --host antigravity  # For Google Antigravity (.agent/skills/)
@@ -94,7 +99,7 @@ Open your AI Agent (Claude Code, Antigravity, Cursor...) in your project reposit
   > *"This repository uses Forge harness. Read the `bootstrap` skill and execute Pass 2: survey the codebase and propose candidate claims (architecture, components, invariants, pitfalls) into `docs/system/`."*
 
 * **Scenario B: Start developing a feature or bugfix right away**
-  > *"This repository uses Forge harness. Read the `forge` skill, check `forge status`, and open a change via `forge change new \"<feature-name>\" --track B` to implement it with disciplined TDD."*
+  > *"This repository uses Forge harness. Read the `forge` skill, check `forge status`, and open a change via `forge change new \"<feature-name>\" --track B --branch` to implement it with disciplined TDD."*
 
 ---
 
@@ -167,7 +172,7 @@ graph TD
     end
 
     subgraph SkillsLayer["REASONING TIER (SKILLS)"]
-        Skills["Markdown Procedures (*.md)<br>• forge router<br>• investigate<br>• specify<br>• plan-tasks<br>• implement (TDD)<br>• curate-knowledge<br>• bootstrap"]
+        Skills["Markdown Procedures (*.md)<br>• forge router<br>• investigate<br>• specify<br>• plan-tasks<br>• implement (TDD)<br>• curate-knowledge<br>• bootstrap<br>• interface & ui-ux"]
     end
 
     subgraph KernelLayer["MECHANISM TIER (KERNEL CLI)"]
@@ -259,9 +264,11 @@ If non-empty, `forge gate impact:post` strictly blocks until `impact.md` explici
 # Using pipx:
 pipx install git+https://github.com/CodeGenLabs/forge-harness.git
 pipx ensurepath
+forge install --global
 
 # Or using uv (fastest):
 uv tool install git+https://github.com/CodeGenLabs/forge-harness.git
+forge install --global
 ```
 
 #### 1B. From cloned repository
@@ -271,6 +278,7 @@ cd forge-harness
 pipx install .
 # or
 uv tool install .
+forge install --global
 ```
 
 ---
@@ -279,18 +287,22 @@ uv tool install .
 
 * **Windows (PowerShell):**
   ```powershell
-  git clone https://github.com/CodeGenLabs/forge-harness.git
-  cd forge-harness
+  # Direct 1-liner (no clone required):
+  irm https://raw.githubusercontent.com/CodeGenLabs/forge-harness/main/scripts/install.ps1 | iex
+
+  # Or from a cloned repository:
   powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1
   ```
 * **Linux / macOS (Bash):**
   ```bash
-  git clone https://github.com/CodeGenLabs/forge-harness.git
-  cd forge-harness
+  # Direct 1-liner (no clone required):
+  curl -fsSL https://raw.githubusercontent.com/CodeGenLabs/forge-harness/main/scripts/install.sh | bash
+
+  # Or from a cloned repository:
   bash ./scripts/install.sh
   ```
 
-Automatically creates an isolated user venv at `~/.forge-harness/venv`, installs shims into `~/.local/bin`, and permanently registers it in your User `PATH`.
+Automatically creates an isolated user venv at `~/.forge-harness/venv`, installs shims into `~/.local/bin`, permanently registers it in your User `PATH`, and runs `forge install --global` to install all 9 Forge skills once into `~/.gemini/config/skills`, `~/.claude/skills`, and `~/.codex/AGENTS.md`.
 
 ---
 
@@ -321,13 +333,13 @@ python -m forge.cli check --repo /path/to/my-project
 ```bash
 cd /path/to/my-project
 
-# 1. Initialize Forge scaffold (.forge/ and docs/system/)
-forge init
+# 1. Initialize Forge scaffold (.forge/ and docs/system/) without copying skill files per-repo:
+forge init --no-skills
 
-# 2. Install AI host skills:
-forge install --host claude       # For Claude Code (.claude/skills/)
-forge install --host antigravity  # For Antigravity (.agents/skills/)
-forge install --host codex        # For Cursor / Codex (AGENTS.md)
+# 2. (Optional) Only if you didn't run `forge install --global`, or want repo-local skills committed for teammates:
+# forge install --host claude       # For Claude Code (.claude/skills/)
+# forge install --host antigravity  # For Antigravity (.agent/skills/)
+# forge install --host codex        # For Cursor / Codex (AGENTS.md)
 
 # 3. Configure test & build commands in .forge/config.yaml:
 # commands:
@@ -349,7 +361,7 @@ forge check
 
 ### Scenario 1: Adopting an Existing Codebase (Bootstrap)
 Follow the 3-Pass Bootstrap process:
-1. `forge init`: Scaffold store baseline.
+1. `forge init --no-skills`: Scaffold store baseline.
 2. `forge bootstrap derive`: Deterministically scan files, languages, tests, modules.
 3. Pass 2: Agent drafts candidate claims into `docs/system/`.
 4. `forge bootstrap review`: Human reviews candidate claims (rejects by default).
@@ -358,7 +370,7 @@ Follow the 3-Pass Bootstrap process:
 ---
 
 ### Scenario 2: Feature Development Lifecycle
-1. `forge change new "order-refunds" --track C`
+1. `forge change new "order-refunds" --track C --branch`
 2. `forge instructions spec --change 1`
 3. `forge gate spec:post --change 1`
 4. `forge impact --change 1` (fill out `impact.md`)
@@ -397,8 +409,9 @@ In your project rules (`AGENTS.md` or `CLAUDE.md`), add:
 | `forge doctor` | Inspect environment (Python, Git, Tree-Sitter, Test runner) | 0 / 1 |
 | `forge status` | 1-screen summary: track, phase, claims, drift, tests | 0 |
 | `forge check` | Run 18 store integrity checks (S1–S18) and freshness checks | 0 / 1 |
-| `forge init` | Scaffold `.forge/` and `docs/system/` in repository | 0 |
-| `forge install [--host <host>]` | Install skills into host runtime (default: all - `claude`, `antigravity`, `codex`) | 0 |
+| `forge init [--no-skills]` | Scaffold `.forge/` and `docs/system/` in repository (`--no-skills` skips `.forge/skills/`) | 0 |
+| `forge install [--global] [--host <host>]` | Install skills into host runtime (`--global` installs once into `~/.gemini/config/skills`, `~/.claude/skills`, `~/.codex/AGENTS.md`) | 0 |
+| `forge guard [--cmd <cmd>] [--paths <p>...]` | Pre-execution command safety and active task file-scope guard | 0 / 1 |
 | `forge hooks install` | Install Git pre-commit hook to prevent drift commits | 0 |
 | `forge hooks uninstall` | Uninstall Git pre-commit hook | 0 |
 | `forge reconcile --since <ref>` | Reconcile unmanaged commits and open drift ledger entries | 0 / 1 |
@@ -406,17 +419,17 @@ In your project rules (`AGENTS.md` or `CLAUDE.md`), add:
 | `forge bootstrap review` | Pass 3: Interactive review sheet for candidate claims | 0 |
 | `forge bootstrap seal` | Seal ratified claims and generate Baseline ADR | 0 |
 | `forge sync derived` | Rebuild derived tier (`inventory`, `deps`, `tests`, `trace`) | 0 |
-| `forge change new "<name>" --track <A|B|C>` | Open new change branch | 0 / 2 |
+| `forge change new "<name>" --track <A\|B\|C> --branch` | Open new change branch | 0 / 2 |
 | `forge change show <N>` | Display progress and pending DAG artifacts | 0 |
 | `forge gate <point> --change <N>` | Execute lifecycle gate (`spec:post`, `impact:post`, etc.) | 0 / 1 |
 | `forge impact --change <N>` | Compute blast radius and claim-touch set | 0 |
-| `forge verify --change <N>` | Verify 11 conditions (tests, DAG, touch compliance) | 0 / 1 |
+| `forge verify --change <N>` | Verify 11 conditions (tests, DAG, touch compliance, UI probe) | 0 / 1 |
 | `forge archive --change <N> [--amend]` | Fold spec deltas into main store, restamp claims, auto-sync derived tier, and archive change | 0 / 1 |
 | `forge drift --store` | Scan entire claim store for stale AST anchors | 0 / 1 |
 | `forge drift --changed` | Scan only anchors touched by current git diff | 0 / 1 |
 | `forge claim new <kind> [--append]` | Scaffold claim template (invariant, concept, architecture,...) | 0 |
 | `forge trace <ID>` | Bidirectional traceability lookup for claim ID | 0 |
-| `forge skill list` | List packaged AI agent skills | 0 |
+| `forge skill list` | List packaged AI agent skills (`forge`, `investigate`, `specify`, `plan-tasks`, `implement`, `curate-knowledge`, `bootstrap`, `interface`, `ui-ux`) | 0 |
 
 ---
 
@@ -451,7 +464,7 @@ Full reasoning, and what counts as each item's failure, in
       suite; Forge renders nothing. *Shipped: `ui` is a condition; declare `commands.ui`,
       or `ui: none` if the project has no browser UI.*
 - [x] **R8 — Ban the average, prescribe nothing.** Advisory, never a gate. *Shipped as
-      the `interface` skill.*
+      the `interface` and `ui-ux` skills.*
 
 ---
 
@@ -463,7 +476,7 @@ Visit our full documentation online at **[https://codegenlabs.github.io/forge-ha
 | :--- | :--- | :---: | :---: | :---: |
 | **Getting Started** | Setup, global install, first run | [Read](docs/en/getting-started.md) | [Đọc](docs/vi/getting-started.md) | [読む](docs/ja/getting-started.md) |
 | **Core Concepts** | 3-tier model, claim store, AST anchors | [Read](docs/en/concepts.md) | [Đọc](docs/vi/concepts.md) | [読む](docs/ja/concepts.md) |
-| **CLI Reference** | Complete guide for all 11 commands | [Read](docs/en/cli-reference.md) | [Đọc](docs/vi/cli-reference.md) | [読む](docs/ja/cli-reference.md) |
+| **CLI Reference** | Complete guide for all CLI commands | [Read](docs/en/cli-reference.md) | [Đọc](docs/vi/cli-reference.md) | [読む](docs/ja/cli-reference.md) |
 | **Guides & CI/CD** | AI agents, GitHub Actions, monorepos | [Read](docs/en/guides.md) | [Đọc](docs/vi/guides.md) | [読む](docs/ja/guides.md) |
 | **Architecture** | Kernel, Tree-sitter AST, hashes | [Read](docs/en/architecture.md) | [Đọc](docs/vi/architecture.md) | [読む](docs/ja/architecture.md) |
 | **Configuration** | Full `.forge/config.yaml` schema | [Read](docs/en/configuration.md) | [Đọc](docs/vi/configuration.md) | [読む](docs/ja/configuration.md) |
