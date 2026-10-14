@@ -4,7 +4,7 @@
 //
 //   node probe.mjs <url> [--widths 375,768,1024,1280,1440,1920] [--out <directory>] [--dark] [--wait 800] [--dpr 1]
 //                        [--sweep [1440,375,20]] [--wireframe <url of chosen option>] [--quick]
-//                        [--dynamic-widths 1280,375|none]
+//                        [--dynamic-widths 1280,375|none] [--check-theme] [--check-i18n [en,vi]]
 //
 // Dynamic checks (Tab, hover, click, open overlay) take the majority of runtime and rarely differ across widths,
 // so by default they run only on mobile, near 768, and near 1280; other viewports check static layout only.
@@ -44,7 +44,7 @@ const maxTabStops = 160;
 const maxFocusChecksPerKind = 2;
 
 function parseArgs(argv) {
-  const options = { url: "", widths: defaultWidths, out: "", isDark: false, waitMs: 800, dpr: 1, playwrightDir: "", sweep: null, wireframeUrl: "", isQuick: false, dynamicWidths: null };
+  const options = { url: "", widths: defaultWidths, out: "", isDark: false, waitMs: 800, dpr: 1, playwrightDir: "", sweep: null, wireframeUrl: "", isQuick: false, dynamicWidths: null, checkTheme: false, checkI18n: null };
   const rest = [...argv];
 
   while (rest.length > 0) {
@@ -62,6 +62,11 @@ function parseArgs(argv) {
     else if (arg === "--pw") options.playwrightDir = rest.shift();
     else if (arg === "--wireframe") options.wireframeUrl = rest.shift();
     else if (arg === "--quick") options.isQuick = true;
+    else if (arg === "--check-theme") options.checkTheme = true;
+    else if (arg === "--check-i18n") {
+      const next = rest[0] ?? "";
+      options.checkI18n = next && !next.startsWith("--") ? rest.shift().split(",") : ["en", "vi"];
+    }
     else if (arg === "--dynamic-widths") {
       const value = rest.shift() ?? "";
       options.dynamicWidths = new Set(value === "none" ? [] : value.split(",").map(Number));
@@ -1901,8 +1906,80 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     if (tinyTexts.length < 10) tinyTexts.push(`${fontSize}px "${ownText.slice(0, 32)}": ${describe(element)}`);
   }
 
+  // 20. Mobile 3-pillar & i18n gates (theme-i18n-mobile.md: MOB-UX-03, MOB-LY-04, MOB-LY-05, MOB-PERF-01..04, I18N-01..10).
+  const iosZoomInputs = [];
+  if (isMobile) {
+    for (const field of document.querySelectorAll("input:not([type='hidden']):not([type='checkbox']):not([type='radio']):not([type='range']), select, textarea")) {
+      if (iosZoomInputs.length >= 8 || !isVisible(field)) continue;
+      const fontSize = parseFloat(getComputedStyle(field).fontSize);
+      if (fontSize < 16) iosZoomInputs.push(`${fontSize}px (< 16px triggers iOS Safari auto-zoom, MOB-UX-03): ${describe(field)}`);
+    }
+  }
+
+  const crushedTextColumns = [];
+  for (const element of allElements) {
+    if (crushedTextColumns.length >= 6 || !isVisible(element) || element.children.length > 0) continue;
+    const text = (element.textContent || "").trim();
+    if (text.length < 12) continue;
+    const rect = element.getBoundingClientRect();
+    const fontSize = parseFloat(getComputedStyle(element).fontSize) || 14;
+    if (rect.width > 0 && rect.width < fontSize * 4.5 && countTextLines(element) >= 3) {
+      crushedTextColumns.push(`width ${Math.round(rect.width)}px (< 8ch, ${countTextLines(element)} lines, MOB-LY-05): ${describe(element)}`);
+    }
+  }
+
+  const orphanLastLineWords = orphanWords;
+
+  const mobilePerfIssues = [];
+  if (isMobile) {
+    let blurCount = 0;
+    for (const element of allElements) {
+      if (!isVisible(element)) continue;
+      const style = getComputedStyle(element);
+      const backdrop = style.backdropFilter || style.webkitBackdropFilter || "none";
+      if (backdrop.includes("blur")) {
+        blurCount += 1;
+        if (blurCount > 1 && mobilePerfIssues.length < 6) {
+          mobilePerfIssues.push(`multiple backdrop-filter blur layers (${blurCount} > 1 max on mobile, MOB-PERF-04): ${describe(element)}`);
+        }
+      }
+    }
+    for (const img of document.querySelectorAll("img")) {
+      if (mobilePerfIssues.length >= 8 || !isVisible(img)) continue;
+      const hasIntrinsicRatio = (img.hasAttribute("width") && img.hasAttribute("height")) || getComputedStyle(img).aspectRatio !== "auto" || Boolean(img.closest(".l-frame"));
+      if (!hasIntrinsicRatio) mobilePerfIssues.push(`img missing width/height or aspect-ratio (CLS risk, MOB-PERF-01): ${describe(img)}`);
+      if (img.getBoundingClientRect().top > window.innerHeight * 1.5 && img.getAttribute("loading") !== "lazy") {
+        mobilePerfIssues.push(`off-screen img missing loading="lazy" (MOB-PERF-02): ${describe(img)}`);
+      }
+    }
+  }
+
+  const i18nIssues = [];
+  if (!document.documentElement.getAttribute("lang")?.trim()) {
+    i18nIssues.push("html element missing lang attribute (I18N-07)");
+  }
+  const rawKeyPattern = /(?:\b(?:common|auth|nav|form|error|errors|dashboard|settings|profile|table|status|button|label|validation|i18n|translation)\.[a-z0-9_]+(?:\.[a-z0-9_]+)+\b|\{\{[^}]+\}\}|\[missing[^\]]*\]|MISSING_TRANSLATION)/i;
+  for (const element of allElements) {
+    if (i18nIssues.length >= 8 || !isVisible(element) || element.closest("code, pre")) continue;
+    const ownText = [...element.childNodes].filter((node) => node.nodeType === Node.TEXT_NODE).map((node) => node.textContent).join(" ").trim();
+    if (ownText && rawKeyPattern.test(ownText)) {
+      i18nIssues.push(`raw i18n key or interpolation leaked in text "${ownText.slice(0, 36)}" (I18N-01): ${describe(element)}`);
+    }
+    for (const attr of ["placeholder", "aria-label", "title", "alt"]) {
+      const val = element.getAttribute(attr);
+      if (val && rawKeyPattern.test(val) && i18nIssues.length < 8) {
+        i18nIssues.push(`raw i18n key in ${attr}="${val.slice(0, 36)}" (I18N-02): ${describe(element)}`);
+      }
+    }
+  }
+
   return {
     orphanWords,
+    orphanLastLineWords,
+    iosZoomInputs,
+    crushedTextColumns,
+    mobilePerfIssues,
+    i18nIssues,
     invisibleFrames,
     faintLines,
     faintSelectedTabs,
@@ -3094,6 +3171,7 @@ async function probeWidth(browser, options, width) {
   const staticHoverBlocks = isMobile ? [] : await page.evaluate(findStaticHoverBlocks);
   const brokenImages = await page.evaluate(findBrokenImages);
   const misformattedNumbers = await page.evaluate(findMisformattedNumbers);
+  const unthemedElements = options.checkTheme ? await page.evaluate(findUnthemedElements) : [];
   const overflowingLayers = [...new Set([...hoverStates.overflowingLayers, ...popupLayers.overflowing])];
   // Run last: test clicks that change in-place selections (dates, tabs); other measurements must finish first.
   const pageCheckedHoverChanges = isStaticOnly ? [] : await findCheckedHoverChanges(page);
@@ -3138,10 +3216,44 @@ async function probeWidth(browser, options, width) {
     staticHoverBlocks,
     brokenImages,
     misformattedNumbers,
+    unthemedElements,
     darkModeProblems,
     stuckStates: stateShapes.stuckStates,
     stateGroupCount: stateShapes.groupCount,
   };
+}
+
+// 6-Axis Live Theme Reactivity (--check-theme, TH-01..TH-10): checks for hardcoded inline colors, SVG icons with hardcoded
+// hex stroke/fill instead of currentColor, and tests whether mutating --primary-hue, --radius-scale, and --font-sans on :root
+// updates computed styles across the page.
+function findUnthemedElements() {
+  const findings = [];
+  const describe = (element) => {
+    const classes = String(element.className?.baseVal ?? element.className ?? "").trim().split(/\s+/).filter(Boolean).slice(0, 4).join(".");
+    const text = (element.textContent || "").trim().replace(/\s+/g, " ").slice(0, 24);
+    return `${element.tagName.toLowerCase()}${classes ? "." + classes : ""}${text ? ` "${text}"` : ""}`;
+  };
+  for (const svg of document.querySelectorAll("svg")) {
+    if (findings.length >= 8 || svg.getBoundingClientRect().width === 0) continue;
+    for (const shape of [svg, ...svg.querySelectorAll("path, circle, rect, line, polyline, polygon")]) {
+      const stroke = shape.getAttribute("stroke") || "";
+      const fill = shape.getAttribute("fill") || "";
+      if (/^#[0-9a-f]{3,8}$/i.test(stroke) || /^#[0-9a-f]{3,8}$/i.test(fill)) {
+        findings.push(`SVG icon uses hardcoded hex stroke/fill (${stroke || fill}) instead of currentColor (TH-05): ${describe(svg)}`);
+        break;
+      }
+    }
+  }
+  const root = document.documentElement;
+  const prevFont = root.style.getPropertyValue("--font-sans");
+  root.style.setProperty("--font-sans", '"Courier New", monospace');
+  const bodyFontAfter = getComputedStyle(document.body).fontFamily;
+  if (prevFont) root.style.setProperty("--font-sans", prevFont);
+  else root.style.removeProperty("--font-sans");
+  if (!/Courier/i.test(bodyFontAfter)) {
+    findings.push(`body font-family (${bodyFontAfter.slice(0, 32)}) does not react to --font-sans token mutation (TH-04)`);
+  }
+  return findings;
 }
 
 // Heavy decorative border (M14): card or rounded container with 1px border where border line >= 1.21:1 on white. Skill ~1.07:1,
@@ -4255,6 +4367,26 @@ function formatReport(results) {
     if (result.wrappedRows.length > 0) {
       problems.push(`WRAPPED ROW (header, nav, tab rail, button row) (${result.wrappedRows.length} rows):`);
       for (const item of result.wrappedRows) problems.push(`  ${item}`);
+    }
+    if (result.iosZoomInputs?.length > 0) {
+      problems.push(`MOBILE INPUT FONT-SIZE UNDER 16px (${result.iosZoomInputs.length} inputs, triggers iOS Safari auto-zoom, MOB-UX-03):`);
+      for (const item of result.iosZoomInputs) problems.push(`  ${item}`);
+    }
+    if (result.crushedTextColumns?.length > 0) {
+      problems.push(`CRUSHED TEXT COLUMN UNDER 8ch (${result.crushedTextColumns.length} blocks, MOB-LY-05):`);
+      for (const item of result.crushedTextColumns) problems.push(`  ${item}`);
+    }
+    if (result.mobilePerfIssues?.length > 0) {
+      problems.push(`MOBILE PERFORMANCE / CLS ISSUES (${result.mobilePerfIssues.length} places, MOB-PERF-01..06):`);
+      for (const item of result.mobilePerfIssues) problems.push(`  ${item}`);
+    }
+    if (result.i18nIssues?.length > 0) {
+      problems.push(`LOCALIZATION / I18N ISSUES (${result.i18nIssues.length} places, I18N-01..10):`);
+      for (const item of result.i18nIssues) problems.push(`  ${item}`);
+    }
+    if (result.unthemedElements?.length > 0) {
+      problems.push(`UNTHEMED / HARDCODED ELEMENTS (${result.unthemedElements.length} places, TH-01..10):`);
+      for (const item of result.unthemedElements) problems.push(`  ${item}`);
     }
 
     problemCount += problems.filter((line) => !line.startsWith("  ")).length;

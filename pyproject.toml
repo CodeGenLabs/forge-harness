@@ -50,9 +50,8 @@ forge = ["_skills/**/*"]
 [tool.setuptools.exclude-package-data]
 forge = ["_skills/**/__pycache__/*"]
 
-# Third-party material inside the skills keeps its notice in every copy.
 [tool.setuptools]
-license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
+license-files = ["LICENSE"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

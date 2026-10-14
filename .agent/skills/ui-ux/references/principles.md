@@ -1,415 +1,465 @@
-# General principles — rules N
+# Visual & Interaction Craft Principles (`P-01`..`P-114` & `C-01`..`C-25`)
 
-Twelve principles that sit **behind** the M, T, F, I, R rules and the component files. These
-are **not new rules**: each line gathers mistakes already made across many different
-components, and points back to the original rule. Read this file **before building anything**,
-especially anything that has no template file in `components/`: no skill writes a full spec
-for every UI, so where there is no spec, the principles are the only thing to hold on to.
-
-Each principle has a **test**: a question you can answer yourself by looking at the build.
-Answering "no" means you are in violation, even if there is no specific rule for that
-component yet.
-
-**Above all twelve principles: follow the majority convention.** Wherever there is already a way
-of doing something that most apps do and users are used to (a red `*` for required fields, a logo
-in the top-left corner that goes home, ✕ in the top-right corner to close, Cancel to the left of the
-primary button), do exactly that, **even when another way looks cleaner**. The user should not have
-to stop and wonder. The skill's style (muted, few signals) only decides the places that have no
-convention yet. Settled.
-
-*Test:* does a first-time user opening this screen hit any spot where they have to ask "what does
-this mean" or "where do I click to…"? If so, you are breaking convention there.
-
-**Also above the twelve principles: if the project already has a colour language, follow the
-project.** The skill's low-colour style (grey + one accent colour, `M4`, `M5`, single-hue charts in
-light and dark shades) is **the default for an empty project**, not a filter to run over an existing
-project. If the project already tints chips with a light accent colour, uses light-blue step blocks,
-small purple pill labels at the top of sections, a glow on the primary button, one colour per category
-in charts, then a newly built screen uses **the same approach** (`N5`), and a refactor **does not
-neutralise** their colours. Walking into a colourful project and pulling it back to grey breaks their
-identity; it does not make it prettier (settled). How to recognise it: count it like a
-style, `P4` in `styles.md` (the "colour" line in layer 3, `SKILL.md` question 2).
-
-Following the project means following **how it uses colour**; the **rules about meaning and
-legibility** still hold in every project, because those are right and wrong, not taste:
-- Red only for errors and for things that cannot be undone (`M30`). A red brand colour in content
-  (logos, images) does not count.
-- One status table for the whole app: "done" is the same colour everywhere (`M7`).
-- Colour is never the only carrier of meaning or value: there is always text, a number or an icon with it (`N4`).
-- Text meets 4.5:1 contrast, including coloured text on a light tinted background.
-- One brand colour serves one role: if the project's accent colour is blue, then the primary button,
-  the selected tab and links share that blue, with no second accent colour.
-
-If the project uses colour haphazardly, with no pattern (each screen its own way), follow the
-**newest** part as in `P5`, and mention it in one line at delivery.
-
-*Test:* put the new screen next to the project's existing screens. Do they look like the same
-product, or is the new screen a pale grey stranger among colourful screens?
+Every rule in this reference states a concrete, testable condition (`DOM`, `CSS`,
+`Visual`, or `Artifact`) and cites its upstream source (`[RUI]`, `[EL]`, `[LUX]`,
+`[IMP]`, `[UPM]`, `[WIG]`, `[UIS]`, `[FD]`, `[ADM]`, `[ADMJ]`, `[WCAG]`).
 
 ---
 
-**N1. Changing state does not make the interface jump or stretch.**
+## 1. Visual Hierarchy (`P-01`..`P-10`)
 
-The user clicks, hovers, changes page, data arrives: everything **around** the spot that just
-changed must stay still. Two ways to hold it: reserve space for the largest state up front, or change
-with colour and opacity instead of adding or removing elements. Self-updating numbers (countdowns,
-percentages, counters) are always `tabular-nums`.
-
-Already happened: a tab adding a border when selected shoved the whole row (tabs always have a
-`border`); pagination nav changing its number of cells per page (always 7 cells); the "Per page"
-select drifting with the count string; a spinner inserted into a button made it swell (the spinner
-replaces the icon); a % column misaligned because the buttons at the end of each row had different
-widths (action column `w-20`); a calendar with 5 or 6 rows (always 6); a skeleton of the wrong shape
-(`I19`); a scrollbar taking space when it appears (`I18`); changing the font weight of a tab when
-selected; an OTP error line inserted that pushed the Confirm button out from under the cursor (the
-error line reserves its space when it sits between the input and the button); an error or lock-reason
-line replacing a `text-sm` description but dropping to `text-xs`, so the settings row shrank on toggle (the replacement line keeps the size of the line it replaces).
-
-**Reserving space is for matching the neighbouring element**, not for keeping a shape. If there is
-nothing alongside (a narrow screen stacked in one column, the whole row missing the same thing), drop
-the reserved space so it does not become meaningless whitespace (already happened: the first month's
-sparkline reserved space on mobile).
-
-**Moving to a whole different screen does not count** (changing form step, changing page): the whole
-screen has been replaced, there is nothing "alongside" left to hold. Do not `truncate` text that must
-be read just to keep the height across screens (already happened: step names in the collapsed bar cut to "…").
-
-**Open/close that deliberately pushes what is below** (accordion, collapsible group) cannot reserve
-space, so it must **slide**, not jerk: `grid-rows` 0fr ↔ 1fr, no `<details>`, no conditional
-rendering (`I30`).
-
-*Test:* toggle each state in turn, and watch the **neighbouring element**, not the element that just
-changed. Does anything move, even by 1px?
-
----
-
-**N2. Every state is built, and each one can be told apart at a glance.**
-
-List the states before building: default, hover, keyboard focus (only inputs and menu items; the rest
-draw no focus ring, per `I13`), selected, disabled, loading, empty, error, done, and **edge cases**
-(nothing, one, very long, very many). One static example per state (`SKILL.md` scope). Two states
-with different meanings must look clearly
-different.
-
-Already happened: done but the bar still full black as if running (done is emerald); the current page
-looking like an input; a secondary button looking disabled (`I8`); today and the selected date
-confused with each other (bold text + dot, versus solid background); one page and 0 rows still showing
-all their dead controls; an error step with no shape of its own; a file rejected for being too large still having an empty progress track, reading as "waiting to run"; a disabled upload box with the same background as while a file is being dragged in; a collapsed step bar filling in the whole current
-segment so "on the last step" looked like "all done", fixed by making it grey so "Step 2 / 3"
-then read like a missing bar (in progress is a third level, half strength).
-
-Named exception: a **selected** table row and a **hovered** row share the same faint background,
-because the two states are already separated by the ticked checkbox (settled, `I10`). A different
-look does not have to mean a different background. This exception is **only for table rows with a
-checkbox**. The sidebar and file tree have no checkbox, so selected is one step stronger than hover:
-hover `hover:bg-item-hover`, selected `bg-secondary` + `font-medium`, no accent colour, no border
-(settled).
-
-*Test:* cover the text and look only at the shapes. Can you still say which state this is?
+- **`P-01` Weight and contrast before font size (`CSS` / `Visual`)** `[RUI, IMP:typography]`
+  Establish hierarchy between sibling text elements by varying `font-weight` (`400` vs
+  `600`) and foreground lightness (`--color-fg` vs `--color-fg-secondary`) before adding
+  a new `font-size` step. A card or panel must not contain more than 3 distinct
+  `font-size` values.
+- **`P-02` Three-tier foreground contrast (`CSS`)** `[RUI, IMP:color]`
+  Every surface defines three text tiers: primary (`--color-fg`, `>= 7:1` contrast),
+  secondary (`--color-fg-secondary`, `>= 4.5:1`), and muted (`--color-fg-muted`,
+  `>= 4.5:1` for `<= 18px` text or `>= 3:1` for `>= 24px` text). Never use CSS
+  `opacity` to create secondary text over textured or colored surfaces.
+- **`P-03` De-emphasize competing elements instead of enlarging primary (`Visual`)** `[RUI, IMP:spatial]`
+  When a primary heading or action fails to stand out, reduce the contrast, weight, or
+  border prominence of surrounding chrome and navigation rather than increasing the
+  primary element's size or saturation.
+- **`P-04` Combine labels with values (`DOM` / `Visual`)** `[RUI, IMP:ux-writing]`
+  Omit redundant field labels when the value format is self-evident (e.g., display
+  `inStock: 14 units` or `$49 / month` with the unit styled in `--color-fg-muted`
+  instead of a separate `Price:` label).
+- **`P-05` Decouple semantic heading rank from visual size (`DOM` / `CSS`)** `[RUI, WIG, WCAG]`
+  Heading elements (`<h1>`–`<h6>`) reflect document outline (`ST-04`), while visual size
+  is bound via classes or tokens (`--text-lg`, `--text-2xl`). Section titles in dense
+  dashboards may use `<h2>` with `--text-sm` uppercase tracking while remaining
+  semantically `h2`.
+- **`P-06` Weight compensation for low-contrast text (`CSS`)** `[RUI, IMP:typography]`
+  Small text (`<= 0.8125rem`) in muted color must use `font-weight: 500` or `600` so thin
+  strokes remain legible on standard-DPI displays.
+- **`P-07` Single primary action per view (`DOM` / `Visual`)** `[RUI, UIS, LUX-02]`
+  Each screen or modal dialog has at most one high-fill primary button (`--color-primary`).
+  Secondary actions use subtle outline or ghost treatments; tertiary actions use text
+  links.
+- **`P-08` Destructive actions do not default to solid red unless primary (`Visual`)** `[RUI, IMP:interaction]`
+  In a list or settings view where deletion is not the primary intent, style the delete
+  trigger as a neutral or subtle danger ghost button, reserving the high-saturation
+  solid `--color-danger` fill for the confirmation dialog's final action.
+- **`P-09` Squint test focal point (`Visual`)** `[IMP:spatial, FD]`
+  Under a `4px` Gaussian blur, the primary focal element and primary CTA must remain the
+  two highest-contrast regions in the viewport.
+- **`P-10` Commit to an explicit aesthetic direction before writing markup (`Artifact`)** `[FD, IMP]`
+  Every screen declares its domain persona, color temperature, typography pairing, and
+  density target before implementation begins.
 
 ---
 
-**N3. One signal per idea. Save the strongest signal for exactly one place.**
+## 2. Spacing & Spatial Rhythm (`P-11`..`P-20`)
 
-Accent-colour backgrounds, solid filled blocks, red, bold text are **expensive** signals: each screen
-spends them once. Hierarchy comes from font size, weight and position first; colour and shadow last
-(`M13`, `T8`). If there is already one marker, do not add a second marker for the same idea (`M6`, `F6`).
-
-Already happened: three black blocks in the time picker (one light band); a trash icon at the top of
-the dialog and on the button (the button is text only); a banner tinting its whole description (only the
-icon and title); an error line saying "then try again" next to a Try again button; "View all" wanting to
-be black on every card (`I1`, `I3`); the page title lighter than the section titles beneath it; an
-expired OTP screen with both "Send new code" in the error line and "Resend code" below (two buttons, one
-job: keep one); a finished upload with a full green bar + `100%` + "Upload complete" (three signals,
-one idea: drop the bar and the number, keep the text).
-
-**The same sentence in every cell, every row, is also one idea said many times**: pull it out and say
-it once at the top of the group. Already happened: "vs 2025" in all four stat cells
-(that very suffix made the narrow cells wrap; do not fix it by stacking into one column instead of
-dropping the suffix); a new customer showing "No previous period" four times; `/2026` on every
-timestamp; a Status column with a green "Active" badge on 14/18 rows. **The normal state needs no marker; only exceptions get one** (an invite "Pending"). In
-a customer panel, `text-3xl` stats larger than the customer's name are also wrong: the heaviest thing must be the thing that answers "what
-am I looking at".
-
-**The thing just clicked to open something is also one saying.** Already happened: click the
-avatar to open a menu, and the top of the menu has another 40px avatar larger than the button just
-clicked; a header with an avatar while the sidebar footer still has a profile row opening the same menu
-(two entrances to one place); on a narrow screen the account list drops right below the menu header,
-so the current account appears twice in a row.
-
-**Once something is said by position, do not say it again with a shape. One running task, one spinner.**
-Already happened in a chat panel: right-aligned bubbles already said "who is speaking", yet every
-answer still had a robot circle; opening the tool list showed a spinner on both the top row and the
-step row; a failed tool whose failure the answer already explained still had a red "1 error", a red
-icon, and a description line, four times one idea (`components/chat.md`). On the same screen, tool
-step names were as heavy as the answer: **the process is always lighter than the result**, and it does
-not pre-announce the result (a step description saying "total 409,000,000" right above an answer that
-opens with that exact number).
-
-*Test:* count the solid-filled or coloured spots on the screen. Can each one answer "what does it say
-that no other spot has said yet"?
-
----
-
-**N4. Colour states status, from exactly one table for the whole app, and always comes with text.**
-
-Colour is not for decoration and not for categorising (`M4`, `M5`). Which status gets which colour
-comes from **one** table (`M7`, `D2`, `M30`): grey pending, green done, amber needs
-attention, red broken. Colour follows **good or bad**, not up or down. Colour never
-stands alone: there is always text or an icon saying the same thing, because colour-blind users and
-screen readers cannot see colour.
-
-Already happened: up/down colour inferred from the sign of the number (costs went up and showed
-green); the lightest grey series in a chart almost white, saved only by the numbers on top of the bars;
-a progress bar changing colour with no line of text; only a red segment on the step bar on narrow
-screens without saying which step was wrong.
-
-*Test:* switch the screen to black and white. Can every state still be read?
+- **`P-11` Non-linear spacing scale (`CSS`)** `[RUI, IMP:spatial]`
+  All `margin`, `padding`, and `gap` declarations must resolve to the non-linear token
+  scale (`4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96px` / `--space-1`..`--space-24`).
+  Adjacent steps must grow by `>= 25%` above `16px` so the eye perceives distinct steps.
+- **`P-12` Internal padding strictly less than external group gap (`CSS` / `Visual`)** `[LUX-04, RUI, IMP:spatial]`
+  By the Law of Proximity, spacing inside a grouped component (`--space-3` or
+  `--space-4`) must be strictly smaller than the gap separating sibling components
+  (`--space-6` or `--space-8`). For headings, `margin-block-start >= 1.5 * margin-block-end`.
+- **`P-13` Start with generous whitespace and subtract only when needed (`Visual`)** `[RUI, IMP:spatial]`
+  Default section vertical padding to `--space-12`..`--space-20` on marketing/editorial
+  views and `--space-6`..`--space-8` on application shells; maintain `>= 25%` open
+  background/surface area across the viewport.
+- **`P-14` Avoid stretch-to-fill syndromes on wide viewports (`CSS` / `Visual`)** `[RUI, EL]`
+  Never stretch a single form or narrow widget across `100%` of a `1440px` viewport.
+  Constrain forms to `32rem–42rem` (`--measure`) or pair them with a contextual
+  `.l-sidebar` pane.
+- **`P-15` Flow spacing owned by parent primitives (`CSS`)** `[EL, IMP:spatial]`
+  Child components must not declare outer `margin-top` or `margin-bottom`; vertical and
+  horizontal gaps are owned by `.l-stack`, `.l-cluster`, `.l-grid`, or `.l-sidebar`.
+- **`P-16` Consistent rhythm across columns and cards (`Visual`)** `[RUI, UIS]`
+  Cards in the same `.l-grid` row share identical padding tokens (`--space-5` or
+  `--space-6`) and align their footer actions to the bottom edge via `.l-stack` split
+  margins (`margin-block-end: auto`).
+- **`P-17` Optical alignment over geometric centering (`CSS` / `Visual`)** `[RUI, IMP:spatial]`
+  Play icons inside circular buttons shift `1–2px` toward the triangle's apex; text links
+  with trailing arrows hang the icon outside the text alignment box; form inputs use
+  slightly larger inline padding (`--space-3`..`--space-4`) than block padding
+  (`--space-2`..`--space-3`).
+- **`P-18` Responsive spacing scales down on narrow viewports (`CSS`)** `[IMP:responsive, EL]`
+  Section padding and grid gaps use `clamp()` or container-aware tokens so a `375px`
+  viewport never loses more than `32px` total horizontal gutter (`16px` per side).
+- **`P-19` Touch target spacing buffer (`CSS` / `Visual`)** `[WCAG 2.5.8, LUX-02, WIG]`
+  Interactive controls have a hit area `>= 44x44px` on touch/mobile (`>= 24x24px` WCAG AA
+  floor on desktop dense toolbars) with `>= 8px` (`--space-2`) clearance between adjacent
+  targets.
+- **`P-20` No fixed heights on text containers (`CSS`)** `[EL, WIG]`
+  Containers holding text or localized strings use `min-block-size` and padding rather
+  than fixed `height` so `200%` text zoom never clips content.
 
 ---
 
-**N5. Same role, same template, same classes.**
+## 3. Typography (`P-21`..`P-38`)
 
-If something already has a template, copy the template; do not mould a variant (`SKILL.md` section 2
-"assemble, do not redraw", `D1`, `D8`). When a new component shares a part with an existing one, borrow
-exactly that part: a field that opens a popover looks exactly like an input, a button in a form is as
-tall as the input, every calendar uses one grid.
-
-Already happened: the two ends of a date range in different shades; an error step circle shaped
-differently from a done step circle; "Download report" borrowing the "View all" template by mistake
-(buttons follow the type of action, not where they stand); `₫` here and `VND` there; `12,4 / 20` next to `4/6`; the grey scale of a grouped bar chart differing from the donut's grey scale; `2,8 %` in the main number next to `27,3%` in the
-comparison line; a label–value block
-writing status, category labels and money as plain text instead of using the existing badge,
-pill and currency format; a large avatar on the profile page built separately, so it differed in colour from
-the same person's avatar in the header; an email in a confirm dialog not using the line-breaking
-already defined in the label–value block. **A value that has its own template uses that template everywhere**,
-even when it sits inside another component. **Borrowing a template means borrowing the classes too**, not just
-the look (font size, connector thickness, how the first line aligns with the circle).
-
-*Test:* for each new element, does the skill already have something with **the same role**?
-If so, are the classes the same?
-
----
-
-**N6. Text does the job: what happened, why, what to do next.**
-
-Long messages split into **two levels**: the top level says what happened, the lower level says why or
-the consequence, with concrete numbers and dates. Error messages say how to fix it, without repeating the
-label or placeholder (`T20`, `T22`, `layouts/form.md`). Disabled things say why they are disabled. Pointers
-to somewhere else are buttons or links, not plain text.
-
-Already happened: an error toast breaking into three lines; a load error with a single sentence and no
-reason; "Choose an expiry date" as an error message (reads like an instruction); "e.g. 31/12/2026" for
-a field you cannot type in; "Change in Settings" not clickable; the line under the calendar still
-saying "Choose a start date" after it was chosen. An OTP screen with no "Change email": a mistyped
-email means you are stuck, with no way back. **Every step needs a way out when the user takes a wrong
-turn.** Stopping something yourself can also be a wrong turn: a stopped answer with no Regenerate means
-retyping the whole question (`components/chat.md`).
-
-**An error message must not invent a rule the system never checks.** It teaches the user something
-wrong, and contradicts the data shown on the same screen (a multi-tag input
-saying "needs an @ and a .com ending" while the valid emails right above it are
-`@saoviet.vn`). Write what is actually checked: "needs an @ and a domain".
-
-**When the screen is empty and the user is the one who has to start, the empty state is something
-clickable right away**, not a "nothing yet" notice. Already happened: a new chat showing only "No
-messages yet" in the middle of the screen (replace with 2–3 starter suggestions, `components/chat.md`).
-Lists filled by the system (orders, notifications) still get one faint line of text (`components/empty-state.md`).
-
-*Test:* after reading this sentence, does the user know what to do next?
-
----
-
-**N7. Do not act for the user, do not guess for the user.**
-
-If nothing is chosen, leave it empty and show a placeholder. Suggestions go in the suggestion area,
-not into the field. Do not invent numbers, do not pre-tick consent.
-
-Already happened: opening the time picker auto-filled `00:00:00`; choosing a date made the date-time
-field grab a time on its own; tabs with invented counts for show. Named exception: a radio group always
-has one option preselected (`components/choice-controls.md`).
-
-*Test:* is there any value in a field that the user has never touched?
-
----
-
-**N8. Do not cover or cut off what the user needs in order to decide.**
-
-The page does not scroll horizontally (`R1`, `T13`). An overlay does not cover the field that opened
-it. Whatever is used to confirm (the name of the object about to be deleted) is not `truncated`.
-Descriptions wrap; only one-line titles get cut, and cut text has a `title` (`T14`). **Descriptions that
-wrap are always `text-pretty`** (`T10`), especially in narrow columns: no single orphan word on the last line. No text sliced in half.
-
-Already happened: a date-range calendar flipping upward to cover its own field; numbers in a wheel cut
-in half at the edge; the top half of a popover blank because of inserted padding. Step descriptions in a
-vertical step list dropping single words onto their own line
-(a ~200px column, missing `text-pretty`). A "Change email" link broken in two at the end of a line. **A short link inside
-a sentence is not broken midway**: `whitespace-nowrap` so it wraps as a whole
-unit. Button labels are the opposite: they may wrap (`T15`). **Text drawn over a graphic (numbers on a
-chart) goes on the empty side**, not fixed to one side: a "44.4M" label placed above a dot
-sat right on the rising line segment, its background cutting the line in two. A number without its
-date, when the axis shows only a few labels, is also missing something that must be read: you cannot tell which day it belongs to.
-
-**If something must be cut, cut the part that is the same and keep the part that differs.** Cutting at
-the end is not the only way, and wrapping is not the only alternative. Emails keep the domain and cut
-the part before `@` (`layouts/overlay.md`, "Truncating emails"); file names keep the `.pdf` extension.
-Already happened in an account switcher menu: afraid of losing the domain, emails were allowed to wrap,
-each row became three lines, and the submenu was heavier than the parent menu. In menus, option rows and
-narrow cells: one line per field.
-
-*Test:* at 375px and with the longest data, can the user still read everything they need in order to
-click?
+- **`P-21` Maximum two font families per interface (`CSS`)** `[RUI, IMP:typography, UPM]`
+  Use at most 2 font families (`--font-sans` + `--font-display`, or `--font-sans` +
+  `--font-mono` when technical/numeric data is present).
+- **`P-22` Modular fluid type scale (`CSS`)** `[EL, IMP:typography]`
+  Define 6–8 fluid font-size steps using `clamp(min, base + vw, max)` so type scales
+  smoothly without breakpoint jumps. Never include `vw` alone without a `rem` base
+  (which breaks browser zoom).
+- **`P-23` Line length constrained to `45ch–75ch` (`CSS` / `Visual`)** `[EL, RUI, IMP:typography]`
+  Body prose blocks enforce `max-inline-size: 65ch` (`45ch–75ch` acceptable window;
+  narrower captions/sidebars `25ch–40ch`).
+- **`P-24` Line-height inversely proportional to font size (`CSS`)** `[RUI, IMP:typography]`
+  Body copy (`1rem`) uses `line-height: 1.5–1.65`; multi-line subheadings use `1.25–1.35`;
+  display headings (`>= 2rem`) use `1.08–1.20`.
+- **`P-25` Negative tracking on display headings, positive on all-caps (`CSS`)** `[RUI, IMP:typography]`
+  Display headings (`>= 1.875rem`) apply `letter-spacing: -0.02em` to `-0.03em`.
+  Uppercase kickers/badges (`<= 0.8125rem`) apply `letter-spacing: 0.05em` to `0.08em`
+  and `font-weight: 600`. Body text in Latin scripts never uses negative letter-spacing.
+- **`P-26` Left-align body copy; never justify web prose (`CSS`)** `[RUI, IMP:typography, WIG]`
+  Prose and multi-line descriptions (> 3 lines) are left-aligned (`text-align: start`).
+  Centered text is restricted to short headlines or hero intros (`<= 3` lines).
+  `text-align: justify` is banned in web UIs.
+- **`P-27` Baseline alignment when mixing font sizes on one line (`CSS`)** `[RUI, IMP:typography]`
+  Inline metrics (`$49` in `2.25rem` beside `/mo` in `0.875rem`) align via
+  `align-items: baseline`, never `align-items: center`.
+- **`P-28` Tabular numerals for aligned numbers and timers (`CSS`)** `[RUI, WIG, IMP:typography]`
+  Tables, KPI cards, prices, counters, and timestamps apply
+  `font-variant-numeric: tabular-nums` so digits align vertically and never jitter
+  during updates.
+- **`P-29` Balanced and pretty text wrapping (`CSS`)** `[WIG, IMP:typography, UIS]`
+  Headings (`h1`–`h4`) apply `text-wrap: balance`; body paragraphs apply
+  `text-wrap: pretty` to prevent single-word orphans.
+- **`P-30` Base body font size `>= 16px` (`1rem`) (`CSS`)** `[IMP:typography, WIG, UPM]`
+  Primary reading copy and all `<input>`, `<select>`, and `<textarea>` elements use
+  `font-size >= 1rem` (`16px`) to prevent iOS Safari auto-zoom on focus.
+- **`P-31` Dark-mode font-weight compensation (`CSS`)** `[RUI, IMP:typography]`
+  Light text on dark backgrounds (`[data-theme="dark"]`) appears optically heavier due to
+  halation; apply `-webkit-font-smoothing: antialiased` or step body weight down when
+  supported by variable font axes (`GRAD`).
+- **`P-32` Proper typographic punctuation (`DOM`)** `[WIG, IMP:ux-writing]`
+  Use curly quotes (`“ ”`, `‘ ’`), real ellipsis (`…`), en-dash (`–`) for ranges, and
+  non-breaking spaces (`&nbsp;`) between numbers and units (`10 MB`).
+- **`P-33` Truncation safety with explicit fallback (`CSS` / `DOM`)** `[WIG, UIS]`
+  Every flex child holding dynamic text sets `min-inline-size: 0` so `text-overflow:
+  ellipsis` works without blowing out the flex track, and provides the full text via
+  `title` or expandable disclosure.
+- **`P-34` Font loading with metric-compatible fallback (`CSS`)** `[WIG, IMP:typography]`
+  Web fonts declare `font-display: swap` (or `optional`) and `size-adjust` fallbacks to
+  prevent layout shift (CLS).
+- **`P-35` Restrict font weights to 3–4 active weights (`CSS`)** `[IMP:typography, UIS]`
+  Load and use at most 3–4 weights (typically `400`, `500`, `600`, `700`). Avoid ultra-light
+  (`100–200`) weights below `24px`.
+- **`P-36` Paragraph spacing between `0.75em` and `1.25em` (`CSS`)** `[EL, IMP:typography]`
+  Multi-paragraph prose separates `<p>` blocks by `1em` (`--space-4`) via `.l-stack`.
+- **`P-37` Code and identifier blocks use monospace at `0.9em` (`CSS`)** `[ADM, IMP:typography]`
+  Inline `<code>`, commit hashes, API keys, and keyboard shortcuts (`<kbd>`) render in
+  `--font-mono` at `0.875em–0.925em` with a subtle surface pill (`--neutral-100`).
+- **`P-38` Underline offset on text links (`CSS`)** `[WIG, IMP:typography]`
+  Inline prose links remain distinguishable without color alone by setting
+  `text-decoration: underline; text-underline-offset: 0.18em; text-decoration-thickness: 1px`.
 
 ---
 
-**N9. Every action works with a mouse, with the keyboard, and with a finger on a phone.**
+## 4. Color & Contrast (`P-39`..`P-58`)
 
-Clickable things have hover and `cursor-pointer` on the actual clickable element, and the hit area
-spans the whole row (`I9`, `I29`). They can be reached with Tab; no focus ring is drawn (`I13`, settled). With no
-hover on touch screens, anything that shows on hover must always be visible (`I11`). Anything
-selectable can be selected in several ways, not just one gesture. `aria-*` for things expressed only
-visually (`aria-pressed`, `aria-current`, `role="progressbar"`).
-
-**Clickable things whose visual is smaller than 32px** (inline text buttons like "Try again", "Resend", a `size-7` icon button
-next to a value) **keep the visual and enlarge the hit area with `relative before:absolute before:-inset-*`**
-up to ~32–40px, without enlarging the visual: a bigger visual misaligns the row and outweighs its job. The negative value here
-must stay (`N11`). If two enlarged areas touch, move the item onto its own row first. Already happened:
-a 28px copy button, an 18px "Resend · Cancel", a 16px "Try again"; the formula for
-each spot is in `components/description-list.md`, `layouts/app.md` (Profile), `components/file-upload.md`.
-
-Already happened: a time wheel selectable only by scrolling, and the scroll stalling midway; only
-‹ › arrows to change month, so going far tires the hand (the title opens a month/year grid).
-
-*Test:* unplug the mouse and use Tab + Enter + arrows to go through the whole screen. Then open it on a
-phone. Does it get stuck anywhere?
-
----
-
-**N10. The skill handles the look; the user handles the logic.**
-
-Everything with data consequences is the user's decision: when to save, what to call, which dates
-are disabled, colour-change thresholds, whether something reappears after being closed. The skill
-leaves empty props or handlers, and only decides **what each of those choices looks like**. Details
-are in the scope section at the top of `SKILL.md`.
-
-Tools too: which library and which component set belong to the project. **Check before building**
-anything that usually has its own library (charts, calendars, tables, virtual lists): if there is one,
-use exactly that, adjusted to match the look (turn off what it enables by default, take colours from
-tokens), and do not redraw it alongside. If there is none, do not install one yourself: build normally,
-and only propose a library when there is a real need that would be costly to build by hand. Choose by
-criteria (lightweight, solves exactly the problem, fits the ecosystem), not by familiar names.
-
-*Test:* does the code just written call an API, set a threshold, persist state, or schedule a timer
-that the request did not ask for?
-
----
-
-**N11. Do not use negative values for spacing and position unless there is no other way.**
-
-Negative margins (`-mt-*`, `-mx-*`), `-space-*`, `-translate-*`, `-inset-*`, `top-[-…]`: negative
-values pull an element out of its place, so the bounding box no longer tells the truth about its size.
-Change the padding in one place and something else shifts with it, and it tends to show up in other
-states (a negative margin in an accordion made a closed item leak the first line of its answer; a `size-8`
-⋯ button on a kanban card pulled `-mr-2`, so the wrapper shrank to 24px and the Button's `max-w-full`
-squeezed the button to 24×32).
-Settled: avoiding them takes priority at any cost.
-
-Work in this order:
-
-1. **Put padding on the element that needs it.** If a divider should run to the edge, the container has
-   no horizontal padding and each row has its own `px`: the line reaches the edge on its own, nothing is pulled out.
-2. **Accept the spacing that fixed padding produces**, instead of pulling things closer. Do not
-   change one block's padding by state to compensate for its neighbour: tint that block's background and the
-   text sits off-centre (an accordion trimming the button's `pb` when open, `I30`).
-3. **`gap`, `items-*` alignment, changing `leading`** to line things up, instead of nudging with `translate`.
-   **Centering around a point** (a dot on a chart, a label on a handle): place an `absolute
-   w-0 flex justify-center` box exactly at the point with the element inside it, not `-translate-x-1/2`.
-4. If none of the above works: use the negative value, and **write a comment with the reason right above that line**, like
-   `eslint-disable`. Places tried and kept: stacked avatars (`avatar.md`); a hit area
-   extending beyond a small element (`before:-inset-*`, `N9`); an inline-edit name frame extending
-   beyond the text so the text stays aligned with the column (`inline-edit.md`); a row of icons with a hover background inside a column of text
-   (`button.md`, the `ghost` section); the bold segment of the file tree's vertical line (`tree.md`).
-
-**Not counted as `N11` negatives**: the starting point of a motion (`-translate-y-1 → 0` for a
-dropdown, `-translate-y-full → 0` for a toast at the top). That is the direction it slides in, not a resting
-spacing or position; a resting element is always at `translate-0`.
-
-*Test:* grep `-m[trblxy]?-|-space-|-translate-|-inset-` in the file just built. Every
-result must have a comment explaining why approaches 1–3 could not do it (except motion starting points).
+- **`P-39` Author tokens in OKLCH (`CSS` / `Artifact`)** `[IMP:color, RUI]`
+  Define color scales in `oklch(L C H)` so lightness steps (`L`) are perceptually uniform
+  across hues. Provide hex fallbacks only in exported documentation tables.
+- **`P-40` 60-30-10 surface-to-accent allocation (`Visual`)** `[IMP:color, RUI, UPM]`
+  At least `60%` of the viewport is primary background/surface (`--color-bg`,
+  `--color-surface`), `~30%` is secondary structure/typography (`--neutral-*`), and at
+  most `10%` uses high-chroma brand/accent fills (`--color-primary`).
+- **`P-41` Tonal 9–10 step scales per hue (`CSS` / `Artifact`)** `[RUI, IMP:color]`
+  Never define a single hex for a brand or neutral color; generate a 9-to-10 step scale
+  (`50` through `900`/`950`) spanning `L = 0.98` down to `L = 0.14`.
+- **`P-42` Chroma parabolic curve across lightness (`CSS`)** `[RUI, IMP:color]`
+  Peak chroma (`C`) sits in steps `500–600`; reduce chroma at very high lightness (`50–100`)
+  and very low lightness (`800–950`) so tints do not look neon and dark shades do not clip
+  out of sRGB/P3 gamut.
+- **`P-43` Hue rotation toward luminosity at extremes (`CSS`)** `[RUI, IMP:color]`
+  Shift lighter steps (`50–200`) slightly toward the nearest luminous hue (`60°–95°`
+  yellow, `195°` cyan, or `320°` magenta) and darker steps (`800–950`) toward deep
+  indigo/violet (`260°–285°`) to avoid muddy yellows and dead grays.
+- **`P-44` Ban pure `#000000` and pure achromatic grays (`CSS`)** `[IMP:color, RUI]`
+  Never use `#000000` (`oklch(0 0 0)`) or zero-chroma grays (`oklch(L 0 0)`) alongside
+  tinted brand colors.
+- **`P-45` Tint neutrals with the brand hue (`CSS`)** `[IMP:color, RUI]`
+  Neutral steps (`--neutral-50`..`--neutral-950`) carry a subtle chroma (`C = 0.004` to
+  `0.018`) at the brand's warm (`40°–80°`) or cool (`240°–265°`) hue angle.
+- **`P-46` WCAG AA contrast floor on every text/surface pair (`CSS` / `Visual`)** `[WCAG 1.4.3, WIG]`
+  Normal text (`< 18px`, or `< 14px` bold) achieves `>= 4.5:1` contrast against its
+  immediate background; large text (`>= 24px`, or `>= 18.66px` bold) achieves `>= 3.0:1`.
+- **`P-47` Non-text UI and input border contrast `>= 3:1` (`CSS`)** `[WCAG 1.4.11, WIG, UIS]`
+  Form control borders, checkbox/radio outlines, active tabs, and meaningful icons achieve
+  `>= 3:1` contrast or pair a subtle border with a distinct surface fill delta.
+- **`P-48` Status badges use light tint fill + dark shade text (`CSS`)** `[RUI, IMP:color]`
+  In light mode, badges and alert banners use `--color-*-bg` (`L >= 0.95`, `C <= 0.04`)
+  with dark text (`L <= 0.38`) in the same hue rather than white text on a bright mid-tone
+  fill.
+- **`P-49` Never rely on color alone to convey state (`DOM` / `Visual`)** `[WCAG 1.4.1, WIG, UPM]`
+  Every status, validation error, or chart series pairs color with an icon, text label,
+  pattern fill, or explicit shape marker.
+- **`P-50` Accessible chart palettes (`Visual` / `Artifact`)** `[UPM, IMP:color]`
+  Multi-series charts use `<= 5` distinct series per chart, separate adjacent hues in
+  lightness (`Delta L >= 0.12`) for deuteranopia/protanopia safety, and label lines or
+  bars directly whenever space permits.
+- **`P-51` Accent borders on callouts (`CSS`)** `[RUI]`
+  Add a `3px–4px` inline-start accent border (`border-inline-start`) on alert banners or
+  blockquotes to anchor the eye without heavy full-perimeter borders.
+- **`P-52` Semantic status hues stay distinct from brand primary (`CSS`)** `[RUI, UPM]`
+  If the brand primary is red/coral or amber, shift `--color-danger` and `--color-warning`
+  hues and pair them with unmistakable iconography so brand buttons never read as errors.
+- **`P-53` Text over photography requires a scrim (`CSS`)** `[RUI, WIG, WCAG]`
+  Text placed over dynamic imagery uses a gradient scrim (`linear-gradient(to top,
+  oklch(0.12 0.01 255 / 0.82), transparent)`) or backdrop pill guaranteeing `>= 4.5:1`
+  contrast across all image regions.
+- **`P-54` Dark mode elevates surfaces by lightness, not drop shadows (`CSS`)** `[RUI, IMP:color, ADM]`
+  In `[data-theme="dark"]`, deeper layers are darker (`--color-bg: L ~ 0.145`), cards are
+  lighter (`--color-surface: L ~ 0.188`), and modals/popovers are lighter still
+  (`--color-surface-raised: L ~ 0.232`), paired with a `1px` top/perimeter highlight
+  (`oklch(1 0 0 / 0.08)`).
+- **`P-55` Desaturate accent fills in dark mode (`CSS`)** `[IMP:color, RUI]`
+  Reduce accent chroma by `10%–20%` and raise lightness (`L ~ 0.65–0.72`) in dark mode so
+  accents do not vibrate against dark surfaces.
+- **`P-56` Declare `color-scheme` on `:root` and `[data-theme="dark"]` (`CSS`)** `[WIG, IMP:color]`
+  Set `color-scheme: light` and `color-scheme: dark` so native scrollbars, date pickers,
+  and form autofill backgrounds match the active theme.
+- **`P-57` No gray text on colored backgrounds (`CSS`)** `[RUI, IMP:color]`
+  Secondary text on a colored surface (`--color-primary` or tinted banner) must use the
+  same hue with adjusted lightness/chroma rather than achromatic gray.
+- **`P-58` Gradients shift hue by `10°–25°` (`CSS`)** `[RUI, IMP:color]`
+  When a subtle surface or button gradient is warranted by the brand, rotate the hue by
+  `10°–25°` between stops in OKLCH space; never fade a color to muddy gray.
 
 ---
 
-**N12. Text in a block has hierarchy, rhythm, and names that are not cut short** ⚑.
+## 5. Elevation, Borders & Radii (`P-59`..`P-75`)
 
-Applies to **every repeated block**: listing cards, job cards, product cards, list rows, grid
-cells, including kinds that have no template yet. No per-kind template is needed; these three points are enough:
-
-1. **The type scale within a block steps by one.** At most three font sizes, and the largest is only one
-   step of the scale above the item name (`budgets.md`): with a `text-sm` name, the price or main number is `text-base`
-   `font-semibold`, not a jump to `text-lg`, `text-xl`. The rest of the hierarchy comes from weight
-   and colour. A price one and a half times the size of the name makes the card read like a price list, with the name as secondary text. Exception: stat
-   cards, where the main number is the whole block (`components/charts.md`).
-2. **Rhythm by group: close within a group, far between groups.** Group text by meaning (price +
-   name; area · location · nearby landmark; posting time). Lines within a group are **4px
-   (`gap-1`)** apart, not `gap-0.5`: at 2px two lines stick together, especially lines with diacritics
-   (settled). Between groups 8–12px, and the space from text to the block edge is no smaller
-   than the space between groups. Evenly spaced lines mean there are no groups, and the eye reads one lump of text.
-3. **The name that identifies an item is not cut short.** In a repeated block where each item is its own block (cards in a
-   grid), the name is `line-clamp-2`; one-line `truncate` is only for dense lists (table rows,
-   sidebar, `T14`). A name cut after twenty-odd characters ("Self-contained room for rent …") loses
-   exactly what the user reads to choose (`N8`).
-
-Settled: do not write more per-kind templates; write the general test.
-
-*Test:* the probe's "REPEATED BLOCKS" section (cards with images: largest text versus the name, spacing between lines,
-names cut to one line). For blocks without images, check the three points above yourself from screenshots.
+- **`P-59` Prefer spacing or surface contrast before adding borders (`CSS` / `Visual`)** `[RUI, IMP:spatial, ADM]`
+  Separate list rows, table cells, or dashboard sections using `--space-4`..`--space-8`
+  or a subtle surface step (`--color-bg` vs `--color-surface`) before reaching for a `1px`
+  border.
+- **`P-60` No nested card-in-card containers (`DOM` / `CSS`)** `[IMP:spatial, UIS]`
+  A card (`border` or `box-shadow` + `border-radius`) must never contain another bordered
+  or shadowed card. Group inner sub-sections with whitespace, subtle background tint
+  (`--color-surface-sunken`), or a single divider.
+- **`P-61` Five-level elevation system (`CSS`)** `[RUI]`
+  Define at most 5 elevation levels (`xs`: inputs/buttons, `sm`: resting cards, `md`:
+  dropdowns/hover cards, `lg`: popovers/drawers, `xl`: modal dialogs).
+- **`P-62` Two-part natural shadows (`CSS`)** `[RUI]`
+  Every elevation shadow above `xs` combines a larger, softer ambient shadow with a
+  tighter, darker direct shadow (both tinted with the neutral hue, never pure black at
+  high alpha), and applies negative spread (`-2px` to `-4px`) on `md`/`lg` shadows.
+- **`P-63` Interactive elevation feedback (`CSS`)** `[RUI, IMP:interaction]`
+  Draggable items elevate one shadow step on `:active`/drag; clickable cards use subtle
+  border contrast increase (`--color-border-strong`) rather than exaggerated `translateY`
+  leaps.
+- **`P-64` Crisp `1px` ring or border for whisper-quiet luxury (`CSS`)** `[ADM:linear, ADM:vercel, UIS]`
+  Modern technical UIs (`Linear`, `Vercel`, `Stripe`) favor `1px solid var(--color-border-subtle)`
+  or `box-shadow: 0 0 0 1px ...` over heavy blurred drop shadows.
+- **`P-65` Recessed inputs via subtle inner top shadow or darker border (`CSS`)** `[RUI]`
+  Text inputs in light mode may use `--shadow-xs` or a slightly stronger top border to
+  read as a slot awaiting input.
+- **`P-66` Concentric border-radius formula (`CSS` / `Visual`)** `[RUI, UIS, IMP:spatial]`
+  When a rounded child sits inside a rounded parent with padding $p$, enforce
+  $r_{\text{outer}} = r_{\text{inner}} + p$ (e.g., `r_inner = 8px` + `padding = 8px`
+  $\Rightarrow$ `r_outer = 16px`).
+- **`P-67` Radius scale matches brand personality (`CSS`)** `[RUI, ADM, UPM]`
+  Technical/precision brands use `4px–8px` (`--radius-xs`..`--radius-md`); approachable
+  consumer tools use `8px–16px`; brutalist/Swiss editorial layouts use `0px–2px`. Never
+  mix sharp `0px` cards with `24px` pill cards in the same view.
+- **`P-68` Full pills (`9999px`) reserved for badges, tags, and compact toggles (`CSS`)** `[RUI, ADM]`
+  Do not apply `border-radius: 9999px` to multi-line containers or large rectangular cards.
+- **`P-69` Table cell borders use horizontal rules only (`CSS`)** `[RUI, UIS]`
+  Data tables omit vertical cell borders by default, using horizontal row dividers
+  (`1px solid var(--color-border-subtle)`) and right-aligned numeric columns.
+- **`P-70` Sticky headers acquire a border or shadow on scroll (`CSS`)** `[WIG, IMP:interaction]`
+  Fixed or sticky table headers and top bars separate cleanly from scrolling content with
+  a `1px` bottom border and opaque/blurred surface (`backdrop-filter: blur(12px)` only on
+  a single header layer).
+- **`P-71` Limit `backdrop-filter: blur()` to at most one active overlay (`CSS`)** `[UIS:motion, WIG]`
+  Never stack multiple blurred glass layers in the same viewport; doing so causes GPU
+  overdraw and frame drops during scroll.
+- **`P-72` Hairline inner ring on user avatars and thumbnails (`CSS`)** `[RUI, UIS]`
+  Apply `outline: 1px solid oklch(0 0 0 / 0.08); outline-offset: -1px` on `<img>` avatars
+  and screenshots so light-background images do not bleed into light surfaces.
+- **`P-73` Empty states use dashed subtle borders or clean centered stacks (`Visual`)** `[RUI, IMP:interaction]`
+  Empty states present an icon/illustration, a clear explanation of what belongs here, and
+  a direct primary action to create the first item.
+- **`P-74` Semantic z-index token tiers (`CSS`)** `[UIS, RUI]`
+  Never write arbitrary `z-index: 9999`; use the 5-step token scale (`--z-sticky: 10`,
+  `--z-dropdown: 20`, `--z-overlay: 30`, `--z-modal: 40`, `--z-toast: 50`) or isolate
+  component stacking contexts with `isolation: isolate`.
+- **`P-75` Divider lines do not span edge-to-edge inside padded cards (`CSS`)** `[RUI]`
+  Inset list dividers to align with the text column (past leading icons/avatars) or use
+  row gap spacing instead.
 
 ---
 
-## Building something with no template
+## 6. Imagery, Icons & Data Presentation (`P-76`..`P-89`)
 
-A vertical stepper, a timeline, a file tree, nested comments… with no file
-in `components/`:
+- **`P-76` Never scale small vector icons up to fill large feature slots (`CSS` / `Visual`)** `[RUI]`
+  A `24x24` stroke icon scaled to `64px` looks spindly and crude. Keep the icon at
+  `20px–24px` and wrap it in a `40px–48px` tinted surface badge (`--primary-50` fill,
+  `--primary-600` stroke, `--radius-md`).
+- **`P-77` Consistent icon stroke width and optical grid (`DOM` / `CSS`)** `[UIS, IMP:spatial]`
+  All icons in a view come from a single family with uniform stroke width (`1.5px` or
+  `2px`) and `viewBox="0 0 24 24"`.
+- **`P-78` Never downscale full-screen desktop screenshots into tiny card thumbnails (`Visual`)** `[RUI]`
+  Unreadable micro-screenshots fail to communicate; crop to the relevant control region,
+  render a simplified UI abstraction, or show a focused preview.
+- **`P-79` Enforce explicit `width`, `height`, or `aspect-ratio` on every media element (`DOM` / `CSS`)** `[WIG, EL:Frame]`
+  Every `<img>`, `<video>`, and `<svg>` declares dimensions or sits inside `.l-frame`
+  so zero Cumulative Layout Shift (CLS) occurs during load.
+- **`P-80` Decorative icons hide from assistive tech; semantic icons label themselves (`DOM`)** `[WCAG 1.1.1, WIG, UIS]`
+  Decorative SVGs beside text carry `aria-hidden="true"`. Standalone icon buttons carry an
+  explicit `aria-label` on the `<button>`.
+- **`P-81` Cap-height icon alignment via `.l-icon` (`CSS`)** `[EL:Icon]`
+  Inline icons paired with text use `.l-icon` (`0.85em–1em` size, baseline/center aligned
+  with `0.5ch` gap).
+- **`P-82` Never use emojis as application UI icons (`DOM`)** `[UPM, IMP, UIS]`
+  Replace emojis (`🚀`, `⚙️`, `🔥`) in navigation, buttons, and status badges with crisp
+  SVG icons.
+- **`P-83` Avoid generic stock photography and AI-generated hero cliches (`Visual`)** `[RUI, IMP, FD]`
+  Use authentic product UI previews, domain-specific diagrams, or typographic authority
+  instead of generic corporate stock photos.
+- **`P-84` Right-align numeric table columns and match header alignment (`CSS`)** `[RUI, WIG]`
+  Text columns align start (`left` in LTR); numeric, currency, and percentage columns and
+  their `<th>` headers align end (`right` in LTR) with `tabular-nums`.
+- **`P-85` Combine related table columns to avoid horizontal overflow (`DOM` / `Visual`)** `[RUI]`
+  Stack secondary row metadata (e.g., user email under user name, role badge beside title)
+  into a single composite cell rather than adding 8+ sparse columns.
+- **`P-86` Chart selection matches analytical task (`Visual` / `Artifact`)** `[UPM]`
+  Trends over time use line/area charts; categorical comparisons use horizontal or
+  vertical bar charts; part-to-whole with `<= 5` slices uses stacked bar or donut with a
+  center total; pie charts with `> 5` slices are banned.
+- **`P-87` Chart axes start at zero for bar and area charts (`Visual`)** `[UPM]`
+  Bar and area charts anchor their baseline at `0` so bar lengths remain proportional to
+  values.
+- **`P-88` Direct data labeling over detached legends (`Visual`)** `[UPM, LUX]`
+  When a chart has `<= 4` series, label series directly or place a compact inline header
+  legend with matching semantic tokens.
+- **`P-89` Skeleton placeholders mirror real content geometry (`CSS` / `DOM`)** `[WIG, LUX-03, IMP:interaction]`
+  Loading skeletons match the exact height and layout of the loaded state and pulse
+  subtly (`opacity` between `0.5` and `1.0` over `1.5s`), avoiding layout jumps when data
+  arrives.
 
-1. **Find the closest thing that has a template and borrow its frame** (`N5`). A vertical stepper borrows the circles,
-   connectors and four states of the step bar (`layouts/form.md`); nested comments
-   borrow the list row (`components/list-row.md`); a file tree borrows the sidebar link
-   with a submenu (`layouts/app.md`); a chat panel borrows the file tree, the outline button and
-   "Load error" (`components/chat.md`).
-   **Only borrow from files in the skill**, not from unreviewed builds in the project.
-   A frame taken from a file is still there for the next project, and mistakes do not get duplicated.
-   **Borrow the frame, not the content.** A new frame doing a different job chooses its content again
-   for its own job: a detail page borrows the name row and stat cells of the quick-view panel, but the
-   tab set must include the main child records (a customer page that copied the panel's Messages / Files /
-   Activity tabs wholesale had nowhere to see 24 orders, `layouts/app.md`).
-2. **Build the edge cases straight into the page**, not only the pretty case (`N2`, `S8`). For repeated blocks (cards,
-   rows, cells), each copy is one case: a one-line name and a very long name, `0` and a very large number,
-   missing image, missing description, one item and many items. If it cannot repeat (a form, a panel),
-   show one static example per state side by side.
-3. **Run the probe and fix things yourself** as in gate 3 (`checklist.md`): `--sweep`, fix until the
-   `P` list is empty, at most three rounds.
-4. **Review by eye the five questions a machine cannot measure** ⚑. Open the 375px screenshot and one desktop screenshot,
-   and look at exactly the edge cases just built:
-   - **Do the edge cases look intentional?** Counts of `0` ("0 photos", "0 comments") are hidden,
-     or said in words ("No photos yet"). A missing image is a "no photo yet" state; do not
-     leave a count badge sitting on a placeholder image. A missing description makes the block shrink, with no blank line.
-   - **Is there any empty space that exists only to hold a place?** Holding a place is fine when it keeps
-     important things aligned in a grid (price, buttons at the same height across cards). Then mention it in one
-     line at delivery. If it does not do that, drop it.
-   - **Do the copies of the repeated block use the same notation?** The same number format and unit
-     within one list ("4.5 million" with "0.85 million", not mixed with "850,000"), the same
-     line order, the same labels (`N5`).
-   - **Is any area overloaded?** On an image, on the header, in a corner:
-     more than three things stacked on top of each other means grouping or moving some out of that area (`N3`).
-   - **Is what is needed to decide still intact in the longest case?** The longest name, the largest
-     price, at 375px (`N8`).
+---
 
-   Any question answered "no" gets fixed, then go back to step 3.
-5. **Run the twelve tests** above before reporting done.
-6. At delivery say one line: *"X has no reviewed template, so I borrowed the frame of Y"*, plus one line per
-   trade-off (e.g. *"the name reserves two lines so prices line up across
-   cards"*).
+## 7. Interactive States, Forms, Motion & UX Writing (`P-90`..`P-114`)
 
-This flow applies to both new builds and the rebuild mode of branch `V` (`review.md`). Unfamiliar
-elements not covered by the skill are normal, so there is no need for a template for everything: borrow the closest
-frame, build the edge cases, let the machine measure, then review the five questions above by eye.
+- **`P-90` Eight-state completeness for interactive views and controls (`DOM` / `CSS`)** `[IMP:interaction, WIG, UIS]`
+  Every interactive control and data view accounts for: `default`, `hover`, `focus-visible`,
+  `active`, `disabled`, `loading`, `empty`, and `error`.
+- **`P-91` Keyboard focus ring via `:focus-visible` (`CSS`)** `[WCAG 2.4.7, WIG, UIS]`
+  Never write `outline: none` without a replacement. Apply
+  `outline: 2px solid var(--color-focus-ring); outline-offset: 2px` on `:focus-visible`.
+- **`P-92` Guard hover styles for touch devices (`CSS`)** `[WIG, IMP:responsive]`
+  Wrap hover-only visual shifts or hover-revealed actions in
+  `@media (hover: hover) and (pointer: fine)` so touch taps do not leave sticky hover
+  artifacts, and never hide critical actions behind hover alone.
+- **`P-93` Tactile `:active` state (`CSS`)** `[IMP:interaction, UIS]`
+  Buttons shift lightness or apply `transform: scale(0.98)` (or `translateY(1px)`) on
+  `:active` for immediate physical feedback (`< 100ms` Doherty Threshold).
+- **`P-94` Disabled buttons explain why or remain absent (`DOM` / `UX`)** `[IMP:interaction, WIG]`
+  Prefer keeping the submit button enabled and validating on submit, or provide helper
+  text explaining what is required rather than leaving an unexplained disabled button.
+- **`P-95` Animate only `transform` and `opacity` on the compositor thread (`CSS`)** `[UIS:motion, WIG, IMP:motion]`
+  Never animate layout properties (`width`, `height`, `top`, `left`, `margin`, `padding`).
+  Never write `transition: all`.
+- **`P-96` Duration budget: `100ms–150ms` micro, `180ms–250ms` panel, `<= 350ms` modal (`CSS`)** `[IMP:motion, UIS, LUX-03]`
+  Exit animations run `~25%` faster than entrance animations (`150ms` exit vs `200ms`
+  enter). UI transitions exceeding `500ms` are banned.
+- **`P-97` Natural exponential easing; no bounce or elastic curves (`CSS`)** `[IMP:motion, UIS]`
+  Enter with `cubic-bezier(0.22, 1, 0.36, 1)` (`--ease-out-quint`) or `--ease-out-quart`;
+  never use `linear` for spatial motion and never use overshooting bounce/elastic curves
+  in productivity UIs.
+- **`P-98` Honor `prefers-reduced-motion: reduce` globally (`CSS`)** `[WCAG 2.3.3, WIG, IMP:motion]`
+  Collapse movement and transition durations to `0.01ms` or replace spatial translation
+  with instant opacity crossfades when `prefers-reduced-motion: reduce` is active.
+- **`P-99` Every form input has a persistent visible `<label>` (`DOM`)** `[WCAG 3.3.2, WIG, UPM]`
+  Bind `<label for="id">` above the input. Placeholder text disappears on typing and must
+  never substitute for a label; use placeholders only for format examples (`e.g.,
+  jane@acme.com`).
+- **`P-100` Prefer single-column vertical form layouts (`DOM` / `CSS`)** `[LUX, IMP:interaction, WIG]`
+  Stack form fields in a single `.l-stack` column; only tightly coupled short fields
+  (e.g., `City` + `Postal Code`, or `Start Date` + `End Date`) may share a row.
+- **`P-101` Correct semantic `type`, `inputmode`, and `autocomplete` (`DOM`)** `[WIG, IMP:responsive]`
+  Email, phone, URL, password, and OTP inputs declare matching `type`, `inputmode`, and
+  `autocomplete` attributes (`email`, `tel`, `current-password`, `one-time-code`) and
+  never block paste.
+- **`P-102` Validate on blur or submit (`reward early, punish late`) (`DOM`)** `[IMP:interaction, WIG]`
+  Do not show red error messages while the user is typing into a field for the first time;
+  validate on `blur` or `submit`, then clear the error immediately on valid `input`.
+- **`P-103` Programmatic error association via `aria-invalid` and `aria-describedby` (`DOM`)** `[WCAG 3.3.1, WIG, UIS]`
+  Invalid fields set `aria-invalid="true"` and point `aria-describedby` to an inline error
+  message element that explains both the problem and how to fix it.
+- **`P-104` Replace native `<select>` with radio cards when options `<= 5` (`DOM`)** `[RUI, LUX-02]`
+  When a single-choice field has `2–5` options, expose them as visible radio buttons or
+  selectable radio cards so users compare choices without an extra click.
+- **`P-105` Confirmation or Undo for destructive actions (`DOM` / `UX`)** `[LUX-05, IMP:interaction, WIG]`
+  Reversible deletions offer an immediate toast with `Undo`; permanent deletions require a
+  confirmation modal naming the specific resource and using a verb-specific button
+  (`Delete project`, never generic `OK` or `Yes`).
+- **`P-106` Submit buttons prevent double-submission (`DOM`)** `[WIG, IMP:interaction]`
+  During async submission, set `aria-busy="true"`, disable duplicate clicks, and keep
+  button width stable while showing an inline spinner + action verb (`Saving…`).
+- **`P-107` Specific verb+noun button labels (`DOM`)** `[IMP:ux-writing, WIG]`
+  Buttons state what they do (`Create API key`, `Export CSV`, `Save changes`). Ban vague
+  labels (`Submit`, `Click here`, `OK`, `Yes/No`).
+- **`P-108` Actionable, blame-free error messages (`DOM`)** `[IMP:ux-writing]`
+  Error copy states what happened and the next step (`Payment declined by card issuer.
+  Try another card or update billing details.`), never raw error codes (`Error 500:
+  ECONNRESET`) or user-blaming language.
+- **`P-109` Sentence case for UI headings, labels, and buttons (`DOM`)** `[IMP:ux-writing, ADM]`
+  Default UI chrome, headings, navigation items, and buttons to Sentence case (capitalizing
+  only the first word and proper nouns) for faster scanning.
+- **`P-110` Optimistic UI for high-probability non-destructive toggles (`UX`)** `[LUX-03, IMP:interaction]`
+  Bookmarking, starring, reordering, and theme toggles update visually in `< 50ms` and
+  roll back with a non-blocking toast only if the request fails.
+- **`P-111` URL reflects shareable view state (`UX`)** `[WIG]`
+  Active tab, filter, sort, pagination, and search query parameters sync with the URL so
+  refresh and deep-linking preserve state.
+- **`P-112` Safe-area insets and `100dvh` on mobile shells (`CSS`)** `[WIG, IMP:responsive]`
+  Full-height mobile shells use `min-block-size: 100dvh` (never `100vh`) and pad fixed
+  bottom bars with `env(safe-area-inset-bottom)`.
+- **`P-113` Container queries over viewport media queries for reusable components (`CSS`)** `[EL, IMP:responsive]`
+  When a component must adapt to narrow vs wide slots, declare `container-type: inline-size`
+  on its wrapper and query `@container (min-width: ...)` or use `.l-switcher` / `.l-sidebar`
+  instead of `@media (min-width: ...)`.
+- **`P-114` Zero horizontal page overflow from `320px` to `1920px` (`Visual` / `CSS`)** `[WCAG 1.4.10, WIG]`
+  At every viewport width from `320px` up, `document.documentElement.scrollWidth <=
+  document.documentElement.clientWidth`. Wide tables or code blocks scroll inside their
+  own container (`.l-reel`), never stretching the page body.
+
+---
+
+## 8. Cross-Source Conflict Resolutions (`C-01`..`C-25`)
+
+When upstream sources differ on thresholds, apply these binding resolutions:
+
+| ID | Topic | Binding Resolution | Sources Reconciled |
+|---|---|---|---|
+| `C-01` | Color space | Author tokens in **OKLCH** with hex fallbacks in documentation tables | `[IMP]` vs `[RUI]`/`[UPM]` |
+| `C-02` | Breakpoints vs intrinsic | **Every Layout primitives first** (`0` viewport `@media` queries in `primitives.css`); `@container` second; viewport `@media` only for shell nav collapse | `[EL]` vs `[RUI]`/`[UPM]` |
+| `C-03` | Touch target size | **`44x44px` studio floor** on touch/mobile (`TG-01`); `24x24px` WCAG 2.2 AA minimum allowed only on dense desktop toolbars (`TG-02`) | `[IMP]`/`[UPM]` vs `[WCAG]` |
+| `C-04` | Type scale sizing | **Fluid `clamp()` tokens** mapped to a named 8-step scale (`--text-xs`..`--text-4xl`) | `[EL]`/`[IMP]` vs `[RUI]` |
+| `C-05` | Line length | **`65ch` default `--measure`**, `45ch–75ch` valid prose range, `25ch–40ch` narrow column exception | `[EL]` vs `[IMP]`/`[RUI]` |
+| `C-06` | `Inter` / `Roboto` font policy | **Contextual**: avoid as unexamined default (`AP-06`) when choosing a fresh brand identity, but permitted when mandated by an existing `DESIGN.md` (e.g., Linear/Vercel) or Japanese Latin pairing | `[IMP]`/`[FD]` vs `[ADM]`/`[ADMJ]` |
+| `C-07` | Pure black `#000000` | **Banned by default** (`AP-16`); use `oklch(0.145 0.009 H)`. Allowed only for explicit OLED/Monochrome Swiss themes documented in `DESIGN.md` (`Vercel`/`The Verge`) | `[IMP]`/`[RUI]` vs `[ADM]` |
+| `C-08` | Shadows vs `1px` borders | Use **spacing/surface contrast first**, crisp `1px` subtle borders for technical/dark UI, and 2-part shadows (`--shadow-sm`..`--shadow-lg`) for elevated light-mode layers | `[RUI]` vs `[ADM]`/`[UIS]` |
+| `C-09` | Maximum `z-index` Tiers | **5 semantic token tiers** (`10`..`50`) + `isolation: isolate`; arbitrary `z-index >= 100` is banned | `[UIS]` vs `[RUI]` |
+| `C-10` | Animation duration ceiling | **`120ms–200ms` micro-interactions**, **`<= 320ms` modals/drawers**, hard ceiling **`500ms`** (`AN-03`) | `[IMP]`/`[UIS]` vs `[WIG]` |
+| `C-11` | Spring/bounce physics | **Exponential ease-out (`--ease-out-quart` / `--ease-out-quint`)** by default; overshooting bounce (`cubic-bezier` with $y_2 > 1.05$) banned in productivity UI | `[IMP]` vs `[UIS]` |
+| `C-12` | Heading case | **Sentence case** by default (`P-109`), uppercase allowed only for small kickers (`<= 13px`) with `letter-spacing >= 0.05em` | `[IMP]` vs `[RUI]` |
+| `C-13` | Japanese vs Latin line-height | Latin body `1.5–1.65`; **Japanese (`:lang(ja)`) body `1.75–1.90`** and heading `1.25–1.40` (`JA-15`) | `[IMP]`/`[RUI]` vs `[ADMJ]` |
+| `C-14` | Japanese letter-spacing | Latin display headings use `-0.02em`..`-0.03em`; **Japanese body never uses negative tracking (`>= 0em`)** (`JA-20`) | `[RUI]` vs `[ADMJ]` |
+| `C-15` | Japanese italic & bold | **Never apply `font-style: italic` to Japanese glyphs** (`JA-29`) and avoid `font-weight >= 800` on intricate kanji below `20px` | `[IMP]` vs `[ADMJ]` |
+| `C-16` | Top-level navigation count | **`<= 5` top-level nav items** on mobile bottom bars (`WF-20`), **`<= 7` items** on desktop headers/sidebars (`LUX-10`) | `[LUX]` vs `[UPM]` |
+| `C-17` | Card internal complexity | **`<= 4` distinct data points** and **`<= 3` font sizes** per card (`LUX-09`, `P-01`) | `[RUI]` vs `[LUX]` |
+| `C-18` | Form error trigger timing | **Validate on `blur` or `submit`**, then re-validate live on `input` only after an error is shown (`P-102`) | `[WIG]` vs `[IMP]` |
+| `C-19` | Disabled submit buttons | Keep submit buttons enabled and trigger clear validation feedback on click, or explain the missing prerequisite right beside the button (`P-94`) | `[WIG]` vs `[UIS]` |
+| `C-20` | `h-screen` / `100vh` | **Always use `100dvh`** (`min-block-size: 100dvh`); `100vh` is banned (`AP-42`) | `[UIS]`/`[WIG]` vs legacy CSS |
+| `C-21` | Dark mode contrast ceiling | Body text in dark mode uses `L = 0.92–0.96` (`#ECEEF2`), not pure `#FFFFFF` on `#000000`, to prevent halation (`P-54`) | `[IMP]`/`[RUI]` vs `[WCAG]` |
+| `C-22` | Placeholder usage | **Never use placeholder as a label** (`P-99`); omit redundant placeholders and use only for non-obvious format hints | `[WIG]`/`[UPM]` vs `[RUI]` |
+| `C-23` | Grid column sizing | Use **RAM (`repeat(auto-fit, minmax(min(100%, var(--min)), 1fr))`)** instead of fixed `grid-template-columns: repeat(3, 1fr)` (`LP-13`) | `[EL]` vs `[RUI]` |
+| `C-24` | Icon-to-text sizing | Inline icons use `0.85em–1em` via `.l-icon` (`LP-17`); standalone button icons use `18px–20px` inside a `>= 40px–44px` hit box | `[EL]` vs `[RUI]` |
+| `C-25` | PrimeVue version guidance | Target **PrimeVue v4 (`@primevue/themes`)**; explicitly flag PrimeVue v5 license constraints before adoption | `[UPM]` studio policy |

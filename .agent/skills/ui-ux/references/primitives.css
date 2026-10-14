@@ -1,0 +1,247 @@
+/**
+ * Every Layout Intrinsic Primitives & Container Utility
+ * Domains: [EL] Every Layout (3rd ed.), [IMP] Spatial & Responsive Craft, [WIG] Web Interface Audit
+ * Rule: Zero viewport breakpoint media queries. Responsiveness is driven by content,
+ *       measure (--measure), flex-wrap, and CSS Grid RAM (repeat(auto-fit, minmax(min(100%, var(--min)), 1fr))).
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 1. The Stack [EL:Stack, LP-06] — Vertical flow via owl selector */
+.l-stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.l-stack > * {
+  margin-block: 0;
+}
+
+.l-stack > * + * {
+  margin-block-start: var(--space, var(--space-4, 1rem));
+}
+
+.l-stack[data-recursive] * + * {
+  margin-block-start: var(--space, var(--space-4, 1rem));
+}
+
+.l-stack > [data-split-after] {
+  margin-block-end: auto;
+}
+
+/* 2. The Box [EL:Box, LP-07] — Padded surface container */
+.l-box {
+  padding: var(--padding, var(--space-4, 1rem));
+  border: var(--border-width, 1px) solid var(--border-color, var(--color-border-subtle, transparent));
+  border-radius: var(--radius, var(--radius-md, 0.5rem));
+  background-color: var(--bg, var(--color-surface, transparent));
+  color: var(--fg, var(--color-fg, inherit));
+}
+
+.l-box * {
+  color: inherit;
+}
+
+.l-box[data-invert] {
+  color: var(--color-surface, #ffffff);
+  background-color: var(--color-fg, #111827);
+}
+
+/* 3. The Center [EL:Center, LP-08] — Measure-bounded horizontal centering */
+.l-center {
+  box-sizing: content-box;
+  max-inline-size: var(--measure, 65ch);
+  margin-inline: auto;
+  padding-inline: var(--gutters, var(--space-4, 1rem));
+}
+
+.l-center[data-intrinsic] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.l-center[data-text] {
+  text-align: center;
+}
+
+/* 4. The Cluster [EL:Cluster, LP-09] — Wrapping inline groups (pills, tags, nav, button bars) */
+.l-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space, var(--space-2, 0.5rem));
+  justify-content: var(--justify, flex-start);
+  align-items: var(--align, center);
+}
+
+/* 5. The Sidebar [EL:Sidebar, LP-10] — Intrinsic two-pane quantum layout */
+.l-sidebar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space, var(--space-6, 1.5rem));
+}
+
+.l-sidebar > :first-child {
+  flex-basis: var(--side-width, 16rem);
+  flex-grow: 1;
+}
+
+.l-sidebar > :last-child {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-inline-size: var(--content-min, 55%);
+}
+
+.l-sidebar[data-side="right"] > :first-child {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-inline-size: var(--content-min, 55%);
+}
+
+.l-sidebar[data-side="right"] > :last-child {
+  flex-basis: var(--side-width, 16rem);
+  flex-grow: 1;
+}
+
+/* 6. The Switcher [EL:Switcher, LP-11] — All-horizontal to all-vertical at container threshold */
+.l-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space, var(--space-4, 1rem));
+}
+
+.l-switcher > * {
+  flex-grow: 1;
+  flex-basis: calc((var(--threshold, 30rem) - 100%) * 999);
+}
+
+.l-switcher > :nth-last-child(n + 5),
+.l-switcher > :nth-last-child(n + 5) ~ * {
+  flex-basis: 100%;
+}
+
+/* 7. The Cover [EL:Cover, LP-12] — Vertically centered principal element with header/footer */
+.l-cover {
+  display: flex;
+  flex-direction: column;
+  min-block-size: var(--min-height, 100dvh);
+  padding: var(--padding, var(--space-6, 1.5rem));
+}
+
+.l-cover > * {
+  margin-block: var(--space, var(--space-4, 1rem));
+}
+
+.l-cover > :first-child:not([data-principal]) {
+  margin-block-start: 0;
+}
+
+.l-cover > :last-child:not([data-principal]) {
+  margin-block-end: 0;
+}
+
+.l-cover > [data-principal] {
+  margin-block: auto;
+}
+
+/* 8. The Grid [EL:Grid, LP-13] — Responsive auto-fit card/tile grid without breakpoints */
+.l-grid {
+  display: grid;
+  gap: var(--space, var(--space-4, 1rem));
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, var(--min, 16rem)), 1fr)
+  );
+}
+
+/* 9. The Frame [EL:Frame, LP-14] — Aspect-ratio media wrapper */
+.l-frame {
+  aspect-ratio: var(--n, 16) / var(--d, 9);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.l-frame > img,
+.l-frame > video {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+/* 10. The Reel [EL:Reel, LP-15] — Accessible horizontal overflow track */
+.l-reel {
+  display: flex;
+  block-size: var(--reel-height, auto);
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: var(--space, var(--space-4, 1rem));
+  padding-block-end: var(--space-2, 0.5rem);
+  scroll-snap-type: x proximity;
+  scrollbar-color: var(--color-border-strong, #9ca3af) transparent;
+}
+
+.l-reel > * {
+  flex: 0 0 var(--item-width, auto);
+  scroll-snap-align: start;
+}
+
+.l-reel > img {
+  block-size: 100%;
+  flex-basis: auto;
+  inline-size: auto;
+}
+
+/* 11. The Imposter [EL:Imposter, LP-16] — Positioned overlay / modal / popover container */
+.l-imposter {
+  position: var(--positioning, absolute);
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.l-imposter[data-contain] {
+  --margin: var(--space-4, 1rem);
+  overflow: auto;
+  max-inline-size: calc(100% - (var(--margin) * 2));
+  max-block-size: calc(100% - (var(--margin) * 2));
+}
+
+/* 12. The Icon [EL:Icon, LP-17] — Optical cap-height glyph alignment */
+.l-icon {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space, 0.5ch);
+}
+
+.l-icon > svg {
+  inline-size: var(--icon-size, 0.85em);
+  block-size: var(--icon-size, 0.85em);
+  flex-shrink: 0;
+  stroke: currentColor;
+}
+
+/* 13. Outer Page Shell Container [LP-18] */
+.l-container {
+  inline-size: min(100% - (var(--gutter, var(--space-6, 1.5rem)) * 2), var(--container-max, 75rem));
+  margin-inline: auto;
+}
+
+/* 14. Screen-Reader Only Utility [A11Y-05, WIG] */
+.u-visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

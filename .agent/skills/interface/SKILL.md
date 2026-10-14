@@ -3,8 +3,8 @@ name: interface
 phase: implement
 description: >
   Keep a user interface out of the two holes AI-built front ends fall into:
-  the defaults that make every page look the same, and the responsive
-  failures that type-checking and linting cannot see.
+  the defaults that make every page look the same, and the responsive,
+  theming, and localization failures that type-checking and linting cannot see.
 requires-kernel: ["forge verify"]
 reads: from-dag
 writes: []
@@ -69,11 +69,13 @@ different direction.
 
 ### The design procedure: `ui-ux`
 
-When tasked with designing, redesigning, or refining a screen, invoke the `ui-ux`
-skill. While `interface` establishes the invariant contract (the banned defaults
+When tasked with designing, redesigning, auditing, or refining a screen, invoke the
+`ui-ux` skill. While `interface` establishes the invariant contract (the banned defaults
 and what the `ui` verification proves), `ui-ux` provides the concrete step-by-step
-procedure: brief, viewport wireframing, numeric token constraints, component assemblies,
-and before/after reviews.
+procedures (`design-system`, `wireframe`, `mockup`, `refine-block`, `critique`, `polish`,
+and `document`) backed by the distilled 10-source knowledge base (Every Layout
+primitives, OKLCH token scales, Laws of UX heuristics, Japanese typography, Vue/Nuxt
+stack mappings, 6-axis theme reactivity, zero-literal i18n, and 3-pillar mobile rules).
 
 ## 3. What the `ui` condition should prove
 
@@ -87,9 +89,11 @@ commands:
 ```
 
 For projects without an established UI test suite, `ui-ux/scripts/probe.mjs` from the
-shipped `ui-ux` skill can serve as `commands.ui`: it renders pages in headless
-browsers across 375px to 1920px viewports, measuring contrast, overflow and tap
-targets.
+shipped `ui-ux` skill can serve as `commands.ui`:
+
+```bash
+node .forge/skills/ui-ux/scripts/probe.mjs http://localhost:3000 --sweep 1440,320,20 --check-theme --check-i18n
+```
 
 `ui: none` is a real answer. Saying nothing is not - it reports `unavailable`
 and leaves the verdict unproven, which is the same contract every other
@@ -97,19 +101,24 @@ command has.
 
 What that suite should assert, at minimum:
 
-- **No horizontal overflow** at a declared viewport set - 320, 375, 768, 1024
-  and 1440 is a reasonable start. Count an element only when no ancestor has
-  `overflow-x: auto | hidden | scroll`, or every scroll container reports a
-  false positive.
-- **Every interactive control reachable at every breakpoint.** The failure is
-  not that a button looks wrong; it is that it is not there at 375px and
-  nobody noticed.
-- **Colour from tokens only.** No raw hex in components. This is the one that
-  stops text, labels and tags drifting into ad-hoc colour.
+- **Three-pillar mobile readiness at 320px and 375px (`MOB-LY`, `MOB-PERF`, `MOB-UX`).**
+  1. *Layout*: Zero horizontal overflow across 320, 375, 768, 1024 and 1440px;
+     buttons and badges wrap as whole controls (`white-space: nowrap` in `.l-cluster`)
+     rather than splitting their labels across lines; no single-word orphan drops on
+     headings/paragraphs; no flex text column crushed below `10ch`.
+  2. *Performance*: Explicit `width`/`height` or `aspect-ratio` on every media element
+     (zero CLS); `loading="lazy"` below the fold; compositor-only transitions
+     (`transform`, `opacity`); at most one `backdrop-filter: blur()`.
+  3. *Touch UX*: Tap targets at least `44x44px` with `>= 8px` gap on mobile; form inputs
+     `font-size >= 16px` (preventing iOS Safari auto-zoom); semantic `inputmode` and
+     `autocomplete`; `100dvh` with safe-area insets; zero actions hidden behind `:hover`.
+- **Full-page 6-axis theme reactivity (`--check-theme`).** Mutating primary hue,
+  neutral hue, font family, icon stroke, border-radius scale, or light/dark polarity
+  on `:root` updates 100% of the page with zero hardcoded islands left behind.
+- **Zero-literal localization completeness (`--check-i18n`).** Switching locales leaves
+  zero untranslated text nodes, `placeholder`, `aria-label`, or `title` attributes, and
+  zero leaked translation keys (`common.save`, `undefined`) from frontend or backend.
 - **WCAG AA contrast**, which is computed rather than judged.
-- **Touch targets at 44px.**
-- **Truncation declared, never accidental.** Text that is meant to clip says
-  so; text that clips because a container shrank is a defect.
 
 Type-checking, linting and the build all pass while every one of these breaks.
 That is why the condition exists separately rather than as a lint rule.

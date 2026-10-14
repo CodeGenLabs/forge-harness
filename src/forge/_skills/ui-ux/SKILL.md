@@ -2,103 +2,122 @@
 name: ui-ux
 phase: implement
 description: >
-  Build and polish application UI screens (dashboards, tables, forms, settings,
-  modals) using project components, strict layout formulas, and numeric budgets.
+  Design, build, critique, polish, and document high-craft UI/UX screens and
+  design systems using the distilled 10-source knowledge base, Every Layout
+  primitives, OKLCH tokens, and deterministic verification.
 requires-kernel: ["forge verify"]
 reads: from-dag
 writes: []
 ---
 
-# ui-ux - user interface design and construction
+# ui-ux - deterministic interface design, construction, and audit
 
 ## Announce
 
-> Running `ui-ux`: designing and refining user interface screens.
+> Running `ui-ux`: routing interface work through the distilled 10-source UI/UX knowledge base.
 
 ## What this does
 
-This skill directs the creation and refinement of application screens. It does not
-rely on vague aesthetic adjectives. Instead, it enforces a disciplined sequence:
-probe codebase reality before modifying code, reject repetitive artificial defaults,
-and constrain geometry, spacing, and typography with exact numbers.
+This skill turns interface requests into verifiable engineering and design decisions.
+Every rule in its companion knowledge base is concrete, testable (`DOM`, `CSS`,
+`Visual`, or `Artifact`), and attributed to its upstream source in `references/sources.md`.
 
-Scope: internal application screens (dashboards, lists, tables, forms, settings,
-modals, and pricing tables). For marketing landing pages or storefronts, note that
-unmodeled patterns fall back to foundational principles in `references/principles.md`.
+## 0. Route the request to one of seven actions
 
-## 0. Determine the mode
+Match the user's request to the appropriate action procedure in `references/workflows.md`:
 
-Identify the path matching the user's intent:
+| Action | When to use | Primary companion references |
+|---|---|---|
+| `design-system` | Generate or update `tokens.json`, `tokens.css`, and `DESIGN.md` for a product or brand | `references/design-system.md`, `references/tokens.css`, `references/typography-ja.md` |
+| `wireframe` | Explore 1-3 grayscale structural options (`A`, `B`, `C`) and score against the 100-point rubric (`R1`-`R8`) | `references/ux-heuristics.md`, `references/layout-primitives.md`, `references/primitives.css` |
+| `mockup` | Build a production-ready screen, application view, or prototype | `references/principles.md`, `references/anti-patterns.md`, `references/theme-i18n-mobile.md`, `references/stacks-vue-nuxt.md` |
+| `refine-block` | Redesign or repair a single `[data-block]` section or component in isolation | `references/principles.md`, `references/anti-patterns.md`, `references/theme-i18n-mobile.md` |
+| `critique` | Run an unanchored holistic review (Nielsen 10 heuristics, 5 personas) plus the 126-rule deterministic audit | `references/workflows.md`, `references/audit-checklist.md`, `references/ux-heuristics.md` |
+| `polish` | Execute the 5-tier pre-ship craft pass (alignment, type, contrast, states, motion) without a concealed redesign | `references/workflows.md`, `references/audit-checklist.md`, `references/theme-i18n-mobile.md` |
+| `document` | Extract an existing codebase's design system (`Scan`) or formalize a brief (`Seed`) into `DESIGN.md` | `references/workflows.md`, `references/design-system.md`, `references/typography-ja.md` |
 
-| Intent | Mode and Reference |
-|---|---|
-| Review existing UI | Run review mode in `references/review.md` with before/after issue table. |
-| Rebuild keeping brand | Preserve brand colours and page shell; update controls per `references/review.md`. |
-| Refactor code keeping appearance | Clean markup and CSS while preserving exact geometry per `references/refactor.md`. |
-| Logo / brand mark | Generate 3 logo directions in context per `references/components/logo.md`. |
-| Direct build without wireframes | For explicit fast delivery, skip wireframe selection and build the recommended layout directly. |
-| Establish design system first | Define tokens and core primitives on a catalog page per `references/system.md`. |
-| Component-level fix | For tasks smaller than a screen, directly fix the target control using component recipes. |
-| Default: design or redesign a screen | Designer flow: brief, core action, 2-3 wireframes, pick, then construct per `references/design-process.md`. |
+## 1. Audit codebase reality before writing code
 
-## 1. Audit codebase reality
+Before generating markup or styles, inspect three layers of the repository:
 
-Audit existing libraries and conventions before proposing or building markup:
+1. **Stack and component library:** Check `package.json` and project configs. For Vue 3,
+   Nuxt, `@nuxt/ui`, `shadcn-vue`, and Tailwind CSS v4 (`@theme`), follow the token and
+   component bindings in `references/stacks-vue-nuxt.md`.
+2. **Existing components and i18n dictionary:** Reuse the repository's existing primitives
+   (`Button`, `Card`, `Table`, `Dialog`, `FormField`) and localization catalog (`locales/*.json`)
+   rather than introducing duplicate wrappers or hardcoded strings.
+3. **Design tokens and `DESIGN.md`:** Read existing CSS custom properties or `DESIGN.md`.
+   When none exist, adopt `references/tokens.css`, `references/primitives.css`, and the
+   domain palettes and font pairings in `references/design-system.md`. For Japanese
+   interfaces (`:lang(ja)`), apply `references/typography-ja.md`.
 
-1. **Stack:** Detect presence of Tailwind CSS, component libraries (shadcn/ui, Radix,
-   MUI, Ant Design), and specialized tools (Recharts, TanStack Table, date pickers).
-2. **Existing components:** Check if primitives (Button, Input, Avatar, Dialog) already
-   exist in the repository. Use existing project components instead of introducing
-   parallel implementations.
-3. **Existing style:** Count style signals across files to identify whether the project
-   favours flat borders, elevated cards, glassmorphism, or dark themes per `references/styles.md`.
-4. **Design tokens:** Read colours and typography from existing CSS variables or Tailwind
-   theme configuration. If none exist, adopt `references/tokens.css` and `references/brand-tokens.md`.
+State the detected stack, token source, and chosen action mode in one concise line.
 
-Report the audit outcome in one concise line before generating interface artifacts.
+## 2. Enforce the 15-rule pre-write craft floor
 
-## 2. Layout and component selection
+Every built or refined interface obeys `references/anti-patterns.md`,
+`references/principles.md`, and `references/theme-i18n-mobile.md`:
 
-Do not invent screen layouts. Map the request to a tested archetype:
+1. **Semantic landmarks (`ST-01`..`ST-04`):** Include `<header>`, `<main id="main">`, a
+   skip link (`<a href="#main">`), and a non-skipping `<h1>`..`<h6>` outline.
+2. **Intrinsic layout without viewport breakpoints (`LP-01`..`LP-19`):** Compose layouts
+   with Every Layout primitives from `references/primitives.css` (`.l-stack`, `.l-box`,
+   `.l-center`, `.l-cluster`, `.l-sidebar`, `.l-switcher`, `.l-cover`, `.l-grid`,
+   `.l-frame`, `.l-reel`, `.l-imposter`, `.l-icon`, `.l-container`).
+3. **Six-axis full-page theme reactivity (`TH-01`..`TH-10`):** Bind all colors, surfaces,
+   fonts, icons (`stroke="currentColor"` + `--icon-stroke`), radii (`--radius-scale`),
+   and light/dark polarity (`[data-theme="dark"]`) to `references/tokens.css`. Never write
+   hardcoded palette classes (`bg-blue-600`, `bg-white`, `text-gray-500`) that leave
+   unstyled islands when theme settings change.
+4. **Zero-literal frontend and backend localization (`I18N-01`..`I18N-10`):** Route 100%
+   of user-facing text, `placeholder`, `aria-label`, `title`, `alt`, validation messages,
+   and backend error/enum codes through the localization dictionary with 100% key parity
+   across locales.
+5. **60-30-10 surface budget and single primary action (`P-07`, `P-40`, `LUX-08`):** Keep
+   `>= 60%` of the viewport neutral surface, `~30%` secondary structure, `<= 10%` accent
+   fill, and at most one solid primary button per view.
+6. **Measure and fluid typography (`P-22`..`P-30`):** Constrain prose and forms to
+   `45ch-75ch` (`--measure: 65ch`), use `clamp()` fluid type tokens, and apply
+   `font-variant-numeric: tabular-nums` to all numeric data.
+7. **Proximity and concentric geometry (`P-12`, `P-60`, `P-66`):** Keep internal padding
+   smaller than external group gaps (`>= 1.5x` outer-to-inner ratio), enforce concentric
+   radii ($r_{\text{outer}} = r_{\text{inner}} + p$), and never nest bordered cards inside
+   bordered cards.
+8. **Mobile Pillar A - Layout (`MOB-LY-01`..`08`):** Zero horizontal overflow from
+   `320px` to `1920px`; buttons and badges set `white-space: nowrap` inside `.l-cluster`
+   so whole controls wrap before labels split; headings use `text-wrap: balance` and
+   paragraphs use `text-wrap: pretty` to prevent single-word orphan drops; flex text
+   columns never crush below `10ch`.
+9. **Mobile Pillar B - Performance (`MOB-PERF-01`..`06`):** Zero CLS (explicit `width` +
+   `height` or `.l-frame` `aspect-ratio` on all media), `loading="lazy" decoding="async"`
+   on below-the-fold images, compositor-only transitions (`transform`, `opacity`), at
+   most one `backdrop-filter: blur()`, and `content-visibility: auto` on long lists.
+10. **Mobile Pillar C - Touch UX (`MOB-UX-01`..`08`):** Touch targets `>= 44x44px` with
+    `>= 8px` gap on `< 640px` viewports, `<input>`/`<select>`/`<textarea>` `font-size >= 16px`
+    (preventing iOS auto-zoom), matching `inputmode` and `autocomplete`, `touch-action: manipulation`,
+    zero hover-only actions, and `100dvh` + `env(safe-area-inset-bottom)`.
+11. **Accessible forms (`P-99`..`P-108`):** Pair every input with a visible `<label>`,
+    stack fields in a single vertical column, validate on `blur` or `submit`, and bind
+    actionable inline errors via `aria-invalid` and `aria-describedby`.
+12. **Complete 8 interactive states (`P-90`):** Implement `default`, `hover`,
+    `focus-visible`, `active`, `disabled`, `loading`, `empty`, and `error`.
+13. **Zero AI slop signatures (`AP-85`..`AP-97`):** No purple-to-blue gradient cliches,
+    no gradient heading text, no three identical icon-in-circle cards, no emoji UI icons,
+    and no placeholder `Lorem ipsum` or `John Doe` copy.
 
-- **App shells, dashboards, tables, details, settings, and errors:** `references/layouts/app.md`
-- **Forms, authentication, multi-step wizards:** `references/layouts/form.md`
-- **Overlays, modals, slide-overs, dropdowns, and menus:** `references/layouts/overlay.md`
-- **Pricing cards and plan comparison tables:** `references/layouts/pricing.md`
+## 3. Verify and exit
 
-Assemble pages from tested component patterns under `references/components/`:
-- Structure: `card.md`, `description-list.md`, `empty-state.md`
-- Actions & controls: `button.md`, `choice-controls.md`, `input.md`, `small-controls.md`
-- Data density: `list-row.md`, `sortable-header.md`, `charts.md`, `timeline.md`, `tree.md`
-- Feedback & status: `banner.md`, `loading.md`, `otp-input.md`, `file-upload.md`
+Before claiming completion:
 
-## 3. Strict scope rules
-
-1. **Exact section count:** Build only requested sections. Never invent FAQ blocks,
-   promotional banners, or extraneous cards.
-2. **Realistic mock data:** Use domain-representative sample records. Include boundary
-   cases (long titles, zero counts, missing avatars) rather than uniformly ideal text.
-3. **Ambiguity defaults:** If phrasing is ambiguous, default to the standard meaning
-   (e.g., "table" means tabular data; "card" means a content panel) and declare the
-   choice at delivery.
-4. **Interaction boundaries:** Provide styling for all states (default, hover, focus,
-   active, disabled, empty, loading, error). Leave event handlers as clean props for
-   application logic to wire up.
-
-## 4. Verification and delivery
-
-Prior to completing work:
-
-1. Review against the release checklist in `references/checklist.md`.
-2. Verify responsive behaviour at narrow viewports (375px) ensuring zero horizontal
-   overflow, legible text, and minimum 44px tap targets per `references/responsive.md`.
-3. For environments with Node.js and Playwright available, execute the visual audit
-   tool `scripts/probe.mjs` to measure rendering across 375px to 1920px viewports.
-4. Confirm verification with `forge verify`.
+1. Check the output against `references/audit-checklist.md` and `references/theme-i18n-mobile.md`.
+2. When a live URL or HTML file and Playwright are available, run `scripts/probe.mjs`
+   across mobile (`320px`, `375px`) and desktop (`1440px`) viewports with `--sweep`,
+   `--check-theme`, and `--check-i18n`.
+3. Run `forge verify` to confirm all project verification gates pass.
 
 ## Exit
 
-Present the built or modified interface, declaring:
-- Chosen layout formula and component references used.
-- Explicit assumptions or defaults adopted.
-- Verification status reported by `forge verify`.
+Report:
+- Action mode executed and companion references applied.
+- How 6-axis theme reactivity, i18n completeness, and 3-pillar mobile rules were satisfied.
+- Audit score or `forge verify` result.

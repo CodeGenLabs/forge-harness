@@ -119,6 +119,128 @@ def test_ui_ux_skill_properties():
     assert "scripts/probe.mjs" in ui_skill.body
 
 
+# @covers REQ-ui-ux-ten-source-kb
+def test_ui_ux_ten_source_knowledge_base():
+    ref_dir = REPO / "src/forge/_skills/ui-ux/references"
+    expected_files = {
+        "principles.md",
+        "anti-patterns.md",
+        "layout-primitives.md",
+        "ux-heuristics.md",
+        "audit-checklist.md",
+        "typography-ja.md",
+        "design-system.md",
+        "workflows.md",
+        "stacks-vue-nuxt.md",
+        "theme-i18n-mobile.md",
+        "sources.md",
+        "primitives.css",
+        "tokens.css",
+    }
+    actual_files = {
+        p.relative_to(ref_dir).as_posix()
+        for p in ref_dir.rglob("*")
+        if p.is_file()
+    }
+    assert actual_files == expected_files
+
+    sources_text = (ref_dir / "sources.md").read_text(encoding="utf-8")
+    for source_code in ("RUI", "EL", "LUX", "IMP", "UPM", "WIG", "UIS", "FD", "ADM", "ADMJ", "WCAG"):
+        assert f"`{source_code}`" in sources_text or f"[{source_code}]" in sources_text
+
+    primitives_css = (ref_dir / "primitives.css").read_text(encoding="utf-8")
+    for primitive in (
+        ".l-stack", ".l-box", ".l-center", ".l-cluster", ".l-sidebar",
+        ".l-switcher", ".l-cover", ".l-grid", ".l-frame", ".l-reel",
+        ".l-imposter", ".l-icon",
+    ):
+        assert primitive in primitives_css
+    assert "@media (min-width" not in primitives_css
+    assert "@media (max-width" not in primitives_css
+
+    tokens_css = (ref_dir / "tokens.css").read_text(encoding="utf-8")
+    assert "oklch(" in tokens_css
+
+    ux_text = (ref_dir / "ux-heuristics.md").read_text(encoding="utf-8")
+    for i in range(1, 11):
+        assert f"LUX-{i:02d}" in ux_text
+    for r in range(1, 9):
+        assert f"R{r}" in ux_text
+
+    ja_text = (ref_dir / "typography-ja.md").read_text(encoding="utf-8")
+    assert "JA-01" in ja_text and "JA-61" in ja_text
+    assert "line-break: strict" in ja_text
+
+    stacks_text = (ref_dir / "stacks-vue-nuxt.md").read_text(encoding="utf-8")
+    for stack_term in ("Vue", "Nuxt", "@nuxt/ui", "shadcn-vue", "@theme"):
+        assert stack_term in stacks_text
+
+
+_VIETNAMESE_RE = re.compile(
+    r"[ăâđêôơưĂÂĐÊÔƠƯàảãáạằẳẵắặầẩẫấậèẻẽéẹềểễếệìỉĩíịòỏõóọồổỗốộờởỡớợùủũúụừửữứựỳỷỹýỵ]"
+)
+
+
+# @covers REQ-ui-ux-studio-workflows
+def test_ui_ux_studio_workflows_and_notices():
+    found = skills.load_skills(REPO)
+    ui_skill = next(s for s in found if s.name == "ui-ux")
+    workflows_text = (REPO / "src/forge/_skills/ui-ux/references/workflows.md").read_text(encoding="utf-8")
+    for action in ("design-system", "wireframe", "mockup", "refine-block", "critique", "polish", "document"):
+        assert action in ui_skill.body
+        assert action in workflows_text
+
+    skill_root = REPO / "src/forge/_skills/ui-ux"
+    for path in skill_root.rglob("*"):
+        if path.is_file() and path.suffix in {".md", ".html", ".css"}:
+            text = path.read_text(encoding="utf-8")
+            assert not _VIETNAMESE_RE.search(text), f"Vietnamese character in {path}"
+            assert "github.com/" not in text, f"External repository URL in {path}"
+    assert "THIRD_PARTY" not in (REPO / "pyproject.toml").read_text(encoding="utf-8")
+
+
+# @covers REQ-ui-ux-theme-i18n-mobile-gates
+def test_ui_ux_theme_i18n_mobile_gates():
+    ref_dir = REPO / "src/forge/_skills/ui-ux/references"
+    tim_text = (ref_dir / "theme-i18n-mobile.md").read_text(encoding="utf-8")
+    for rule_id in (
+        "TH-01", "TH-10",
+        "I18N-01", "I18N-10",
+        "MOB-LY-01", "MOB-LY-08",
+        "MOB-PERF-01", "MOB-PERF-06",
+        "MOB-UX-01", "MOB-UX-08",
+    ):
+        assert rule_id in tim_text
+
+    tokens_css = (ref_dir / "tokens.css").read_text(encoding="utf-8")
+    for axis_var in ("--primary-hue", "--neutral-hue", "--radius-scale", "--icon-stroke", "--font-sans"):
+        assert axis_var in tokens_css
+
+    found = skills.load_skills(REPO)
+    ui_skill = next(s for s in found if s.name == "ui-ux")
+    interface_skill = next(s for s in found if s.name == "interface")
+    assert "references/theme-i18n-mobile.md" in ui_skill.body
+    assert "--check-theme" in ui_skill.body
+    assert "--check-i18n" in ui_skill.body
+    assert "--check-theme" in interface_skill.body
+    assert "--check-i18n" in interface_skill.body
+
+    probe_text = (REPO / "src/forge/_skills/ui-ux/scripts/probe.mjs").read_text(encoding="utf-8")
+    for probe_feature in (
+        "--check-theme",
+        "--check-i18n",
+        "iosZoomInputs",
+        "crushedTextColumns",
+        "orphanLastLineWords",
+        "mobilePerfIssues",
+        "i18nIssues",
+        "unthemedElements",
+    ):
+        assert probe_feature in probe_text
+
+
+
+
 # @covers REQ-skill-router-batch
 def test_forge_router_batch_preparation_section():
     """Verify forge router skill contains batch preparation and decision gate."""
