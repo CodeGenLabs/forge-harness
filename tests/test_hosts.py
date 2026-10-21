@@ -13,6 +13,8 @@ is caught by a check rather than by somebody remembering to look.
 
 from __future__ import annotations
 
+import shutil
+
 import pytest
 
 from forge import hosts, skills
@@ -122,6 +124,25 @@ def test_a_copy_host_refreshes_a_stale_local_skill(project):
     assert outcome == "copied"
     assert written == [f"{skills.SKILLS_DIR}/bootstrap/SKILL.md"]
     assert "an edit" not in local.read_text(encoding="utf-8")
+
+
+def test_a_copy_host_installs_a_skill_the_local_set_never_had(project):
+    """The stale case above fixed where the bytes come from. This is the case
+    it left: a repository adopted at an older version has a local set that
+    enumerates eight skills, the kernel now ships nine, and the ninth is not
+    in the list being copied. Sourcing from the kernel does not help when the
+    kernel's own skill is never looked at - so the repository stays one skill
+    short of the kernel for as long as it keeps a local copy."""
+    local = project.root / skills.SKILLS_DIR
+    newest = sorted(p.name for p in skills.PACKAGED_SKILLS.iterdir() if p.is_dir())[-1]
+    shutil.rmtree(local / newest)
+    assert not (local / newest / "SKILL.md").exists()
+
+    hosts.export(project.root, "forge")
+
+    assert (local / newest / "SKILL.md").is_file(), (
+        f"{newest} ships with the kernel and is still missing after an export"
+    )
 
 
 def test_an_unknown_host_is_refused(project):

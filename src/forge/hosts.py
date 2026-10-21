@@ -157,12 +157,15 @@ def export(repo: Path, host: str) -> tuple[str, list[str]]:
     if host not in HOSTS:
         raise KeyError(host)
     target = HOSTS[host]
-    found = [s for s in skills.load_skills(repo) if not s.parse_error]
-    if not found:
-        return "no skills", []
-
     root = skills.skills_root(repo)
     if target.kind == "copy":
+        # Enumerated from the kernel's set, not the project's. Sourcing the
+        # bytes from the kernel fixed a stale copy; it does not help a copy
+        # that is simply short, because a skill the project has never had is
+        # not in the list being walked. A repository adopted at an older
+        # version would then stay one skill behind for as long as it kept a
+        # local copy - the longer a project runs, the further behind it gets.
+        found = [s for s in _load_packaged_skills() if not s.parse_error]
         # From the kernel's own set, never from the project's copy. `export`
         # with a copy target means "put the shipped skills where this host
         # reads them" - sourcing from the local copy would copy it onto itself
@@ -198,6 +201,9 @@ def export(repo: Path, host: str) -> tuple[str, list[str]]:
 
         return ("copied" if written else "unchanged"), written
 
+    found = [s for s in skills.load_skills(repo) if not s.parse_error]
+    if not found:
+        return "no skills", []
     section = _section(found, root, repo)
     path = repo / target.target
     existing = path.read_text(encoding="utf-8") if path.is_file() else ""
