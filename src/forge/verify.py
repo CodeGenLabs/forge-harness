@@ -308,6 +308,10 @@ def verify(repo: Path, item: Change, *, waived: tuple[str, ...] = (),
         else:
             runnable.append((name, line))
 
+    if runnable and runnable[0][0] == "build":
+        _, build_line = runnable.pop(0)
+        gates["build"] = _run(repo, "build", build_line, timeout)
+
     if runnable:
         with concurrent.futures.ThreadPoolExecutor(max_workers=len(runnable)) as pool:
             futures = {
