@@ -38,8 +38,8 @@ The system SHALL provide a `forge guard --paths <path>... --change <id>` check t
 - **WHEN** `forge guard --change 1 --paths src/forge/store.py` is run
 - **THEN** the command exits 1 and emits a `guard.out_of_scope` error naming `src/forge/store.py`
 
-### Requirement: REQ-verify-parallel-commands - Verification runs independent commands concurrently and records duration
-`forge verify` SHALL execute runnable project commands (`build`, `typecheck`, `lint`, `tests`, `ui`) concurrently and SHALL record `duration_ms` (non-negative integer milliseconds) in each executed command's gate dictionary in `verification.json`.
+### Requirement: REQ-verify-parallel-commands - Verification runs build first, then independent commands concurrently, and records duration
+`forge verify` SHALL execute `build` before fanning out the remaining runnable commands (`typecheck`, `lint`, `tests`, `ui`) concurrently, so compiled toolchains never race on shared build outputs, and SHALL record `duration_ms` (non-negative integer milliseconds) in each executed command's gate dictionary in `verification.json`.
 
 #### Scenario: Executed command gate records duration_ms
 
