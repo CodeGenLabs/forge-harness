@@ -65,7 +65,6 @@ _REQ_RE = re.compile(
 )
 _SCENARIO_RE = re.compile(r"^(?P<hashes>#{1,6})\s*Scenario:\s*(?P<title>[^\n]*)$", re.M)
 _NORMATIVE_RE = re.compile(r"\b(SHALL|MUST)\b")
-_CLARIFICATION_RE = re.compile(r"\[NEEDS CLARIFICATION")
 # A diff fragment pasted in place of the full text. Deliberately keyed on `+`
 # and hunk headers and never on a leading `-`: every scenario line in this
 # grammar is a markdown bullet, so treating `-` as a diff marker fires on
@@ -109,6 +108,7 @@ class Delta:
     unknown_sections: list[tuple[str, int]] = field(default_factory=list)
     purpose: str = ""
     preamble: str = ""
+    raw: str = ""
 
     @property
     def is_empty(self) -> bool:
@@ -149,7 +149,7 @@ def _requirements_in(section: str, offset: int) -> list[Requirement]:
 
 def parse_delta(text: str, path: str, capability: str) -> Delta:
     """Read a delta spec. Parsing never rejects; `check_delta` does that."""
-    delta = Delta(path=path, capability=capability, sections={v: [] for v in VERBS})
+    delta = Delta(path=path, capability=capability, sections={v: [] for v in VERBS}, raw=text)
 
     headings = list(_ANY_H2_RE.finditer(text))
     if headings:
@@ -244,11 +244,19 @@ def check_delta(repo: Path, delta: Delta, issue) -> list:
                 seen[requirement.id] = requirement
             issues.extend(_check_requirement(verb, requirement, delta, issue))
 
-    if _CLARIFICATION_RE.search(_strip_fences(_readable(delta))):
-        error("the delta still contains [NEEDS CLARIFICATION",
-              "resolve it, or drop the requirement until the answer exists - an "
-              "unresolved question folded into a permanent spec becomes a promise "
-              "nobody can test")
+    from .validate import find_placeholders
+
+    source = delta.raw if delta.raw else _readable(delta)
+    for line_no, label in find_placeholders(source):
+        location = f" at line {line_no}" if delta.raw else ""
+        error(
+            f"the delta contains {label}{location}",
+            "resolve it, wrap literal templates like `{id}` in backticks, or drop "
+            "the requirement until the answer exists - a placeholder folded into a "
+            "permanent spec fails store.placeholder",
+            line=line_no if delta.raw else None,
+            code="store.placeholder",
+        )
     return issues
 
 

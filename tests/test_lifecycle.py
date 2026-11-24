@@ -509,6 +509,45 @@ def test_an_archived_number_is_never_reused(project):
     assert change.new_change(project.root, "next thing", today=TODAY).number == 2
 
 
+def test_archive_folds_inline_code_tokens_and_passes_check(project, capsys):
+    delta = DELTA.replace(
+        "refundable balance.",
+        "refundable balance using `{prefix}_API_KEY` at `/api/v1/bots/{id}/pause`.",
+    )
+    write(project, "spec/payments/spec.md", delta)
+    write(project, "impact.md", ACCOUNT)
+    write(project, "tasks.md", TASKS)
+    project.write("tests/test_pay.py",
+                  TESTS + "\n\n# @covers REQ-refunds-1\ndef test_over():\n    assert True\n")
+    project.commit("implement and tag")
+    sync(project)
+    assert not run(project, "spec:post")[0].blocks
+    assert main(["verify", "--change", "1", "--repo", str(project.root)]) == 0
+    assert main(["archive", "--change", "1", "--date", "2026-09-11",
+                 "--repo", str(project.root)]) == 0
+    project.commit("archive inline token change")
+    sync(project)
+    capsys.readouterr()
+    assert main(["check", "--repo", str(project.root)]) == 0, capsys.readouterr().out
+
+
+def test_archive_refuses_bare_placeholder_even_with_force(project, capsys):
+    write(project, "spec/payments/spec.md",
+          DELTA.replace("refundable balance.", "refundable {prefix}_API_KEY balance."))
+    write(project, "tasks.md", TASKS)
+    gate_results = run(project, "spec:post")
+    assert gate_results[0].blocks
+    assert any(i.code == "store.placeholder" for i in gate_results[0].errors)
+
+    capsys.readouterr()
+    assert main(["archive", "--change", "1", "--force", "--date", "2026-09-11",
+                 "--repo", str(project.root)]) == 1
+    err = capsys.readouterr().err
+    assert "store.placeholder" in err
+    assert not (project.root / spec.SPECS_DIR / "payments/spec.md").exists()
+    assert item(project).root.is_dir()
+
+
 def test_the_archive_is_not_a_citation(project):
     """It is never an input to any phase, so counting it would keep a retired
     claim looking consulted forever."""

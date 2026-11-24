@@ -165,6 +165,26 @@ def test_an_unresolved_clarification_is_rejected(project):
     assert "[NEEDS CLARIFICATION" in messages(found)
 
 
+@pytest.mark.parametrize("placeholder", [
+    "TBD", "TODO", "FIXME", "XXX", "{prefix}", "similar to REQ-refunds-1",
+])
+def test_delta_placeholders_outside_code_are_rejected(project, placeholder):
+    text = ADDED + f"\n- Note: {placeholder} handling.\n"
+    expected_line = len(text.splitlines())
+    found = check(project, text)
+    hits = [i for i in found if i.code == "store.placeholder"]
+    assert len(hits) == 1
+    assert hits[0].line == expected_line
+
+
+def test_delta_template_tokens_inside_inline_code_are_allowed(project):
+    text = ADDED.replace(
+        "refundable balance.",
+        "refundable balance using `{prefix}_API_KEY` at `/api/v1/bots/{id}/pause`.",
+    )
+    assert check(project, text) == []
+
+
 def test_an_invented_section_is_rejected_not_ignored(project):
     """A typo in a section heading silently drops every requirement under it."""
     found = check(project, ADDED.replace("## ADDED Requirements",
@@ -357,6 +377,14 @@ def test_spec_fold_refuses_a_conflict_and_writes_nothing(project, capsys):
     assert "already defines it" in capsys.readouterr().err
     assert (project.root / spec.SPECS_DIR / "payments/spec.md").read_text(
         encoding="utf-8") == before
+
+
+def test_spec_fold_refuses_rebuilt_spec_with_placeholder(project, capsys):
+    write_delta(project, ADDED.replace("refundable balance.", "refundable {prefix} balance."))
+    assert main(["spec", "fold", "--change", "1", "--repo", str(project.root)]) == 1
+    err = capsys.readouterr().err
+    assert "store.placeholder" in err or "nothing folded" in err
+    assert not (project.root / spec.SPECS_DIR / "payments/spec.md").exists()
 
 
 def test_check_scope_change_runs_the_grammar(project, capsys):

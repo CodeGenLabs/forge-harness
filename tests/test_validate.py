@@ -591,6 +591,29 @@ def test_s9_the_reported_line_survives_fence_blanking(store_repo):
     assert "TODO" in text.split("\n")[hit.line - 1]
 
 
+def test_s9_a_placeholder_inside_inline_code_is_not_one(store_repo):
+    edit(store_repo, "docs/system/pitfalls.md", "Back off, and never retry",
+         "Routes like `/api/v1/bots/{id}/pause`, env vars like `{prefix}_API_KEY`, "
+         "double-backtick `` `{token}` ``, and Windows paths `C:\\path\\{id}\\` stay literal. "
+         "Back off, and never retry")
+    assert "store.placeholder" not in codes(check(store_repo))
+
+
+@pytest.mark.parametrize("snippet", [
+    "Unclosed `code before {token}",
+    r"Escaped \`{token}\` stays live",
+    "Valid `{ok}` followed by bare {bad}",
+])
+def test_s9_unclosed_or_escaped_backticks_do_not_hide_placeholders(store_repo, snippet):
+    edit(store_repo, "docs/system/pitfalls.md", "The acquirer rate-limits",
+         f"{snippet}. The acquirer rate-limits")
+    hits = [i for i in check(store_repo) if i.code == "store.placeholder"]
+    assert hits
+    text = (store_repo.root / "docs/system/pitfalls.md").read_text(encoding="utf-8")
+    assert hits[0].line is not None
+    assert snippet.split()[0] in text.split("\n")[hits[0].line - 1]
+
+
 def test_s11_a_claim_with_no_prose_is_a_label(store_repo):
     edit(store_repo, "docs/system/pitfalls.md",
          "The acquirer rate-limits, and a tight retry loop converts one failure into an\n"
