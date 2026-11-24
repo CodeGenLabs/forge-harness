@@ -12,9 +12,9 @@
 ```yaml
 version: 1
 
-# Phiên bản kernel được ghim (ví dụ: "0.3.0", ">=0.3.0", "~=0.3.0").
+# Phiên bản kernel được ghim (ví dụ: "0.4.0", ">=0.4.0", "~=0.4.0").
 # Khi khai báo, `forge check` sẽ kiểm tra độ lệch phiên bản giữa repo và kernel.
-kernel_version: "0.3.0"
+kernel_version: "0.4.0"
 
 # Bảo vệ nhánh main/master khỏi `forge change new` không có `--branch` hoặc `--allow-main`.
 protect_main: true

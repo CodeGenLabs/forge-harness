@@ -12,9 +12,9 @@
 ```yaml
 version: 1
 
-# 固定するカーネルバージョン (例: "0.3.0", ">=0.3.0", "~=0.3.0")。
+# 固定するカーネルバージョン (例: "0.4.0", ">=0.4.0", "~=0.4.0")。
 # 指定した場合、forge check がリポジトリとカーネルのバージョン乖離を検出・報告します。
-kernel_version: "0.3.0"
+kernel_version: "0.4.0"
 
 # `--branch` や `--allow-main` なしでの main/master 上の直接作業を防止。
 protect_main: true

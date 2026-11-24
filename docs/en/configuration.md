@@ -12,9 +12,9 @@ Specification of `.forge/config.yaml`. Every key is optional and has a sensible 
 ```yaml
 version: 1
 
-# Pinned kernel version string (e.g. "0.3.0", ">=0.3.0", "~=0.3.0").
+# Pinned kernel version string (e.g. "0.4.0", ">=0.4.0", "~=0.4.0").
 # When present, forge check reports version skew between the repository and the kernel.
-kernel_version: "0.3.0"
+kernel_version: "0.4.0"
 
 # Refuse `forge change new` directly on main/master without `--branch` or `--allow-main`.
 protect_main: true

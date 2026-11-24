@@ -79,8 +79,8 @@ $ forge doctor
 ```
 Expected output:
 ```text
-kernel           0.3.0
-kernel_pin       0.3.0 (matches)
+kernel           0.4.0
+kernel_pin       0.4.0 (matches)
 python           3.12.x
 grammars         python, typescript, tsx, go, csharp
 git              2.44.0
