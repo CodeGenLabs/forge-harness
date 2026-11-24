@@ -1931,115 +1931,120 @@
         "tests": [
           {
             "covers": [],
-            "line": 33,
+            "line": 35,
             "name": "test_every_shipped_skill_is_host_neutral"
           },
           {
             "covers": [],
-            "line": 53,
+            "line": 55,
             "name": "test_the_rule_catches_a_host_feature"
           },
           {
             "covers": [],
-            "line": 63,
+            "line": 65,
             "name": "test_the_rule_leaves_ordinary_prose_alone"
           },
           {
             "covers": [],
-            "line": 72,
+            "line": 74,
             "name": "test_a_pointer_manifest_names_every_skill"
           },
           {
             "covers": [],
-            "line": 80,
+            "line": 82,
             "name": "test_it_merges_into_a_file_the_project_already_owns"
           },
           {
             "covers": [],
-            "line": 93,
+            "line": 95,
             "name": "test_re_exporting_replaces_the_section_and_nothing_else"
           },
           {
             "covers": [],
-            "line": 105,
+            "line": 107,
             "name": "test_a_copy_host_writes_the_kernels_skills"
           },
           {
             "covers": [],
-            "line": 111,
+            "line": 113,
             "name": "test_a_copy_host_refreshes_a_stale_local_skill"
           },
           {
             "covers": [],
-            "line": 125,
+            "line": 127,
+            "name": "test_a_copy_host_installs_a_skill_the_local_set_never_had"
+          },
+          {
+            "covers": [],
+            "line": 146,
             "name": "test_an_unknown_host_is_refused"
           },
           {
             "covers": [],
-            "line": 130,
+            "line": 151,
             "name": "test_claude_host_copies_skills"
           },
           {
             "covers": [],
-            "line": 139,
+            "line": 160,
             "name": "test_antigravity_host_copies_skills"
           },
           {
             "covers": [],
-            "line": 148,
+            "line": 169,
             "name": "test_antigravity_host_prefers_existing_agents_dir"
           },
           {
             "covers": [
               "REQ-host-antigravity-rules"
             ],
-            "line": 161,
+            "line": 182,
             "name": "test_antigravity_host_writes_rules"
           },
           {
             "covers": [],
-            "line": 169,
+            "line": 190,
             "name": "test_codex_host_is_alias_for_agents_md"
           },
           {
             "covers": [],
-            "line": 177,
+            "line": 198,
             "name": "test_forge_install_cli"
           },
           {
             "covers": [],
-            "line": 186,
+            "line": 207,
             "name": "test_forge_install_all_hosts_default"
           },
           {
             "covers": [
               "REQ-skill-global-install"
             ],
-            "line": 201,
+            "line": 222,
             "name": "test_forge_install_global_and_init_no_skills"
           },
           {
             "covers": [],
-            "line": 235,
+            "line": 256,
             "name": "test_an_unedited_copy_reads_as_a_copy"
           },
           {
             "covers": [],
-            "line": 239,
+            "line": 260,
             "name": "test_an_edited_copy_reads_as_stale"
           },
           {
             "covers": [],
-            "line": 248,
+            "line": 269,
             "name": "test_line_endings_alone_are_not_a_difference"
           },
           {
             "covers": [],
-            "line": 259,
+            "line": 280,
             "name": "test_this_repository_owns_its_skills"
           }
         ],
-        "untagged": 19
+        "untagged": 20
       },
       "tests/test_impact.py": {
         "language": "python",
@@ -4300,9 +4305,9 @@
       }
     },
     "tagged_tests": 27,
-    "total_tests": 797
+    "total_tests": 798
   },
-  "generated_from_commit": "a965625d3a1256fb0f22106ca4ecc7093e926034",
+  "generated_from_commit": "515029941d188e4eb6b18d2eb1d528da9b56b711",
   "generator": "forge sync derived",
   "tool": "forge"
 }
