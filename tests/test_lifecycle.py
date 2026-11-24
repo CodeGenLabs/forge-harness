@@ -653,3 +653,23 @@ def test_verify_runs_commands_and_records_duration_ms(project):
         assert gate["duration_ms"] >= 0
 
 
+# @covers REQ-verify-parallel-commands
+def test_verify_finishes_build_before_starting_tests(project):
+    _complete(project)
+    # `build` writes a marker file; `test` asserts the marker already exists.
+    cfg = (project.root / ".forge/config.yaml").read_text(encoding="utf-8")
+    cfg = cfg.replace(
+        'build: python -c "pass"',
+        'build: python -c "import pathlib, time; time.sleep(0.05); pathlib.Path(\'built.ok\').write_text(\'1\')"',
+    ).replace(
+        'test: python -c "pass"',
+        'test: python -c "import pathlib, sys; sys.exit(0 if pathlib.Path(\'built.ok\').is_file() else 1)"',
+    )
+    (project.root / ".forge/config.yaml").write_text(cfg, encoding="utf-8")
+    item = change.find_change(project.root, "1")
+    report = verify.verify(project.root, item, run_commands=True)
+    assert report["gates"]["build"]["status"] == "pass"
+    assert report["gates"]["tests"]["status"] == "pass"
+
+
+
