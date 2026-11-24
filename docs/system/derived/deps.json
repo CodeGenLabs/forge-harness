@@ -219,6 +219,15 @@
         "src/forge/config.py",
         "src/forge/derive.py"
       ],
+      "tests/test_docs_conformance.py": [
+        "src/forge/__init__.py",
+        "src/forge/cli.py",
+        "src/forge/gates.py",
+        "src/forge/hosts.py",
+        "src/forge/schema.py",
+        "src/forge/skills.py",
+        "src/forge/verify.py"
+      ],
       "tests/test_evidence.py": [
         "src/forge/evidence.py",
         "src/forge/store.py"
@@ -378,7 +387,7 @@
         "src/forge/skills.py"
       ]
     },
-    "files_with_imports": 55,
+    "files_with_imports": 56,
     "reverse": {
       "src/forge/__init__.py": [
         "src/forge/anchor.py",
@@ -406,6 +415,7 @@
         "tests/test_config.py",
         "tests/test_deps.py",
         "tests/test_derive.py",
+        "tests/test_docs_conformance.py",
         "tests/test_fingerprint.py",
         "tests/test_gitio.py",
         "tests/test_guard.py",
@@ -475,6 +485,7 @@
         "tests/test_claim_granularity.py",
         "tests/test_cli.py",
         "tests/test_config.py",
+        "tests/test_docs_conformance.py",
         "tests/test_guard.py",
         "tests/test_hooks.py",
         "tests/test_hosts.py",
@@ -546,6 +557,7 @@
       ],
       "src/forge/gates.py": [
         "src/forge/cli.py",
+        "tests/test_docs_conformance.py",
         "tests/test_impact_scope.py",
         "tests/test_lifecycle.py",
         "tests/test_lifecycle_repairs.py"
@@ -580,6 +592,7 @@
       ],
       "src/forge/hosts.py": [
         "src/forge/cli.py",
+        "tests/test_docs_conformance.py",
         "tests/test_hosts.py",
         "tests/test_skill_companions.py"
       ],
@@ -618,6 +631,7 @@
         "src/forge/instructions.py",
         "src/forge/scaffold.py",
         "tests/test_change.py",
+        "tests/test_docs_conformance.py",
         "tests/test_instructions.py",
         "tests/test_lifecycle_repairs.py",
         "tests/test_schema.py"
@@ -625,6 +639,7 @@
       "src/forge/skills.py": [
         "src/forge/hosts.py",
         "src/forge/scaffold.py",
+        "tests/test_docs_conformance.py",
         "tests/test_hosts.py",
         "tests/test_skill_companions.py",
         "tests/test_skills.py",
@@ -678,6 +693,7 @@
       ],
       "src/forge/verify.py": [
         "src/forge/gates.py",
+        "tests/test_docs_conformance.py",
         "tests/test_impact.py",
         "tests/test_lifecycle.py",
         "tests/test_lifecycle_repairs.py"
@@ -686,7 +702,7 @@
     "tool": "forge",
     "unresolved_imports": 0
   },
-  "generated_from_commit": "7cecb4cddc2a287664287a9b806b3258a0dc9aa3",
+  "generated_from_commit": "02011c04658b19f03e4d4512ef52e7fbc06d05f7",
   "generator": "forge sync derived",
   "tool": "forge"
 }

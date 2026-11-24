@@ -1011,9 +1011,14 @@
             "covers": [],
             "line": 424,
             "name": "test_check_in_empty_repo_does_not_crash"
+          },
+          {
+            "covers": [],
+            "line": 434,
+            "name": "test_check_fast_skips_derived_freshness"
           }
         ],
-        "untagged": 31
+        "untagged": 32
       },
       "tests/test_config.py": {
         "language": "python",
@@ -1072,9 +1077,14 @@
             "covers": [],
             "line": 111,
             "name": "test_doctor_reports_kernel_version_and_skew"
+          },
+          {
+            "covers": [],
+            "line": 120,
+            "name": "test_workflow_verify_on_merge_only_defaults_true_and_can_be_disabled"
           }
         ],
-        "untagged": 11
+        "untagged": 12
       },
       "tests/test_deps.py": {
         "language": "python",
@@ -1458,6 +1468,47 @@
         ],
         "untagged": 43
       },
+      "tests/test_docs_conformance.py": {
+        "language": "python",
+        "tests": [
+          {
+            "covers": [],
+            "line": 114,
+            "name": "test_docs_cli_commands_and_flags_exist"
+          },
+          {
+            "covers": [],
+            "line": 168,
+            "name": "test_docs_instructions_artifacts_exist"
+          },
+          {
+            "covers": [],
+            "line": 184,
+            "name": "test_docs_gate_points_match_kernel"
+          },
+          {
+            "covers": [],
+            "line": 198,
+            "name": "test_docs_config_keys_and_defaults_match_kernel"
+          },
+          {
+            "covers": [],
+            "line": 249,
+            "name": "test_docs_verify_conditions_match_kernel"
+          },
+          {
+            "covers": [],
+            "line": 264,
+            "name": "test_cli_reference_covers_all_commands_and_no_orphan_readme"
+          },
+          {
+            "covers": [],
+            "line": 277,
+            "name": "test_workspace_antigravity_skills_and_rules_match_packaged"
+          }
+        ],
+        "untagged": 7
+      },
       "tests/test_evidence.py": {
         "language": "python",
         "tests": [
@@ -1515,9 +1566,14 @@
             "covers": [],
             "line": 122,
             "name": "test_evaluate_claim_evidence"
+          },
+          {
+            "covers": [],
+            "line": 144,
+            "name": "test_test_runner_explicit_target_does_not_expand_git_diff"
           }
         ],
-        "untagged": 11
+        "untagged": 12
       },
       "tests/test_fingerprint.py": {
         "language": "python",
@@ -1922,9 +1978,19 @@
             "covers": [],
             "line": 297,
             "name": "test_drift_confirm_green_no_green_entries"
+          },
+          {
+            "covers": [],
+            "line": 303,
+            "name": "test_precommit_hook_never_runs_tests_or_prompts"
+          },
+          {
+            "covers": [],
+            "line": 310,
+            "name": "test_pre_push_hook_install_status_uninstall_and_targets_main"
           }
         ],
-        "untagged": 19
+        "untagged": 21
       },
       "tests/test_hosts.py": {
         "language": "python",
@@ -2582,205 +2648,210 @@
           },
           {
             "covers": [],
-            "line": 237,
+            "line": 245,
             "name": "test_an_unknown_point_is_a_usage_error"
           },
           {
             "covers": [],
-            "line": 243,
+            "line": 251,
             "name": "test_a_change_scoped_check_without_a_change_says_so"
           },
           {
             "covers": [],
-            "line": 253,
+            "line": 261,
             "name": "test_spec_post_blocks_until_a_delta_exists"
           },
           {
             "covers": [],
-            "line": 258,
+            "line": 266,
             "name": "test_spec_post_accepts_a_named_skip"
           },
           {
             "covers": [],
-            "line": 270,
+            "line": 278,
             "name": "test_sync_pre_blocks_until_every_claim_is_accounted_for"
           },
           {
             "covers": [],
-            "line": 280,
+            "line": 288,
             "name": "test_impact_post_reports_the_same_finding_without_blocking"
           },
           {
             "covers": [],
-            "line": 289,
+            "line": 297,
             "name": "test_analyze_post_blocks_until_tasks_discharge_the_requirements"
           },
           {
             "covers": [],
-            "line": 298,
+            "line": 306,
             "name": "test_a_task_naming_no_requirement_blocks"
           },
           {
             "covers": [],
-            "line": 307,
+            "line": 315,
             "name": "test_a_chore_task_needs_no_requirement"
           },
           {
             "covers": [],
-            "line": 313,
+            "line": 321,
             "name": "test_converge_post_blocks_on_a_dirty_tree"
           },
           {
             "covers": [],
-            "line": 319,
+            "line": 327,
             "name": "test_converge_post_passes_on_a_clean_tree"
           },
           {
             "covers": [],
-            "line": 328,
+            "line": 336,
             "name": "test_verify_records_every_condition_not_just_the_tests"
           },
           {
             "covers": [],
-            "line": 333,
+            "line": 341,
             "name": "test_an_undeclared_command_is_unavailable_and_blocks_the_verdict"
           },
           {
             "covers": [],
-            "line": 342,
+            "line": 350,
             "name": "test_ui_is_a_condition_of_its_own"
           },
           {
             "covers": [],
-            "line": 369,
+            "line": 377,
             "name": "test_a_kernel_owed_condition_is_pending_and_does_not_block"
           },
           {
             "covers": [],
-            "line": 381,
+            "line": 389,
             "name": "test_a_clean_ledger_passes_the_drift_condition"
           },
           {
             "covers": [],
-            "line": 389,
+            "line": 397,
             "name": "test_an_undischarged_requirement_fails_verification"
           },
           {
             "covers": [],
-            "line": 396,
+            "line": 404,
             "name": "test_a_tagged_test_discharges_it"
           },
           {
             "covers": [],
-            "line": 406,
+            "line": 414,
             "name": "test_a_failing_command_fails_the_verdict_and_keeps_its_output"
           },
           {
             "covers": [],
-            "line": 417,
+            "line": 425,
             "name": "test_an_unaccounted_claim_fails_verification"
           },
           {
             "covers": [],
-            "line": 431,
+            "line": 439,
             "name": "test_no_run_records_the_commands_as_unproven"
           },
           {
             "covers": [],
-            "line": 437,
+            "line": 445,
             "name": "test_a_waiver_is_recorded_in_the_report"
           },
           {
             "covers": [],
-            "line": 443,
+            "line": 451,
             "name": "test_verify_writes_the_report"
           },
           {
             "covers": [],
-            "line": 451,
+            "line": 459,
             "name": "test_verify_post_reads_the_report"
           },
           {
             "covers": [],
-            "line": 466,
+            "line": 474,
             "name": "test_archive_refuses_without_a_passing_verification"
           },
           {
             "covers": [],
-            "line": 473,
+            "line": 481,
             "name": "test_archive_folds_then_moves"
           },
           {
             "covers": [],
-            "line": 484,
+            "line": 492,
             "name": "test_archive_dry_run_changes_nothing"
           },
           {
             "covers": [],
-            "line": 493,
+            "line": 501,
             "name": "test_force_records_which_blockers_were_overridden"
           },
           {
             "covers": [],
-            "line": 503,
+            "line": 511,
             "name": "test_an_archived_number_is_never_reused"
           },
           {
             "covers": [],
-            "line": 510,
+            "line": 518,
             "name": "test_archive_folds_inline_code_tokens_and_passes_check"
           },
           {
             "covers": [],
-            "line": 532,
+            "line": 540,
             "name": "test_archive_refuses_bare_placeholder_even_with_force"
           },
           {
             "covers": [],
-            "line": 549,
+            "line": 557,
             "name": "test_the_archive_is_not_a_citation"
           },
           {
             "covers": [],
-            "line": 578,
+            "line": 586,
             "name": "test_the_acceptance_case"
           },
           {
             "covers": [],
-            "line": 625,
+            "line": 633,
             "name": "test_a_folded_requirement_is_not_a_dangling_reference"
           },
           {
             "covers": [],
-            "line": 638,
+            "line": 646,
             "name": "test_verify_with_amend_auto_syncs_and_amends"
           },
           {
             "covers": [],
-            "line": 656,
+            "line": 664,
             "name": "test_archive_auto_syncs_and_restamps"
           },
           {
             "covers": [],
-            "line": 668,
+            "line": 676,
             "name": "test_archive_with_amend"
           },
           {
             "covers": [
               "REQ-verify-parallel-commands"
             ],
-            "line": 684,
+            "line": 692,
             "name": "test_verify_runs_commands_and_records_duration_ms"
           },
           {
             "covers": [
               "REQ-verify-parallel-commands"
             ],
-            "line": 696,
+            "line": 704,
             "name": "test_verify_finishes_build_before_starting_tests"
+          },
+          {
+            "covers": [],
+            "line": 720,
+            "name": "test_verify_fast_uses_test_fast_and_skips_ui_and_derived"
           }
         ],
-        "untagged": 45
+        "untagged": 46
       },
       "tests/test_lifecycle_repairs.py": {
         "language": "python",
@@ -4340,9 +4411,9 @@
       }
     },
     "tagged_tests": 27,
-    "total_tests": 805
+    "total_tests": 818
   },
-  "generated_from_commit": "7cecb4cddc2a287664287a9b806b3258a0dc9aa3",
+  "generated_from_commit": "02011c04658b19f03e4d4512ef52e7fbc06d05f7",
   "generator": "forge sync derived",
   "tool": "forge"
 }

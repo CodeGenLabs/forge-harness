@@ -2,12 +2,21 @@
   "$schema": "forge/derived/v1",
   "data": {
     "by_id": {
+      "PIT-build-before-parallel-verify": [
+        "src/forge/verify.py:321"
+      ],
       "PIT-bullet-continuation-lines": [
         "src/forge/change.py:246"
+      ],
+      "PIT-precommit-must-not-run-tests": [
+        "src/forge/hooks.py:138"
+      ],
+      "PIT-single-source-validation": [
+        "src/forge/validate.py:253"
       ]
     }
   },
-  "generated_from_commit": "68da17aaa781588c72f9304d2dbab69aaaed0b20",
+  "generated_from_commit": "02011c04658b19f03e4d4512ef52e7fbc06d05f7",
   "generator": "forge sync derived",
   "tool": "forge"
 }

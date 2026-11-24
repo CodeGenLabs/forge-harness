@@ -7,8 +7,8 @@
         "lines": 896
       },
       "markdown": {
-        "files": 149,
-        "lines": 14954
+        "files": 148,
+        "lines": 14730
       },
       "other": {
         "files": 2,
@@ -19,8 +19,8 @@
         "lines": 118
       },
       "python": {
-        "files": 64,
-        "lines": 25848
+        "files": 65,
+        "lines": 26420
       },
       "script": {
         "files": 1,
@@ -40,7 +40,7 @@
       },
       "yaml": {
         "files": 13,
-        "lines": 387
+        "lines": 392
       }
     },
     "entry_points": [
@@ -107,6 +107,7 @@
       "tests/test_config.py",
       "tests/test_deps.py",
       "tests/test_derive.py",
+      "tests/test_docs_conformance.py",
       "tests/test_evidence.py",
       "tests/test_fingerprint.py",
       "tests/test_gitio.py",
@@ -132,7 +133,7 @@
       "tools/pressure_test.py"
     ]
   },
-  "generated_from_commit": "7cecb4cddc2a287664287a9b806b3258a0dc9aa3",
+  "generated_from_commit": "02011c04658b19f03e4d4512ef52e7fbc06d05f7",
   "generator": "forge sync derived",
   "tool": "forge"
 }

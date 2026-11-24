@@ -177,6 +177,36 @@
         "tests": [],
         "title": "Regenerating the derived tier changes nothing"
       },
+      "PIT-build-before-parallel-verify": {
+        "anchor_paths": [
+          "src/forge/verify.py"
+        ],
+        "anchors": [
+          "src/forge/verify.py#verify@641e154efc"
+        ],
+        "back_references": [
+          "src/forge/verify.py:321"
+        ],
+        "candidate": false,
+        "changes": [],
+        "defined_in": "docs/system/pitfalls.md:99",
+        "evidence": [
+          "test:tests/test_lifecycle.py::test_verify_finishes_build_before_starting_tests"
+        ],
+        "governed_by": [],
+        "governs": [],
+        "id": "PIT-build-before-parallel-verify",
+        "justifies": [],
+        "kind": "pitfall",
+        "provisional": false,
+        "referenced_by_adr": [],
+        "references": [],
+        "since": null,
+        "status": "asserted",
+        "supersedes": null,
+        "tests": [],
+        "title": "Compiled builds must finish before parallel test fan-out"
+      },
       "PIT-bullet-continuation-lines": {
         "anchor_paths": [
           "src/forge/bootstrap.py"
@@ -269,6 +299,36 @@
         "tests": [],
         "title": "A leading dash is not a diff marker"
       },
+      "PIT-precommit-must-not-run-tests": {
+        "anchor_paths": [
+          "src/forge/hooks.py"
+        ],
+        "anchors": [
+          "src/forge/hooks.py#hook_body@641e154efc"
+        ],
+        "back_references": [
+          "src/forge/hooks.py:138"
+        ],
+        "candidate": false,
+        "changes": [],
+        "defined_in": "docs/system/pitfalls.md:116",
+        "evidence": [
+          "test:tests/test_hooks.py::test_precommit_hook_never_runs_tests_or_prompts"
+        ],
+        "governed_by": [],
+        "governs": [],
+        "id": "PIT-precommit-must-not-run-tests",
+        "justifies": [],
+        "kind": "pitfall",
+        "provisional": false,
+        "referenced_by_adr": [],
+        "references": [],
+        "since": null,
+        "status": "asserted",
+        "supersedes": null,
+        "tests": [],
+        "title": "Git pre-commit hooks must stay AST-only and non-interactive"
+      },
       "PIT-regex-across-newlines": {
         "anchor_paths": [
           "src/forge/impact.py"
@@ -298,6 +358,36 @@
         "supersedes": null,
         "tests": [],
         "title": "`\\s*` crosses the newline and eats the next line"
+      },
+      "PIT-single-source-validation": {
+        "anchor_paths": [
+          "src/forge/validate.py"
+        ],
+        "anchors": [
+          "src/forge/validate.py#find_placeholders@641e154efc"
+        ],
+        "back_references": [
+          "src/forge/validate.py:253"
+        ],
+        "candidate": false,
+        "changes": [],
+        "defined_in": "docs/system/pitfalls.md:81",
+        "evidence": [
+          "test:tests/test_lifecycle.py::test_archive_refuses_bare_placeholder_even_with_force"
+        ],
+        "governed_by": [],
+        "governs": [],
+        "id": "PIT-single-source-validation",
+        "justifies": [],
+        "kind": "pitfall",
+        "provisional": false,
+        "referenced_by_adr": [],
+        "references": [],
+        "since": null,
+        "status": "asserted",
+        "supersedes": null,
+        "tests": [],
+        "title": "Gates and permanent-store checks must share one validator"
       },
       "REQ-drift-changed-only": {
         "anchor_paths": [],
@@ -743,16 +833,16 @@
     },
     "summary": {
       "candidates": 2,
-      "claims": 7,
+      "claims": 10,
       "dangling_references": [],
       "decisions": 1,
-      "ids_indexed": 28,
+      "ids_indexed": 31,
       "invariants_without_tests": [],
       "tests_tagged": 27,
-      "tests_total": 805
+      "tests_total": 818
     }
   },
-  "generated_from_commit": "7cecb4cddc2a287664287a9b806b3258a0dc9aa3",
+  "generated_from_commit": "02011c04658b19f03e4d4512ef52e7fbc06d05f7",
   "generator": "forge sync derived",
   "tool": "forge"
 }
