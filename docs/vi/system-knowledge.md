@@ -175,7 +175,7 @@ Mọi claim thuộc tập `Touched Claims` bắt buộc phải được giải t
 2. **`Updated`:** Logic của claim đã thay đổi; phần văn xuôi của claim đã được sửa lại trong change này.
 3. **`Superseded`:** Claim cũ bị bãi bỏ vì có một Quyết định kiến trúc (ADR) mới thay thế nó.
 
-> **Cổng kiểm soát:** Lệnh `forge gate impact:post` sẽ quét và đối chiếu. Nếu có bất kỳ claim nào bị chạm mà thiếu giải trình trong `impact.md`, cổng sẽ báo lỗi và chặn đứng quy trình.
+> **Cổng kiểm soát:** Lệnh `forge gate impact:post` sẽ báo cáo sớm tập giao; đến bước `forge gate sync:pre` và `forge verify`, nếu có bất kỳ claim nào bị chạm mà thiếu giải trình trong `impact.md` (hoặc `proposal.md` ở Track B), cổng sẽ báo lỗi và chặn đứng quy trình.
 
 ---
 

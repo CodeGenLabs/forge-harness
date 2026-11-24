@@ -40,10 +40,15 @@ Bugfixes follow a specialized DAG declaring `reproduce.md` as the root mandatory
 ---
 
 ## 4. Verification Conditions (`forge verify`)
-Before archiving, 11 objective conditions are checked:
-1. `tests_pass`: Configured test runner exits 0.
-2. `build_succeeds`: Build command exits 0.
-3. `dag_complete`: All artifacts required by the active track exist.
-4. `touch_accounted`: Every claim in the computed touch set is accounted for in `impact.md`.
-5. `no_unwaived_drift`: No unresolved drift ledger entries remain.
-6. `no_schema_violations`: All artifacts match their declared templates.
+Before archiving or merging into `main`, `forge verify` evaluates twelve recorded gate signals covering the eight Definition-of-Done conditions:
+1. Toolchain commands (`build`, `typecheck`, `lint`, `tests`, `ui`) — fresh exit codes and `duration_ms` (`build` completes before parallel fan-out).
+2. `requirement_cover`: Every promised `REQ-*` is discharged by at least one `@covers` test.
+3. `claim_evidence`: Every `enforced` claim in the touch set still resolves its declared `evidence:`.
+4. `claim_touch`: Every claim in the computed touch set is accounted for in `impact.md` (or Track B `proposal.md`).
+5. `drift`: No open, unwaived drift entries touch the change's claims (waivable via `--waive drift`).
+6. `debt`: Recorded `pending` until the debt ledger arrives (waivable via `--waive debt`).
+7. `derived_fresh`: `docs/system/derived/` regenerates to a no-op (`forge sync derived`).
+8. `no_new_skips`: Recorded `pending` until baseline per-test tracking arrives.
+
+### Fast Dev Loop vs. Merge Gate
+With `workflow.verify_on_merge_only: true` (the default), feature-branch iteration runs targeted tests and `forge check --fast` (or `forge verify --fast`, which skips `ui` and `derived_fresh`). Full `forge verify --sync` and `forge sync derived` run once at the Merge Gate before merging or archiving (`forge archive` rejects `--fast` reports).

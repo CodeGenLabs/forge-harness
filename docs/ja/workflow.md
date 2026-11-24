@@ -22,3 +22,10 @@ Forgeにおける変更開発サイクルと機械的ゲートの完全な定義
 
 ## 3. バグ修正ワークフロー (bugfix.yaml)
 バグ修正では再現確認ファイル `reproduce.md` が最優先必須成果物として定義されます。欠陥を再現するテストの作成が証明されるまで、修正コードの実装はブロックされます。
+
+---
+
+## 4. 検証条件と高速開発ループ (`forge verify`)
+デフォルト (`workflow.verify_on_merge_only: true`) では、フィーチャーブランチ上の各プロンプト後は対象テストと `forge check --fast`（または `forge verify --fast`）のみを実行し、フル検証と `forge sync derived` は `main` へのマージ前（Merge Gate）に1度だけ実行します。
+
+フル検証では以下の12個のゲート信号（`build`, `typecheck`, `lint`, `tests`, `ui`, `requirement_cover`, `claim_evidence`, `claim_touch`, `drift`, `debt`, `derived_fresh`, `no_new_skips`）を評価し、`forge archive` は `--fast` ではない完全な検証通過を要求します。

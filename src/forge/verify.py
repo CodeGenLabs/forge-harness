@@ -258,7 +258,8 @@ def _deltas(repo: Path, item: Change) -> list[spec.Delta]:
 
 
 def verify(repo: Path, item: Change, *, waived: tuple[str, ...] = (),
-           timeout: int | None = None, run_commands: bool = True) -> dict:
+           timeout: int | None = None, run_commands: bool = True,
+           fast: bool = False) -> dict:
     """Produce the verification report. Writes nothing; the caller decides."""
     from .validate import Issue
 
@@ -283,7 +284,16 @@ def verify(repo: Path, item: Change, *, waived: tuple[str, ...] = (),
     runnable: list[tuple[str, str]] = []
     for name in ("build", "typecheck", "lint", "tests", "ui"):
         key = "test" if name == "tests" else name
-        line = commands.get(key)
+        if fast and name == "ui":
+            gates[name] = {
+                "status": "skipped",
+                "reason": "skipped in --fast mode; run full forge verify before merging",
+            }
+            continue
+        if fast and name == "tests":
+            line = commands.get("test_fast") or commands.get("test")
+        else:
+            line = commands.get(key)
         if _is_none(line):
             # "This project has no such step" and "this project has not told us
             # its command" are different answers, and only the second is a debt.
@@ -308,6 +318,7 @@ def verify(repo: Path, item: Change, *, waived: tuple[str, ...] = (),
         else:
             runnable.append((name, line))
 
+    # forge:PIT-build-before-parallel-verify
     if runnable and runnable[0][0] == "build":
         _, build_line = runnable.pop(0)
         gates["build"] = _run(repo, "build", build_line, timeout)
@@ -394,15 +405,21 @@ def verify(repo: Path, item: Change, *, waived: tuple[str, ...] = (),
         "newly skipped tests")
 
     # 7. derived tier
-    dirty = sorted(n for n, changed in derive.derive_all(repo, dry_run=True).items()
-                   if changed)
-    behind = max((v for v in derive.stale_artifacts(repo).values() if v is not None),
-                 default=0)
-    gates["derived_fresh"] = {
-        "status": "fail" if dirty else "pass",
-        "dirty": dirty,
-        "commits_behind": behind,
-    }
+    if fast:
+        gates["derived_fresh"] = {
+            "status": "skipped",
+            "reason": "deferred in --fast mode; run forge sync derived and full forge verify before merging",
+        }
+    else:
+        dirty = sorted(n for n, changed in derive.derive_all(repo, dry_run=True).items()
+                       if changed)
+        behind = max((v for v in derive.stale_artifacts(repo).values() if v is not None),
+                     default=0)
+        gates["derived_fresh"] = {
+            "status": "fail" if dirty else "pass",
+            "dirty": dirty,
+            "commits_behind": behind,
+        }
 
     for name in waived:
         if name in gates and name in WAIVABLE:
@@ -418,6 +435,7 @@ def verify(repo: Path, item: Change, *, waived: tuple[str, ...] = (),
 
     return {
         "change": item.name,
+        "mode": "fast" if fast else "full",
         "commit": gitio.rev_parse(repo, "HEAD"),
         "base": computed.base,
         "gates": {k: gates[k] for k in CONDITIONS if k in gates},

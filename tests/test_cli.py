@@ -433,3 +433,14 @@ def test_check_in_empty_repo_does_not_crash(repo, capsys):
     assert "GitError" not in err
 
 
+def test_check_fast_skips_derived_freshness(stored, capsys):
+    main(["sync", "derived", "--repo", str(stored.root)])
+    stored.write("src/extra.py", "def extra():\n    return 2\n")
+    stored.commit("make derived tier dirty")
+    capsys.readouterr()
+    assert main(["check", "--repo", str(stored.root)]) == 1
+    capsys.readouterr()
+    assert main(["check", "--fast", "--repo", str(stored.root)]) == 0
+    assert "ok - no issues" in capsys.readouterr().out
+
+

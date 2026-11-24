@@ -631,7 +631,10 @@ def _cmd_check(args: argparse.Namespace) -> int:
         print(f"forge: {repo} is not a git repository", file=sys.stderr)
         return _EXIT_USAGE
 
-    scopes = tuple(args.scope) if args.scope else SCOPES
+    if getattr(args, "fast", False) and not args.scope:
+        scopes = ("store", "change")
+    else:
+        scopes = tuple(args.scope) if args.scope else SCOPES
     issues: list[Issue] = []
     if "derived" in scopes:
         issues.extend(_check_derived(repo))
@@ -1324,7 +1327,8 @@ def _cmd_verify(args: argparse.Namespace) -> int:
     if isinstance(item, int) or item is None:
         return item if isinstance(item, int) else _EXIT_USAGE
 
-    auto_sync = getattr(args, "sync", False) or getattr(args, "amend", False)
+    fast = getattr(args, "fast", False)
+    auto_sync = (getattr(args, "sync", False) or getattr(args, "amend", False)) and not fast
     if auto_sync:
         dirty = [n for n, ch in derive.derive_all(repo, dry_run=True).items() if ch]
         if dirty:
@@ -1333,13 +1337,17 @@ def _cmd_verify(args: argparse.Namespace) -> int:
                 print(f"auto-synced derived tier: {', '.join(dirty)}")
 
     report = verify.verify(repo, item, waived=tuple(args.waive or ()),
-                           run_commands=not args.no_run, timeout=args.timeout)
+                           run_commands=not args.no_run, timeout=args.timeout,
+                           fast=fast)
     target = verify.write_verification(repo, item, report)
 
     amended = False
     rel_target = str(target.relative_to(repo).as_posix())
     if getattr(args, "amend", False) and report["verdict"] == "pass" and gitio.has_commits(repo):
-        gitio.git(repo, "add", derive.DERIVED_DIR, rel_target)
+        if fast:
+            gitio.git(repo, "add", rel_target)
+        else:
+            gitio.git(repo, "add", derive.DERIVED_DIR, rel_target)
         gitio.git(repo, "commit", "--amend", "--no-edit")
         amended = True
 
@@ -1367,7 +1375,8 @@ def _cmd_verify(args: argparse.Namespace) -> int:
             print(f"still unchecked by this kernel: {', '.join(report['pending'])}")
         print(f"written  {rel_target}")
         if amended:
-            print(f"amended  derived tier and {rel_target} into HEAD ({gitio.rev_parse(repo, 'HEAD')[:10]})")
+            scope_note = rel_target if fast else f"derived tier and {rel_target}"
+            print(f"amended  {scope_note} into HEAD ({gitio.rev_parse(repo, 'HEAD')[:10]})")
     return _EXIT_OK if report["verdict"] == "pass" else _EXIT_CHANGED
 
 
@@ -1400,6 +1409,13 @@ def _cmd_archive(args: argparse.Namespace) -> int:
             "no passing verification report"
             if report is None else f"verification verdict is {report.get('verdict')!r}",
             f"forge verify --change {item.number}",
+        ))
+    elif report.get("mode") == "fast":
+        blocking.append(Issue(
+            "ERROR", "verify.definition_of_done",
+            f"{item.relative}/{verify.VERIFICATION_FILE}",
+            "verification report was produced with --fast; run full verification before archiving or merging",
+            f"forge verify --change {item.number} --sync",
         ))
 
     if blocking and not args.force:
@@ -1863,19 +1879,21 @@ def _cmd_hooks(args: argparse.Namespace) -> int:
         print(f"forge: {repo} is not a git repository", file=sys.stderr)
         return _EXIT_USAGE
 
+    stage = getattr(args, "stage", hooks.HOOK_NAME)
+
     if args.action == "status":
-        state, target = hooks.installed_state(repo)
-        where = target.relative_to(repo).as_posix() if target.is_relative_to(repo)             else target.as_posix()
+        state, target = hooks.installed_state(repo, stage=stage)
+        where = target.relative_to(repo).as_posix() if target.is_relative_to(repo) else target.as_posix()
         print({
-            "absent": f"no {hooks.HOOK_NAME} hook at {where}",
+            "absent": f"no {stage} hook at {where}",
             "ours": f"installed  {where}",
-            "theirs": f"a {hooks.HOOK_NAME} hook exists at {where} and this tool "
+            "theirs": f"a {stage} hook exists at {where} and this tool "
                       f"did not write it",
         }[state])
         return _EXIT_OK if state != "theirs" else _EXIT_CHANGED
 
     if args.action == "uninstall":
-        outcome, target = hooks.uninstall(repo)
+        outcome, target = hooks.uninstall(repo, stage=stage)
         if outcome == "refused":
             print(f"forge: {target} was not written by this tool; remove it yourself",
                   file=sys.stderr)
@@ -1883,19 +1901,24 @@ def _cmd_hooks(args: argparse.Namespace) -> int:
         print(f"{outcome:10} {target.as_posix()}")
         return _EXIT_OK
 
-    outcome, target = hooks.install(repo, command=args.command, force=args.force)
+    outcome, target = hooks.install(repo, command=args.command, force=args.force, stage=stage)
     if outcome == "refused":
         wanted = "\n".join("    " + line for line in
-                           hooks.hook_body(args.command).splitlines()[-3:])
+                           hooks.hook_body(args.command, stage=stage).splitlines()[-3:])
         print(f"forge: {target} already exists and this tool did not write it. "
               f"Merge it by hand, or pass --force to replace it:\n\n{wanted}",
               file=sys.stderr)
         return _EXIT_USAGE
     print(f"{outcome:10} {target.as_posix()}")
     if outcome in ("installed", "replaced"):
-        print("\nIt runs `forge check --scope store` and `forge drift --staged` on "
-              "what you are about to commit.\nNeither runs your tests, and neither "
-              "rewrites anything. `git commit --no-verify` skips both.")
+        if stage == hooks.HOOK_PRE_PUSH:
+            print("\nIt skips feature-branch pushes immediately and runs `forge check` "
+                  "and `forge drift --store`\nwhen pushing to main/master. "
+                  "`git push --no-verify` skips both.")
+        else:
+            print("\nIt runs `forge check --scope store` and `forge drift --staged` "
+                  "(AST-only, no tests) on\nwhat you are about to commit. Neither "
+                  "rewrites anything. `git commit --no-verify` skips both.")
     return _EXIT_OK
 
 
@@ -2052,6 +2075,8 @@ def build_parser() -> argparse.ArgumentParser:
     check.add_argument("--scope", action="append", choices=SCOPES,
                        help="limit to one scope; repeatable. Default: all of them")
     check.add_argument("--change", help="limit the change scope to one change")
+    check.add_argument("--fast", action="store_true",
+                       help="fast dev-loop check (store and change scopes only, skipping derived-tier freshness)")
     check.add_argument("--json", action="store_true")
     check.set_defaults(func=_cmd_check)
 
@@ -2202,13 +2227,16 @@ def build_parser() -> argparse.ArgumentParser:
     ver = sub.add_parser(
         "verify",
         help="produce verification.json - evidence, not an opinion",
-        description="Eleven recorded conditions, of which tests passing is one. "
-                    "Generated, never authored: an authored verification report is a "
-                    "place to write 'all tests pass' without having run them.",
+        description="Twelve recorded gate signals covering the eight Definition-of-Done "
+                    "conditions, of which tests passing is one. Generated, never authored: "
+                    "an authored verification report is a place to write 'all tests pass' "
+                    "without having run them.",
     )
     ver.add_argument("--change", required=True)
     ver.add_argument("--waive", action="append", choices=list(verify.WAIVABLE),
                      help="record a waiver for a waivable condition; repeatable")
+    ver.add_argument("--fast", action="store_true",
+                     help="fast dev-loop verification (uses commands.test_fast if set, skips UI and derived freshness; not accepted by forge archive)")
     ver.add_argument("--no-run", action="store_true",
                      help="skip build/test commands and record them as unproven")
     ver.add_argument("--sync", action="store_true",
@@ -2252,8 +2280,8 @@ def build_parser() -> argparse.ArgumentParser:
     instr.add_argument(
         "--write", nargs="?", const="", metavar="NAME",
         help="also scaffold the artifact file from its template, if absent. "
-             "NAME names the file for an artifact that generates a glob "
-             "(`--write payments` writes spec/payments.md)")
+             "NAME names the capability for an artifact that generates a glob "
+             "(`--write payments` writes spec/payments/spec.md)")
     instr.add_argument("--repo", type=Path, default=Path.cwd())
     instr.add_argument("--json", action="store_true")
     instr.set_defaults(func=_cmd_instructions)
@@ -2346,13 +2374,15 @@ def build_parser() -> argparse.ArgumentParser:
 
     hk = sub.add_parser(
         "hooks",
-        help="install the pre-commit hook, the one integration point worth taking",
+        help="install git hooks (fast AST pre-commit or merge-time pre-push)",
         description="Catches drift at the moment it is created, while the reason "
                     "is still in somebody's head - which is what stops a busy week "
                     "from ending in a wall of findings nobody reads.",
     )
     hk.add_argument("action", nargs="?", default="status",
                     choices=("status", "install", "uninstall"))
+    hk.add_argument("--stage", default=hooks.HOOK_NAME, choices=list(hooks.STAGES),
+                    help="git hook stage: pre-commit (fast AST-only) or pre-push (merge-to-main guard)")
     hk.add_argument("--repo", type=Path, default=Path.cwd())
     hk.add_argument("--command", default="forge",
                     help="how this machine invokes the kernel, if not `forge` on PATH")

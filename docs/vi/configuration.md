@@ -12,9 +12,16 @@
 ```yaml
 version: 1
 
-# Phiên bản kernel được ghim (ví dụ: "0.1.0", ">=0.1.0", "~=0.1.0").
+# Phiên bản kernel được ghim (ví dụ: "0.3.0", ">=0.3.0", "~=0.3.0").
 # Khi khai báo, `forge check` sẽ kiểm tra độ lệch phiên bản giữa repo và kernel.
-kernel_version: "0.1.0"
+kernel_version: "0.3.0"
+
+# Bảo vệ nhánh main/master khỏi `forge change new` không có `--branch` hoặc `--allow-main`.
+protect_main: true
+
+# Điều phối vòng lặp phát triển: hoãn full verify & sync derived tới Merge Gate.
+workflow:
+  verify_on_merge_only: true
 
 # Các lệnh được thực thi trong `forge verify` và kiểm tra bởi `forge doctor`.
 # Nếu dự án không có bước tương ứng, đặt giá trị thành `none` (hoặc `n/a`, `-`).
@@ -22,9 +29,10 @@ commands:
   build: "npm run build"
   typecheck: "mypy src"
   lint: "ruff check ."
+  test_fast: "pytest -q tests/unit"
   test: "pytest -q"
   ui: "playwright test"
-  timeout: 300
+  timeout: 900
 
 # Cấu hình cho tầng dữ liệu dẫn xuất (docs/system/derived/).
 derive:
@@ -65,14 +73,21 @@ rules:
     version: "0.1.0"
   ```
 
+### `protect_main`
+* *(boolean, mặc định `true`)*: Từ chối `forge change new` trực tiếp trên `main`/`master` nếu thiếu `--branch` hoặc `--allow-main`, đồng thời cho phép `forge guard --cmd` chặn `git commit` trực tiếp trên nhánh chính.
+
+### `workflow`
+* `verify_on_merge_only` *(boolean, mặc định `true`)*: Giữ vòng lặp code nhanh trên nhánh feature (cổng `implement:pre` chỉ cảnh báo; `forge verify` đầy đủ và `forge sync derived` chạy 1 lần tại Merge Gate trước khi gộp vào `main`). Đặt `false` nếu muốn siết chặt `derived.freshness` trước khi implement.
+
 ### `commands`
 Các lệnh được chạy trong `forge verify` và kiểm tra bởi `forge doctor`. Nếu dự án không có một bước nào đó, hãy đặt giá trị thành `none` để bỏ qua thay vì bị tính là thiếu sót.
 * `build`: Lệnh build dự án.
 * `typecheck`: Lệnh kiểm tra kiểu tĩnh.
 * `lint`: Lệnh linter kiểm tra chuẩn mã nguồn.
-* `test`: Lệnh chạy bộ kiểm thử (test suite).
+* `test_fast` *(tùy chọn)*: Lệnh chạy test nhanh/mục tiêu chỉ dùng cho `forge verify --fast` khi đang code.
+* `test`: Lệnh chạy toàn bộ bộ kiểm thử (bắt buộc ở Merge Gate / `forge archive`).
 * `ui`: Lệnh kiểm thử giao diện / e2e / trợ năng (a11y).
-* `timeout` *(integer)*: Thời gian chạy tối đa tính bằng giây cho mỗi lệnh (mặc định `300`).
+* `timeout` *(integer)*: Thời gian chạy tối đa tính bằng giây cho mỗi lệnh (mặc định `900`).
 
 ### `derive`
 Điều khiển quá trình sinh và lập chỉ mục tầng dữ liệu dẫn xuất (`docs/system/derived/`).

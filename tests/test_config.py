@@ -117,3 +117,11 @@ def test_doctor_reports_kernel_version_and_skew(project, capsys):
     out = capsys.readouterr().out
     assert f"kernel           {__version__}" in out
     assert "kernel_pin       99.0.0 (SKEW:" in out
+
+
+def test_workflow_verify_on_merge_only_defaults_true_and_can_be_disabled(tmp_path):
+    assert config.load_config(tmp_path).verify_on_merge_only is True
+    target = tmp_path / config.CONFIG_PATH
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text("workflow:\n  verify_on_merge_only: false\n", encoding="utf-8")
+    assert config.load_config(tmp_path).verify_on_merge_only is False

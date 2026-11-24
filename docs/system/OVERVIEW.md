@@ -15,9 +15,8 @@ account of which system guarantees a diff reaches.
 
 ## Shape
 
-- 97 files the harness describes, mostly python (41 files), markdown (46 files), json (6 files)
-- Entry points: src/forge/cli.py
-- 464 declared tests across 41 files
+- Python CLI kernel anchored in `src/forge/cli.py`, backed by deterministic AST/store/trace checks and packaged skills under `src/forge/_skills/`.
+- Live file, language, and test counts are derived from `HEAD` via `forge status` and `docs/system/derived/inventory.json` (never hardcoded in always-loaded prose).
 
 This file is loaded into every agent context, so it shares a hard line
 budget with the claim files beside it. When it grows, something moves

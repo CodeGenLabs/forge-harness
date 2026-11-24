@@ -51,7 +51,7 @@ graph TD
 ## ドキュメント一覧
 * **[クイックスタート (Getting Started)](getting-started.md)**: インストールとプロジェクト初期化
 * **[コアコンセプト (Core Concepts)](concepts.md)**: 3層モデル、クレームストア、ASTアンカー
-* **[CLIリファレンス (CLI Reference)](cli-reference.md)**: 全11コマンドの詳細解説
+* **[CLIリファレンス (CLI Reference)](cli-reference.md)**: 全CLIコマンドの詳細解説
 * **[ガイドとCI/CD (Guides)](guides.md)**: AIエージェント連携、GitHub Actions、モノレポ対応
 * **[アーキテクチャ (Architecture)](architecture.md)**: カーネル内部、Tree-sitter AST、決定論的ハッシュ
 * **[設定リファレンス (Configuration)](configuration.md)**: `.forge/config.yaml` の仕様

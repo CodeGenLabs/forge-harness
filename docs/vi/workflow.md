@@ -31,7 +31,7 @@ Việc phân loại quy mô diễn ra một lần duy nhất, công khai, ngay k
 | **Mã nguồn có giữ lại?** | Không (code nháp bỏ đi). | Có. | Có. |
 
 ### Các điều kiện tự động nâng cấp Track
-Lệnh `forge track check` sẽ tự động nâng cấp B ➔ C khi phát hiện:
+Cần nâng cấp B ➔ C bằng `forge change track <N> --to C --reason "<lý do>"` khi phát hiện:
 - Bán kính ảnh hưởng (blast radius) chạm vào bất kỳ Claim loại `ARC-`, `API-`, hoặc `DAT-` nào.
 - Thay đổi thêm một public route, public export, hoặc file migration cơ sở dữ liệu.
 - Số file nằm trong phạm vi thay đổi vượt quá ngưỡng quy định (mặc định > 15 file).
@@ -73,7 +73,7 @@ flowchart TD
 ### 3.2 `investigate` (Điều tra Hiện trạng)
 - **Mục đích:** Đọc hiểu code hiện có trước khi sửa đổi. Xác định các quy tắc ngầm, hàm liên quan và các candidate claim.
 - **Nguyên tắc:** Điều tra nguyên nhân gốc rễ trước khi nghĩ đến giải pháp.
-- **Lệnh CLI:** `forge instructions investigate --change <N>`
+- **Lệnh CLI:** `forge instructions proposal --change <N>` (kèm `forge status` và `forge trace <ID>`)
 
 ### 3.3 `spec` (Đặc tả Delta Requirements)
 - **Mục đích:** Chuyển đổi ý định thành các yêu cầu logic (`REQ-xxx`) và các kịch bản kiểm thử (`SCN-xxx`).
@@ -84,7 +84,7 @@ flowchart TD
 ### 3.4 `impact` (Phân tích Bán kính Ảnh hưởng & Claim-Touch)
 - **Mục đích:** Sử dụng đồ thị phụ thuộc và cấu trúc code để tính toán chính xác những file và Claim nào bị ảnh hưởng.
 - **Đầu ra:** File `changes/NNNN/impact.md`.
-- **Cổng kiểm soát:** `forge gate impact:post --change <N>` (Thực thi **Quy tắc Claim-Touch**: Mọi Claim có anchor giao cắt với git diff đều bắt buộc phải được giải trình là `Unaffected`, `Updated`, hay `Superseded`).
+- **Cổng kiểm soát:** `forge gate impact:post --change <N>` (báo cáo tập claim bị chạm để tham khảo; cổng `sync:pre` và `forge verify` mới là điểm chặn bắt buộc **Quy tắc Claim-Touch**: mọi Claim giao cắt git diff phải được giải trình là `Unaffected`, `Updated`, hoặc `Superseded`).
 
 ### 3.5 `design` (Thiết kế & Quyết định Kiến trúc)
 - **Mục đích:** Chọn giải pháp kỹ thuật, cân nhắc các phương án đánh đổi, và soạn thảo Quyết định Kiến trúc (ADR) nếu có thay đổi mang tính cấu trúc.
@@ -108,18 +108,18 @@ flowchart TD
 - **Ranh giới:** AI chỉ được phép sửa đổi trong phạm vi file đã khai báo cho task đó.
 
 ### 3.9 `verify` (Kiểm chứng Cơ học Toàn diện)
-- **Mục đích:** Nghiệm thu chất lượng độc lập bằng máy móc trước khi cho phép hợp nhất code.
-- **Lệnh CLI:** `forge verify --change <N>`
-- **8 Điều kiện kiểm chứng bắt buộc:**
-  1. Toàn bộ test suite của dự án phải PASS (không có test lỗi).
-  2. Không có bài test nào bị âm thầm skip bất thường.
-  3. 100% các Requirement trong spec đều được đánh dấu hoàn thành trong tasks.
-  4. Tuân thủ tuyệt đối quy tắc Claim-Touch (không bỏ sót claim nào bị sửa).
-  5. Tầng phái sinh (derived tier) không bị lỗi thời.
-  6. Không còn lỗi lint hay lỗi typecheck.
-  7. Không vi phạm các quy tắc kiến trúc trong `.forge/config.yaml`.
-  8. Git working tree sạch sẽ, các file mới đều đã được commit.
-- **Đầu ra:** File `changes/NNNN/verification.json` mang chữ ký dữ liệu cơ học.
+- **Mục đích:** Nghiệm thu chất lượng độc lập bằng máy móc trước khi hợp nhất vào `main`.
+- **Lệnh CLI:** `forge verify --change <N> --sync` (hoặc `forge verify --change <N> --fast` khi lặp nhanh trên nhánh feature)
+- **12 tín hiệu cổng kiểm tra cho 8 điều kiện Definition-of-Done:**
+  1. Các lệnh toolchain (`build`, `typecheck`, `lint`, `tests`, `ui`) đều pass (`build` chạy trước khi chạy song song các lệnh còn lại).
+  2. `requirement_cover`: Mọi `REQ-*` đều có ít nhất một test gắn `@covers`.
+  3. `claim_evidence`: Mọi claim `enforced` trong vùng chạm đều còn chứng minh được qua `evidence:`.
+  4. `claim_touch`: Đã giải trình đủ tập claim bị chạm trong `impact.md` (hoặc `proposal.md` ở Track B).
+  5. `drift`: Không còn mục drift mở chưa waive chạm vào các claim của change (`--waive drift`).
+  6. `debt`: Đang ghi `pending` cho tới khi có debt ledger (`--waive debt`).
+  7. `derived_fresh`: Tầng `docs/system/derived/` khớp hoàn toàn với `HEAD` (`forge sync derived`).
+  8. `no_new_skips`: Đang ghi `pending` cho tới khi runner lưu baseline skip.
+- **Đầu ra:** File `changes/NNNN/verification.json` mang kết quả xác thực cơ học (`forge archive` yêu cầu bản chạy đầy đủ, không chấp nhận `--fast`).
 
 ### 3.10 `sync` (Đồng bộ Tri thức Hệ thống)
 - **Mục đích:** Gập (fold) các đặc tả delta trong change vào tài liệu năng lực vĩnh viễn của hệ thống tại `docs/system/`, cập nhật commit hash cho các anchor, và xử lý các mục trong sổ cái độ lệch.
@@ -146,14 +146,16 @@ Forge thiết kế số lượng cổng con người duyệt ở mức tối thi
 
 ---
 
-## 5. Cấu hình Tự động hóa (Autonomy Settings)
+## 5. Điều phối Vòng lặp Nhanh & Merge Gate
 
-Trong file `.forge/config.yaml`, người dùng có thể cấu hình mức độ tự động hóa cho các cổng G2, G3, G5 tùy theo độ tin cậy mong muốn:
+Trong file `.forge/config.yaml`, Forge mặc định bật `workflow.verify_on_merge_only: true` để tránh chạy `forge verify` đầy đủ hay `forge sync derived` sau từng prompt trên nhánh feature:
 
 ```yaml
-autonomy:
-  G2: review      # 'review' (con người duyệt) hoặc 'auto' (tự động đi tiếp nếu gate exit 0)
-  G3: review
-  G5: review
+protect_main: true
+workflow:
+  verify_on_merge_only: true
+commands:
+  test_fast: "pytest -q tests/unit"
+  test: "pytest -q"
 ```
-*Lưu ý: Cổng G1 (chọn Track ban đầu), G4 (nguy cơ mất dữ liệu) và G6 (rủi ro bảo mật) là **bất biến** và không bao giờ có thể chuyển sang chế độ tự động.*
+*Khi code lặp trên nhánh feature, chỉ chạy targeted test hoặc `forge check --fast` / `forge verify --fast`. Khi chốt merge vào `main`, chạy một lần `forge verify --change <N> --sync` + `forge check` + `forge drift --store` (hoặc cài `forge hooks install --stage pre-push`).*

@@ -78,6 +78,58 @@ The second occurrence is the reason this is written down. The first was found,
 fixed, and never recorded, so nothing stopped the same line-based match being
 written again three days later in a different file.
 
+### PIT-single-source-validation - Gates and permanent-store checks must share one validator
+
+```claim
+kind:     pitfall
+status:   asserted
+truth-source: code
+anchors:  ["src/forge/validate.py#find_placeholders"]
+evidence:
+  - test: tests/test_lifecycle.py::test_archive_refuses_bare_placeholder_even_with_force
+reviewed: 2026-11-24
+```
+
+When `spec:post` checks only `[NEEDS CLARIFICATION` while `store.placeholder`
+enforces `_PLACEHOLDERS`, a change can pass verification and fold `{token}` into
+`docs/system/specs/**`, breaking every subsequent `forge check` and archive.
+Gates and pre-write fold checks must call `find_placeholders` rather than
+duplicating patterns.
+
+### PIT-build-before-parallel-verify - Compiled builds must finish before parallel test fan-out
+
+```claim
+kind:     pitfall
+status:   asserted
+truth-source: code
+anchors:  ["src/forge/verify.py#verify"]
+evidence:
+  - test: tests/test_lifecycle.py::test_verify_finishes_build_before_starting_tests
+reviewed: 2026-11-24
+```
+
+On compiled toolchains (`dotnet`, `cargo`, `gradle`), `commands.test` triggers an
+incremental build into `obj/` or `target/`. Running `commands.build` concurrently
+with `commands.test` races on intermediate assemblies (`CS2012`), so `build`
+must finish before parallel verification fan-out begins.
+
+### PIT-precommit-must-not-run-tests - Git pre-commit hooks must stay AST-only and non-interactive
+
+```claim
+kind:     pitfall
+status:   asserted
+truth-source: code
+anchors:  ["src/forge/hooks.py#hook_body"]
+evidence:
+  - test: tests/test_hooks.py::test_precommit_hook_never_runs_tests_or_prompts
+reviewed: 2026-11-24
+```
+
+Invoking test suites or interactive `input()` prompts inside `pre-commit` hangs
+automated agents on TTYs and blocks iterative commits for minutes. Commit hooks
+must stay AST/store-only, leaving full test suites to `forge verify` at merge
+time or `pre-push` on `main`.
+
 ## Uncertain
 
 - Are there pitfalls from using the harness, as opposed to from building it?

@@ -27,7 +27,18 @@ Add this snippet to your AI agent instructions (e.g. `CLAUDE.md`, `AGENTS.md`, o
 This repository is governed by Forge Harness.
 1. Before implementing non-trivial changes, run `forge change new "<name>" --track <A|B|C> --branch` and follow the change gates.
 2. Ensure all constitutional invariants in `docs/system/pitfalls.md` are respected.
-3. Before submitting changes, run `forge verify --change <N>` and `forge check` and ensure 0 errors.
+3. While iterating on a feature branch, run targeted tests and `forge check --fast`.
+4. Before merging to `main`, run `forge sync derived`, `forge verify --change <N>`, and `forge check` and ensure 0 errors.
+```
+
+### Fast Dev Loop & Merge-Time Hooks
+To keep commits instant on feature branches while still guarding `main`:
+```bash
+# Fast AST-only pre-commit (no tests, no prompts)
+forge hooks install
+
+# Or zero-delay commits on feature branches, running forge check + drift --store only when pushing to main/master
+forge hooks install --stage pre-push
 ```
 
 ---
@@ -75,18 +86,15 @@ jobs:
 
 ## 3. Monorepo Multi-Package Setup
 
-Forge natively supports monorepos (Python, TypeScript, Go, C#):
+Forge natively supports monorepos (Python, TypeScript, Go, C#) by scoping derived scans and fixture exclusions in `.forge/config.yaml`:
 ```yaml
 # .forge/config.yaml
-monorepo:
-  enabled: true
-  packages:
-    - "packages/*"
-    - "apps/*"
+derive:
+  exclude:
+    - "vendor/**"
   exclude_id_scan:
-    - "**/node_modules/**"
-    - "**/dist/**"
-    - "**/build/**"
+    - "packages/**/fixtures/**"
+    - "apps/**/mocks/**"
 ```
 Anchors seamlessly target packages:
 * `packages/core/src/index.ts#CoreClient`
@@ -97,8 +105,8 @@ Anchors seamlessly target packages:
 ## 4. Resolving Stale Drift
 
 When code refactoring triggers drift:
-1. Run `forge check` to locate stale claims.
+1. Run `forge drift --store` (or `forge drift --changed`) to locate stale claims.
 2. Review the diff: did the architectural contract actually change, or was it just a harmless internal refactoring?
-3. If contract changed: Update the description in `docs/system/pitfalls.md` or `docs/system/domain.md`.
-4. If harmless refactor: Update the anchor target symbol or re-anchor.
-5. Run `forge sync derived` and commit.
+3. If contract changed: Update the description in `docs/system/pitfalls.md` or `docs/system/domain.md`, then resolve with `forge drift resolve <ID> --verdict V3 --adr ADR-xxxx`.
+4. If harmless refactor: Confirm and restamp anchors with `forge drift confirm <ID>` (or `--green` when evidence tests pass).
+5. Run `forge sync derived` and commit at merge time.

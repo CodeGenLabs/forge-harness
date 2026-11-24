@@ -27,7 +27,7 @@ recall it, and a context already full of the request will find what it expects.
 ## 1. Start from what is already known
 
 ```bash
-forge instructions investigate --change <n>
+forge instructions proposal --change <n>
 forge status
 ```
 

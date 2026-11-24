@@ -64,7 +64,7 @@ graph TD
 ## Đề mục tài liệu
 * **[Bắt đầu nhanh (Getting Started)](getting-started.md)**: Cài đặt và thiết lập dự án đầu tiên.
 * **[Khái niệm cốt lõi (Core Concepts)](concepts.md)**: Mô hình 3 tầng, Claim Store, Neo AST và Vòng đời thay đổi.
-* **[Tra cứu CLI (CLI Reference)](cli-reference.md)**: Danh mục toàn bộ 11 lệnh CLI của Forge.
+* **[Tra cứu CLI (CLI Reference)](cli-reference.md)**: Danh mục đầy đủ toàn bộ câu lệnh CLI của Forge.
 * **[Hướng dẫn & CI/CD (Guides)](guides.md)**: Làm việc cùng AI Agent, cấu hình GitHub Actions và Monorepo.
 * **[Kiến trúc hệ thống (Architecture)](architecture.md)**: Chi tiết về Kernel, Tree-sitter AST và Fingerprints.
 * **[Cấu hình hệ thống (Configuration)](configuration.md)**: Hướng dẫn file `.forge/config.yaml`.

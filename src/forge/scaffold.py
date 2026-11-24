@@ -239,6 +239,10 @@ kernel_version: "{__version__}"
 # Workspace isolation: protect main/master by refusing `forge change new` without --branch or --allow-main.
 protect_main: true
 
+workflow:
+  # Defer full `forge verify` and `forge sync derived` until merging into main/master.
+  verify_on_merge_only: true
+
 derive:
   # Paths the derived tier does not describe, on top of the built-in vendor and
   # build exclusions. Use for code this project does not own.

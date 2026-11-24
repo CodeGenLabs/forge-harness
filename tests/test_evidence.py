@@ -141,3 +141,32 @@ def test_evaluate_claim_evidence(repo):
     assert len(results) == 1
     assert results[0].target == "test_sample.py::test_one"
     assert results[0].status == "pass"
+
+
+def test_test_runner_explicit_target_does_not_expand_git_diff(tmp_path):
+    import importlib.util
+
+    runner_path = Path(__file__).resolve().parent.parent / "scripts" / "test_runner.py"
+    spec = importlib.util.spec_from_file_location("test_runner_mod", runner_path)
+    mod = importlib.util.module_from_spec(spec)
+    assert spec and spec.loader
+    spec.loader.exec_module(mod)
+
+    captured_cmd: list[str] = []
+
+    def fake_run(cmd, cwd=None):
+        captured_cmd.extend(cmd)
+        return type("Result", (), {"returncode": 0})()
+
+    original_run = mod.subprocess.run
+    mod.subprocess.run = fake_run
+    old_argv = sys.argv
+    try:
+        sys.argv = ["test_runner.py", "-n", "auto", "tests/test_spec.py::test_markdown_bullets_are_not_diff_markers"]
+        assert mod.main() == 0
+    finally:
+        sys.argv = old_argv
+        mod.subprocess.run = original_run
+
+    assert captured_cmd[-1] == "tests/test_spec.py::test_markdown_bullets_are_not_diff_markers"
+    assert not any(arg.endswith("test_hooks.py") or arg.endswith("test_cli.py") for arg in captured_cmd)

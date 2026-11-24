@@ -152,8 +152,11 @@ A confident wrong proposal is worse than none, because it anchors the reader.
 ## 7. Gate G5 - the knowledge delta
 
 Show the user the literal diff of the store, the folded spec, and one ledger
-line per claim. Not a summary of intent - the actual text. One interaction,
-and it is the difference between a curated store and an accreted one.
+line per claim. Not a summary of intent - the actual text. Also verify that
+user-facing documentation (CLI references, config docs, multilingual guides) and
+conformance checks stay synchronized with any changed commands, config keys, or
+gate behaviour before merging or archiving. One interaction, and it is the
+difference between a curated store and an accreted one.
 
 ## Exit
 

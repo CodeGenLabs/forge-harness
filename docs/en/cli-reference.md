@@ -15,22 +15,22 @@ Comprehensive documentation for all subcommands available in the `forge` command
 | `forge install` | Install packaged skills into AI agent hosts | `--global`, `--host <claude\|antigravity\|codex\|all>` |
 | `forge doctor` | Diagnose environment and tool dependencies | `--repo <path>` |
 | `forge status` | One-screen summary of store, drift, and active changes | `--repo <path>`, `--json` |
-| `forge check` | Validate repository integrity, claims, skills & trace | `--repo <path>`, `--scope <store\|derived\|trace\|change\|skills\|candidates>` |
+| `forge check` | Validate repository integrity, claims, skills & trace | `--repo <path>`, `--scope <store\|derived\|trace\|change\|skills\|candidates>`, `--fast` |
 | `forge sync` | Synchronize derived machine-truth tier | `derived`, `--only <file>`, `--amend` |
 | `forge bootstrap` | 3-pass brownfield repository onboarding | `derive`, `review`, `seal` |
 | `forge claim` | Query, scaffold, and stamp claims | `new <kind>`, `show <id>`, `stamp <id\|--all>` |
-| `forge change` | Manage structured change lifecycle | `new`, `list`, `show`, `track` |
+| `forge change` | Manage structured change lifecycle | `new [--branch] [--allow-main]`, `list`, `show`, `track` |
 | `forge instructions` | Resolve a phase artifact's read contract and template | `<artifact>`, `--change <id>`, `--write [name]` |
 | `forge spec` | Fold delta specifications into system store | `fold`, `--change <id>`, `--dry-run` |
 | `forge gate` | Evaluate lifecycle checkpoint gates | `<point>`, `--change <id>` |
 | `forge impact` | Compute blast radius and claim-touch set | `--change <id>`, `--base <rev>` |
 | `forge guard` | Pre-execution command safety and task file-scope guard | `--cmd <cmd>`, `--paths <path>...`, `--change <id>` |
-| `forge verify` | Execute tests, UI probe, and claim-touch accounting | `--change <id>`, `--sync`, `--amend`, `--waive <cond>` |
-| `forge archive` | Fold spec deltas, restamp claims, and archive change | `--change <id>`, `--amend`, `--dry-run` |
-| `forge drift` | Detect AST anchor staleness and manage drift ledger | `--store`, `--changed`, `--staged`, `record`, `resolve`, `waive` |
+| `forge verify` | Execute tests, UI probe, and claim-touch accounting | `--change <id>`, `--fast`, `--sync`, `--amend`, `--no-run`, `--timeout`, `--waive <cond>` |
+| `forge archive` | Fold spec deltas, restamp claims, and archive change | `--change <id>`, `--amend`, `--dry-run`, `--force`, `--date` |
+| `forge drift` | Detect AST anchor staleness and manage drift ledger | `--store`, `--changed`, `--staged`, `--unrecorded`, `record`, `list`, `confirm [--green]`, `resolve`, `waive` |
 | `forge fingerprint` | Print normalized AST fingerprint of a file/symbol | `<path>...` |
 | `forge reconcile` | Attribute unmanaged drift to commits and open ledger entries | `--since <rev>`, `--head <rev>`, `--record` |
-| `forge hooks` | Manage the pre-commit drift & store check hook | `status`, `install`, `uninstall` |
+| `forge hooks` | Manage fast AST `pre-commit` or merge-time `pre-push` hook | `status`, `install`, `uninstall`, `--stage <pre-commit\|pre-push>` |
 | `forge trace` | Bidirectional traceability lookup for any claim/req ID | `<id>`, `--json` |
 | `forge skill` | List, inspect, and export packaged AI agent skills | `list`, `show <name>`, `export [--global] [--host <h>]` |
 | `forge report` | Report a bug, crash, or feature request (sanitized) | `--feature`, `--no-browser` |
@@ -66,8 +66,10 @@ forge doctor
 ### `forge check`
 Verifies claim freshness (S1–S18), AST anchor resolution, derived tier freshness, trace integrity, and skill rules.
 ```bash
-forge check [--repo <path>] [--scope <scope>]
+forge check [--repo <path>] [--scope <scope>] [--fast]
 ```
+* `--fast`: Fast dev-loop check (`store` and `change` scopes only; skips `derived`, `trace`, `skills`, and `candidates`).
+
 **Exit Codes:**
 * `0`: All checks passed, 0 errors.
 * `1`: Stale claims, broken anchors, or skill/trace violations detected.
@@ -129,8 +131,10 @@ forge gate implement:pre --change 1
 ### `forge verify`
 Runs build, lint, typecheck, test, and UI probe commands configured in `.forge/config.yaml` and reconciles touched claims against git diff:
 ```bash
-forge verify --change 1 [--sync] [--amend]
+forge verify --change 1 [--fast] [--sync] [--amend] [--no-run] [--timeout 900]
 ```
+* `--fast`: Fast dev-loop run (uses `commands.test_fast` when set, skips `ui` and `derived_fresh`); `forge archive` requires a full non-`--fast` pass.
+* `--sync` / `--amend`: Auto-sync derived tier before full verification (and fold `derived/` + `verification.json` into `HEAD` with `--amend`).
 
 ---
 

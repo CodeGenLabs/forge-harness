@@ -250,6 +250,7 @@ def find_placeholders(text: str) -> list[tuple[int, str]]:
     Returns `(line_number, label)` pairs (1-based) so `store.placeholder`,
     `spec:post`, and spec folding enforce identical placeholder rules.
     """
+    # forge:PIT-single-source-validation
     hits: list[tuple[int, str]] = []
     blanked = blank_inline_code(blank_fences(text)).split("\n")
     for index, line in enumerate(blanked):

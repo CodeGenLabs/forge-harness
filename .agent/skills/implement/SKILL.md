@@ -95,33 +95,40 @@ hour of plausible edits.
 
 ## 6. Close the task
 
-Tick the checkbox. Then:
+Tick the checkbox. Then run a fast scoped check (do not run `forge sync derived`
+or full verification after each task):
 
 ```bash
-forge check --scope change --change <n>
+forge check --fast --change <n>
 ```
 
 If the diff touched a claimed file, the claim-touch account owes it a line -
 `forge impact --change <n>` says which. Write it now, while you remember why,
 rather than at the end when it becomes an archaeology exercise.
 
-## 7. After the last task
+## 7. Fast Dev Loop vs Merge Gate
+
+During iterative work on a feature branch (`workflow.verify_on_merge_only: true`
+by default), run targeted tests or `forge verify --change <n> --fast`. Defer
+`forge sync derived` and full verification until the change is ready to merge
+into `main` or `master`:
 
 ```bash
-forge verify --change <n> --amend
+forge verify --change <n> --sync
 ```
 
-Eight conditions, of which the tests passing is one. `--amend` auto-syncs the
-derived tier, generates verification.json, and folds both into the task commit
-upon a passing verdict so the tree stays clean without extra chore commits.
-Read what it reports rather than the exit code alone: a verdict of `pass` with
-conditions listed as still unchecked by this kernel is not the same as
-everything being proven, and the report says which.
+Eight conditions, of which the tests passing is one. `--sync` updates the
+derived tier once before running full verification (or pass `--amend` if you
+want `verification.json` and `derived/` folded into HEAD). Read what it reports
+rather than the exit code alone: a verdict of `pass` with conditions listed as
+still unchecked by this kernel is not the same as everything being proven, and
+the report says which.
 
 ## 8. Gate G5 - Integration & Review Hand-off
 
-Do NOT merge directly into `main` or `master`. Once `forge verify --change <n>`
-passes and all tasks are complete, stop and present 3 options to the user:
+Do not merge directly into `main` or `master`. Once full `forge verify --change <n>`
+passes at the Merge Gate and all tasks are complete, stop and present 3 options
+to the user:
 
 1. Merge back to `main` locally (verify full test suite on merged result)
 2. Push branch and create a Pull Request
@@ -136,10 +143,10 @@ remaining tasks in `tasks.md` without pausing between tasks:
 
 1. Pick the next unchecked task from `tasks.md`.
 2. Execute the disciplined cycle (declare scope, write failing test, pass it, refactor).
-3. Tick the task checkbox and verify scope with `forge check --scope change`.
+3. Tick the task checkbox and verify scope with `forge check --fast --change <n>`.
 4. Proceed immediately to the next task.
-5. Once all tasks are checked, run `forge verify --change <n> --amend` and stop
-   at Gate G5 for the integration decision.
+5. Once all tasks are checked and the user asks to integrate/merge, run full
+   `forge verify --change <n> --sync` once at the Merge Gate and stop at Gate G5.
 
 If a stop condition fires, pause immediately and report the finding.
 

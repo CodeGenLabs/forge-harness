@@ -22,7 +22,17 @@ Forge tích hợp sẵn bộ 9 kỹ năng Agent Skill tại `src/forge/_skills/`
 
 ---
 
-## 2. Cấu hình CI/CD trên GitHub Actions
+## 3. Vòng lặp Code nhanh & Git Hook lúc Merge
+
+Để giữ thao tác commit trên nhánh feature tức thì mà vẫn bảo vệ nhánh `main`:
+```bash
+# Hook pre-commit chỉ quét AST/store nhanh (không chạy test, không hỏi stdin)
+forge hooks install
+
+# Hoặc commit 0 giây trên nhánh feature, chỉ chạy forge check + drift --store khi push lên main/master
+forge hooks install --stage pre-push
+```
+Trong lúc sửa code từng bước, dùng targeted test + `forge check --fast`; chỉ chạy `forge sync derived` và `forge verify --change <N> --sync` 1 lần trước khi merge vào `main`.
 
 Tạo file `.github/workflows/forge.yml`:
 ```yaml

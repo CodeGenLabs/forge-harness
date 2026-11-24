@@ -158,6 +158,17 @@ def load_gates(repo: Path) -> list[Gate]:
             raw = None
     if raw is None:
         raw = yaml.safe_load(_DEFAULT_GATES_YAML)
+        if load_config(repo).verify_on_merge_only:
+            for entry in raw:
+                if (
+                    isinstance(entry, dict)
+                    and entry.get("point") == "implement:pre"
+                    and entry.get("check") == "derived.freshness"
+                ):
+                    # Defer strict derived-tier freshness enforcement to Merge Gate / sync:pre
+                    # when `workflow.verify_on_merge_only` is enabled.
+                    entry["blocking"] = False
+                    entry["onError"] = "skip"
 
     gates: list[Gate] = []
     for entry in raw:
@@ -285,6 +296,12 @@ def _check_definition_of_done(repo: Path, item: change.Change | None) -> list[Is
             "ERROR", "verify.definition_of_done", f"{item.relative}/verification.json",
             "no verification report; nothing has been verified at this point",
             f"forge verify --change {item.number}",
+        )]
+    if report.get("mode") == "fast":
+        return [Issue(
+            "ERROR", "verify.definition_of_done", f"{item.relative}/verification.json",
+            "verification report was produced with --fast; run full verification before merging or archiving",
+            f"forge verify --change {item.number} --sync",
         )]
     if report.get("verdict") == "pass":
         return []

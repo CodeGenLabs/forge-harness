@@ -12,9 +12,16 @@
 ```yaml
 version: 1
 
-# 固定するカーネルバージョン (例: "0.1.0", ">=0.1.0", "~=0.1.0")。
+# 固定するカーネルバージョン (例: "0.3.0", ">=0.3.0", "~=0.3.0")。
 # 指定した場合、forge check がリポジトリとカーネルのバージョン乖離を検出・報告します。
-kernel_version: "0.1.0"
+kernel_version: "0.3.0"
+
+# `--branch` や `--allow-main` なしでの main/master 上の直接作業を防止。
+protect_main: true
+
+# ワークフロー設定: フル検証と派生層同期をマージ時のみ実行。
+workflow:
+  verify_on_merge_only: true
 
 # `forge verify` で実行され、`forge doctor` で検証されるプロジェクトのコマンド。
 # プロジェクトに対応するステップが存在しない場合は `none` (または `n/a`, `-`) を指定します。
@@ -22,9 +29,10 @@ commands:
   build: "npm run build"
   typecheck: "mypy src"
   lint: "ruff check ."
+  test_fast: "pytest -q tests/unit"
   test: "pytest -q"
   ui: "playwright test"
-  timeout: 300
+  timeout: 900
 
 # 派生層 (docs/system/derived/) の設定。
 derive:
@@ -65,14 +73,21 @@ rules:
     version: "0.1.0"
   ```
 
+### `protect_main`
+* *(boolean, デフォルト `true`)*: `--branch` または `--allow-main` なしで `main`/`master` 上の `forge change new` を拒否し、`forge guard --cmd` による保護ブランチへの直接コミットをブロックします。
+
+### `workflow`
+* `verify_on_merge_only` *(boolean, デフォルト `true`)*: フィーチャーブランチ上の反復開発を高速に保ち、フル `forge verify` と `forge sync derived` を `main` へのマージ前（Merge Gate）のみに遅延させます。
+
 ### `commands`
 `forge verify` で実行され、`forge doctor` でチェックされるコマンドです。該当するステップがない場合は、未設定の負債として扱われないよう `none` を指定します。
 * `build`: ビルドコマンド。
 * `typecheck`: 静的型チェックコマンド。
 * `lint`: リンター実行コマンド。
-* `test`: テストスイート実行コマンド。
+* `test_fast` *(任意)*: `forge verify --fast` でのみ使用される高速テストコマンド。
+* `test`: フルテストスイート実行コマンド（`forge archive` およびマージゲートで必須）。
 * `ui`: UI/e2e/アクセシビリティテストコマンド。
-* `timeout` *(integer)*: 各コマンドの実行タイムアウト秒数 (デフォルト `300`)。
+* `timeout` *(integer)*: 各コマンドの実行タイムアウト秒数 (デフォルト `900`)。
 
 ### `derive`
 派生層 (`docs/system/derived/`) の生成とインデックス抽出を制御します。

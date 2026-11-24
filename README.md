@@ -68,7 +68,7 @@ forge install --host codex        # For OpenAI Codex / Cursor / ChatGPT (AGENTS.
 - Workspace Isolation: All spec and code changes MUST occur on a dedicated feature branch or worktree. NEVER modify code or open changes directly on `main` or `master`.
 - Open changes via `forge change new "<title>" --track <A|B|C> --branch`.
 - Strictly follow TDD: Test first, code second.
-- Changes are only complete when `forge verify --change <N>` exits 0.
+- Fast Dev Loop: During feature-branch iteration, run targeted tests and `forge check --fast`; defer `forge sync derived` and full `forge verify --change <N> --sync` until merging into `main`.
 - Integration Gate: Do NOT merge directly into `main`. Stop and ask the user whether to merge, create a PR, or keep the branch.
 ```
 
@@ -231,7 +231,7 @@ Requests exceeding the remaining balance are rejected at the domain boundary.
 When modifying code, Forge computes an exact set intersection:
 $$\text{Git Diff of Change} \cap \text{All Anchors in System Knowledge} = \text{Claim-Touch Set}$$
 
-If non-empty, `forge gate impact:post` strictly blocks until `impact.md` explicitly accounts for each touched claim.
+If non-empty, `forge gate impact:post` reports the touched set advisories while `forge gate sync:pre` and `forge verify` strictly block until `impact.md` (or Track B `## Claims touched` in `proposal.md`) explicitly accounts for each touched claim.
 
 ---
 
@@ -394,10 +394,10 @@ In your project rules (`AGENTS.md` or `CLAUDE.md`), add:
 ```markdown
 # Forge Operating Rules
 - All code modifications MUST proceed through Forge Harness.
-- Begin any task by running `forge status` and checking the active phase.
-- Always open a change (`forge change new`) and clear mandatory gates.
-- Strictly adhere to TDD: Test first, code second.
-- Work is only complete when `forge verify --change <N>` exits 0.
+- Begin any task by running `forge status` and opening a branch via `forge change new --branch`.
+- Strictly adhere to TDD: Test first, code second (`@covers REQ-...`).
+- During feature-branch iteration, run targeted tests and `forge check --fast`.
+- At the Merge Gate (once before merging into `main`), run `forge verify --change <N> --sync` and `forge check`.
 ```
 
 ---
@@ -408,12 +408,12 @@ In your project rules (`AGENTS.md` or `CLAUDE.md`), add:
 |---|---|:---:|
 | `forge doctor` | Inspect environment (Python, Git, Tree-Sitter, Test runner) | 0 / 1 |
 | `forge status` | 1-screen summary: track, phase, claims, drift, tests | 0 |
-| `forge check` | Run 18 store integrity checks (S1–S18) and freshness checks | 0 / 1 |
+| `forge check [--fast]` | Run 18 store integrity checks (S1–S18) and freshness checks (`--fast` skips derived tier) | 0 / 1 |
 | `forge init [--no-skills]` | Scaffold `.forge/` and `docs/system/` in repository (`--no-skills` skips `.forge/skills/`) | 0 |
 | `forge install [--global] [--host <host>]` | Install skills into host runtime (`--global` installs once into `~/.gemini/config/skills`, `~/.claude/skills`, `~/.codex/AGENTS.md`) | 0 |
 | `forge guard [--cmd <cmd>] [--paths <p>...]` | Pre-execution command safety and active task file-scope guard | 0 / 1 |
-| `forge hooks install` | Install Git pre-commit hook to prevent drift commits | 0 |
-| `forge hooks uninstall` | Uninstall Git pre-commit hook | 0 |
+| `forge hooks install [--stage <pre-commit\|pre-push>]` | Install fast AST `pre-commit` hook or merge-time `pre-push` hook | 0 |
+| `forge hooks uninstall [--stage <pre-commit\|pre-push>]` | Uninstall Git hook for the selected stage | 0 |
 | `forge reconcile --since <ref>` | Reconcile unmanaged commits and open drift ledger entries | 0 / 1 |
 | `forge bootstrap derive` | Pass 1: Deterministic scan of tests, modules, languages | 0 |
 | `forge bootstrap review` | Pass 3: Interactive review sheet for candidate claims | 0 |
@@ -423,8 +423,8 @@ In your project rules (`AGENTS.md` or `CLAUDE.md`), add:
 | `forge change show <N>` | Display progress and pending DAG artifacts | 0 |
 | `forge gate <point> --change <N>` | Execute lifecycle gate (`spec:post`, `impact:post`, etc.) | 0 / 1 |
 | `forge impact --change <N>` | Compute blast radius and claim-touch set | 0 |
-| `forge verify --change <N>` | Verify 11 conditions (tests, DAG, touch compliance, UI probe) | 0 / 1 |
-| `forge archive --change <N> [--amend]` | Fold spec deltas into main store, restamp claims, auto-sync derived tier, and archive change | 0 / 1 |
+| `forge verify --change <N> [--fast\|--sync]` | Verify 12 gate signals covering 8 DoD conditions (`--fast` defers UI & derived tier) | 0 / 1 |
+| `forge archive --change <N> [--amend] [--force]` | Fold spec deltas into main store, restamp claims, auto-sync derived tier, and archive change | 0 / 1 |
 | `forge drift --store` | Scan entire claim store for stale AST anchors | 0 / 1 |
 | `forge drift --changed` | Scan only anchors touched by current git diff | 0 / 1 |
 | `forge claim new <kind> [--append]` | Scaffold claim template (invariant, concept, architecture,...) | 0 |

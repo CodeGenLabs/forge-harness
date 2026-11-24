@@ -187,14 +187,33 @@ def _filter_pytest_args(args: list[str]) -> list[str]:
     return out
 
 
+_VALUE_OPTIONS = frozenset({"-n", "--numprocesses", "-k", "-m", "-c", "-o", "--rootdir", "--maxfail", "--tb"})
+
+
+def _has_explicit_targets(args: list[str]) -> bool:
+    skip_next = False
+    for arg in args:
+        if skip_next:
+            skip_next = False
+            continue
+        if arg in _VALUE_OPTIONS:
+            skip_next = True
+            continue
+        if arg.startswith("-"):
+            continue
+        return True
+    return False
+
+
 def main() -> int:
     repo_root = Path(__file__).resolve().parent.parent
     args = sys.argv[1:]
 
     force_all = "--all" in args
     filtered_args = _filter_pytest_args(args)
+    explicit_targets = _has_explicit_targets(filtered_args)
 
-    if force_all:
+    if force_all or explicit_targets:
         targets = []
     else:
         changed = get_changed_files(repo_root)
@@ -205,6 +224,8 @@ def main() -> int:
     if targets:
         print(f"Targeted tests ({len(targets)} files): {', '.join(targets)}")
         pytest_cmd.extend(targets)
+    elif explicit_targets:
+        print("Running explicit test target(s).")
     else:
         print("No specific target tests detected or running --all; running full test suite.")
 

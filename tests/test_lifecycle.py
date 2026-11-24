@@ -228,11 +228,19 @@ def test_a_non_blocking_gate_still_reports_what_it_found(project):
 
 
 def test_the_same_check_at_a_later_point_does_block(project):
-    """`derived.freshness` is advisory at `investigate:pre` and blocking at
-    `implement:pre`: reading a stale index while exploring costs little, and
-    writing code against one costs a lot."""
+    """Under default `workflow.verify_on_merge_only: true`, `implement:pre` is
+    advisory so iterative coding is never blocked by derived-tier lag; setting
+    `verify_on_merge_only: false` restores strict blocking before `implement`."""
     project.write("src/other.py", "x = 1\n")
     project.commit("make the derived tier stale")
+
+    advisory = run(project, "implement:pre")[0]
+    assert advisory.errors
+    assert not advisory.blocks
+
+    cfg = (project.root / ".forge/config.yaml").read_text(encoding="utf-8")
+    cfg += "\nworkflow:\n  verify_on_merge_only: false\n"
+    (project.root / ".forge/config.yaml").write_text(cfg, encoding="utf-8")
     assert run(project, "implement:pre")[0].blocks
 
 
@@ -709,6 +717,36 @@ def test_verify_finishes_build_before_starting_tests(project):
     report = verify.verify(project.root, item, run_commands=True)
     assert report["gates"]["build"]["status"] == "pass"
     assert report["gates"]["tests"]["status"] == "pass"
+
+
+def test_verify_fast_uses_test_fast_and_skips_ui_and_derived(project, capsys):
+    _complete(project)
+    cfg = (project.root / ".forge/config.yaml").read_text(encoding="utf-8")
+    cfg = cfg.replace(
+        'test: python -c "pass"',
+        'test: python -c "import sys; sys.exit(1)"\n  test_fast: python -c "import pathlib; pathlib.Path(\'fast.ok\').write_text(\'1\')"',
+    ).replace(
+        "ui: none",
+        'ui: python -c "import sys; sys.exit(1)"',
+    )
+    (project.root / ".forge/config.yaml").write_text(cfg, encoding="utf-8")
+
+    # Make derived tier stale — `--fast` skips derived_fresh so fast dev verify stays green.
+    project.write("src/extra.py", "x = 1\n")
+    project.commit("make derived stale")
+
+    assert main(["verify", "--change", "1", "--fast", "--repo", str(project.root)]) == 0
+    assert (project.root / "fast.ok").is_file()
+    report = verify.read_verification(project.root, item(project))
+    assert report["mode"] == "fast"
+    assert report["gates"]["ui"]["status"] == "skipped"
+    assert report["gates"]["derived_fresh"]["status"] == "skipped"
+
+    # Both verify:post and archive reject `--fast` reports; full verify is required at Merge Gate.
+    assert run(project, "verify:post")[0].blocks
+    capsys.readouterr()
+    assert main(["archive", "--change", "1", "--repo", str(project.root)]) == 1
+    assert "--fast" in capsys.readouterr().out
 
 
 

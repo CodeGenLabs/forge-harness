@@ -57,6 +57,9 @@ class Config:
     #: Whether to protect main/master branches by refusing `forge change new`
     #: without --branch or --allow-main.
     protect_main: bool = True
+    #: Whether to defer full verification and derived-tier freshness checks
+    #: until merging into main/master (`workflow.verify_on_merge_only`).
+    verify_on_merge_only: bool = True
     #: Where the file came from, or None when defaults are in use.
     source: str | None = None
     #: Populated when the file exists but could not be read.
@@ -90,6 +93,7 @@ def load_config(repo: Path) -> Config:
     derive_section = _section(raw, "derive")
     budgets = _section(raw, "budgets")
     thresholds = _section(raw, "thresholds")
+    workflow_section = _section(raw, "workflow")
     rules_section = _section(raw, "rules")
     rules: dict[str, list[str]] = {}
     for key, value in rules_section.items():
@@ -113,6 +117,11 @@ def load_config(repo: Path) -> Config:
         ),
         rules=rules,
         protect_main=bool(raw["protect_main"]) if "protect_main" in raw else defaults.protect_main,
+        verify_on_merge_only=(
+            bool(workflow_section["verify_on_merge_only"])
+            if "verify_on_merge_only" in workflow_section
+            else defaults.verify_on_merge_only
+        ),
         source=CONFIG_PATH,
     )
 

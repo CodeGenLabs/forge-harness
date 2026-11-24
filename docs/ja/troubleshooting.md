@@ -10,9 +10,19 @@
 * Windows: `scripts/install.ps1` を再実行するか、User PATH に追加してください。
 * Linux/macOS: `export PATH="$HOME/.local/bin:$PATH"` を設定してください。
 
-## 2. `Derived tier stale` エラー
+## 2. `derived.dirty`（Derived tier stale）エラー
+フィーチャーブランチ上の開発中は `forge check --fast` を使用し、`main` へのマージ前に1度だけ同期します:
 ```bash
 forge sync derived
 git add docs/system/derived
 git commit -m "chore: sync derived tier"
+```
+
+## 3. ルートテンプレート等（`{id}`）での `store.placeholder` エラー
+リテラルなテンプレート文字列はインラインバッククォートで囲んでください（例: `` `/api/v1/bots/{id}/pause` ``）。
+
+## 4. `git commit` をゼロ遅延にしたい場合
+```bash
+forge hooks uninstall
+forge hooks install --stage pre-push
 ```

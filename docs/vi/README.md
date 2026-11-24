@@ -68,7 +68,7 @@ forge install --host codex        # Dành cho OpenAI Codex / Cursor / ChatGPT (A
 - Cách ly không gian làm việc (Workspace Isolation): Toàn bộ spec và code BẮT BUỘC phải thực hiện trên branch hoặc worktree riêng. TUYỆT ĐỐI KHÔNG sửa code hay mở change trực tiếp trên `main` hoặc `master`.
 - Mở change với cờ tách nhánh: `forge change new "<title>" --track <A|B|C> --branch`.
 - Nghiêm ngặt tuân thủ TDD: Viết test trước, viết code sau (`@covers REQ-...`).
-- Change chỉ hoàn tất khi `forge verify --change <N>` đạt exit code 0.
+- Vòng lặp nhanh (Fast Dev Loop): Khi đang code trên nhánh phụ, chạy targeted test và `forge check --fast`; chỉ chạy `forge sync derived` và `forge verify --change <N> --sync` 1 lần trước khi merge vào `main`.
 - Chốt chặn tích hợp (Integration Gate): KHÔNG tự ý merge vào `main`. Dừng lại hỏi ý kiến người dùng trước khi merge hoặc tạo PR.
 ```
 
@@ -241,7 +241,7 @@ Khi một lập trình viên hoặc AI sửa code, câu hỏi lớn nhất là: 
 Thay vì để AI tự đoán, Forge biến việc này thành một **phép toán tập hợp cơ học**:
 $$\text{Diff Git của Change} \cap \text{Danh sách Anchors của toàn bộ Claims} = \text{Tập Claims bị chạm}$$
 
-Nếu tập này khác rỗng, lệnh `forge gate impact:post` sẽ **chặn đứng** quá trình làm việc cho đến khi file `impact.md` giải trình đầy đủ từng quy tắc bị chạm (là `unaffected`, `updated` hay `superseded`).
+Nếu tập này khác rỗng, `forge gate impact:post` sẽ báo cáo sớm để tham khảo, còn `forge gate sync:pre` và `forge verify` sẽ **chặn đứng** quá trình làm việc cho đến khi file `impact.md` (hoặc mục `## Claims touched` trong `proposal.md` ở Track B) giải trình đầy đủ từng quy tắc bị chạm (`unaffected`, `updated` hay `superseded`).
 
 ---
 
@@ -516,7 +516,8 @@ forge archive --change 2
 - Bắt đầu mọi yêu cầu bằng việc chạy `forge status` và đọc skill: `forge skill show forge`.
 - Luôn mở change mới (`forge change new`) và vượt qua các cổng kiểm soát (`forge gate <point>`).
 - Tuyệt đối tuân thủ TDD: Viết test trước, sửa code sau.
-- Chỉ coi là hoàn thành sau khi `forge verify --change <N>` đạt 100% PASS.
+- Khi đang code trên nhánh feature, chạy targeted test và `forge check --fast`.
+- Trước khi gộp vào `main`, chạy `forge verify --change <N> --sync` và `forge check` đạt 0 lỗi.
 ```
 
 ---
@@ -527,12 +528,12 @@ forge archive --change 2
 |---|---|:---:|
 | `forge doctor` | Kiểm tra môi trường (Python, Git, Tree-Sitter, Test runner) | 0 / 1 |
 | `forge status` | Báo cáo tổng quan trạng thái hệ thống, claims, tests, change hiện tại | 0 |
-| `forge check` | Chạy 18 bài kiểm tra toàn vẹn tri thức (S1–S18) và tính tươi mới | 0 / 1 |
+| `forge check [--fast]` | Chạy 18 bài kiểm tra toàn vẹn tri thức (S1–S18) và tính tươi mới (`--fast` bỏ qua derived) | 0 / 1 |
 | `forge init [--no-skills]` | Khởi tạo cấu trúc `.forge/` và `docs/system/` trong repo (`--no-skills` bỏ qua việc chép `.forge/skills/`) | 0 |
 | `forge install [--global] [--host <host>]` | Cài đặt skills vào host agent (`--global` cài 1 lần vào `~/.gemini/config/skills`, `~/.claude/skills`, `~/.codex/AGENTS.md`) | 0 |
 | `forge guard [--cmd <cmd>] [--paths <p>...]` | Kiểm tra an toàn lệnh thực thi trước khi chạy và kiểm soát phạm vi file (`scope`) theo task | 0 / 1 |
-| `forge hooks install` | Cài đặt Git pre-commit hook tự động chặn vi phạm drift | 0 |
-| `forge hooks uninstall` | Gỡ bỏ Git pre-commit hook | 0 |
+| `forge hooks install [--stage <pre-commit\|pre-push>]` | Cài đặt Git hook `pre-commit` nhanh hoặc `pre-push` lúc merge vào `main` | 0 |
+| `forge hooks uninstall [--stage <pre-commit\|pre-push>]` | Gỡ bỏ Git hook theo stage tương ứng | 0 |
 | `forge reconcile --since <ref>` | Đối soát commit ngoài luồng, mở mục ledger cho các claim bị chạm | 0 / 1 |
 | `forge bootstrap derive` | Pass 1: Quét cơ học codebase, lập danh mục test, modules, ngôn ngữ | 0 |
 | `forge bootstrap review` | Pass 3: Mở bảng phê chuẩn candidate claims (mặc định reject) | 0 |
@@ -542,8 +543,8 @@ forge archive --change 2
 | `forge change show <N>` | Hiển thị tiến độ và các artifact còn thiếu của change | 0 |
 | `forge gate <point> --change <N>` | Chạy cổng kiểm soát tại điểm chuyển giao (`spec:post`, `impact:post`,...) | 0 / 1 |
 | `forge impact --change <N>` | Tính toán bán kính ảnh hưởng và tập claim bị chạm | 0 |
-| `forge verify --change <N>` | Kiểm chứng 11 điều kiện thực tế (chạy test, tính hợp lệ, DAG, UI probe) | 0 / 1 |
-| `forge archive --change <N> [--amend]` | Gập delta spec vào hệ thống chính, restamp claim, auto-sync derived và lưu trữ change | 0 / 1 |
+| `forge verify --change <N> [--fast\|--sync]` | Kiểm chứng 12 tín hiệu cho 8 điều kiện DoD (`--fast` hoãn UI & derived) | 0 / 1 |
+| `forge archive --change <N> [--amend] [--force]` | Gập delta spec vào hệ thống chính, restamp claim, auto-sync derived và lưu trữ change | 0 / 1 |
 | `forge drift --store` | Quét toàn bộ kho tri thức tìm các anchor bị lỗi thời (stale) | 0 / 1 |
 | `forge drift --changed` | Quét độ lệch cho các file đang nằm trong git diff hiện tại | 0 / 1 |
 | `forge claim new <kind> [--append]` | Tạo khung mẫu claim mới (invariant, concept, architecture,...) | 0 |

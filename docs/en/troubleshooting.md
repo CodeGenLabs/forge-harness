@@ -46,11 +46,13 @@ $env:PYTHONUTF8 = "1"
 ### 3. "Derived tier stale" during `forge check`
 **Symptoms**:
 ```text
-ERROR derived_freshness: docs/system/derived/inventory.json was generated from commit abc1234, but HEAD is def5678
+ERROR  derived.dirty  docs/system/derived/inventory.json
+       regenerating produces different bytes; it was hand-edited or is stale
+       fix: forge sync derived
 ```
 
 **Solution**:
-Run synchronization and commit:
+During active feature-branch coding, use `forge check --fast` to focus on store and change checks. When ready to merge, run synchronization once and commit:
 ```bash
 forge sync derived
 git add docs/system/derived
@@ -59,8 +61,19 @@ git commit -m "chore: sync derived tier"
 
 ---
 
-### 4. How to bypass a gate during emergency hotfixes?
-Use the explicit bypass flag with a mandatory reason:
+### 4. `store.placeholder` on route templates or environment variable patterns
+**Symptoms**: `spec:post` or `forge check` rejects `{id}` or `{prefix}_API_KEY`.
+
+**Solution**:
+Wrap literal template tokens in inline backticks (e.g. `` `/api/v1/bots/{id}/pause` `` or `` `{prefix}_API_KEY` ``). Unbackticked `{token}` placeholders outside code blocks are rejected by both `spec:post` and `store.placeholder`.
+
+---
+
+### 5. How to waive drift/debt or bypass hooks during emergency hotfixes?
+Use supported escape hatches with explicit reasons:
 ```bash
-forge gate verify:post --change 0001 --bypass "Emergency CVE hotfix approved by SecOps"
+forge verify --change 1 --waive drift --waive debt
+forge archive --change 1 --force
+git commit --no-verify
+git push --no-verify
 ```

@@ -34,7 +34,7 @@ Một nguyên tắc mà không có cơ chế phát hiện vi phạm thì chỉ l
 ### II. Khảo sát trước khi sửa; Tái hiện trước khi sửa lỗi (Investigate before modifying; reproduce before fixing)
 - **Quy tắc:** Không thực hiện bất kỳ hành động viết code nào trước khi hiện trạng liên quan được đọc và nêu rõ. Không sửa bug trước khi có một bài test tái hiện lỗi được commit ở trạng thái thất bại (failing test). Phải tìm ra nguyên nhân gốc rễ trước khi đưa ra biện pháp khắc phục — việc chỉ sửa triệu chứng bên ngoài là một thất bại kỹ thuật.
 - **Lý do:** Khi chưa hiểu rõ hiện trạng, việc sửa code của AI chỉ là phỏng đoán may rủi và thường làm gãy các logic ngầm xung quanh.
-- **Cơ chế:** Đồ thị DAG của quy trình `bugfix` bắt buộc phải có artifact `reproduce` trước khi chuyển sang `tasks`. Cổng kiểm soát tại `implement:pre` sẽ chặn nếu thiếu test tái hiện lỗi.
+- **Cơ chế:** Đồ thị DAG của quy trình `bugfix` bắt buộc phải có artifact `reproduce` trước khi chuyển sang `tasks` (nghĩa là `tasks` bị chặn khi chưa tái hiện được lỗi).
 - **Miễn trừ:** Track A (Probe) có thể bỏ qua độ sâu điều tra nhưng không bỏ qua bước khảo sát. Một bugfix không bao giờ được miễn trừ test tái hiện lỗi.
 
 ---
@@ -74,7 +74,7 @@ Một nguyên tắc mà không có cơ chế phát hiện vi phạm thì chỉ l
 ### VII. Quy tắc Claim-Touch: Sửa code phải giải trình tài liệu bị chạm
 - **Quy tắc:** Mọi thay đổi mã nguồn có git diff giao cắt với neo của bất kỳ Claim nào trong hệ thống BẮT BUỘC phải giải trình đầy đủ claim đó trong file `impact.md` dưới một trong ba trạng thái: `Unaffected` (kèm lý do), `Updated` (sửa lại nội dung claim), hoặc `Superseded` (thay thế bằng ADR mới).
 - **Lý do:** Biến câu hỏi *"Tài liệu nào cần cập nhật khi code đổi?"* từ một sự phán đoán chủ quan thành một phép toán tập hợp cơ học không thể chối cãi.
-- **Cơ chế:** Cổng kiểm soát `forge gate impact:post` tính toán tập giao và chặn đứng tiến trình nếu thiếu giải trình.
+- **Cơ chế:** Cổng kiểm soát `forge gate impact:post` cảnh báo tập giao sớm, còn cổng `forge gate sync:pre` và `forge verify` sẽ chặn đứng tiến trình nếu thiếu giải trình.
 - **Miễn trừ:** Không có.
 
 ---

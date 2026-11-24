@@ -123,11 +123,11 @@ def _section(found: list[skills.Skill], root: Path, repo: Path) -> str:
         "",
         "### Operating Rules",
         "",
-        "- **Workspace Isolation:** All spec and code changes MUST occur on a dedicated feature branch or worktree. NEVER modify code or open changes directly on `main` or `master`.",
+        "- **Workspace Isolation:** All spec and code changes must occur on a dedicated feature branch or worktree. Never modify code or open changes directly on `main` or `master`.",
         "- **Open Changes:** Always run `forge change new \"<title>\" --track <A|B|C> --branch` to ensure an isolated branch is created.",
         "- **TDD Discipline:** Write failing tests first before modifying implementation code (`@covers REQ-...`).",
-        "- **Verification:** Changes are complete only when `forge verify --change <N>` exits 0.",
-        "- **Integration Gate (G5):** Do NOT merge directly into `main`. When tasks and verification are complete, stop and ask the user whether to merge locally, push/open a PR, or keep the branch.",
+        "- **Fast Dev Loop (per prompt):** Run only targeted tests for touched files (or `forge check --fast` / `forge verify --fast`) while iterating. Defer `forge sync derived` and full `forge verify` until merging.",
+        "- **Merge Gate & G5:** Before merging into `main`, run `forge sync derived`, full `forge verify --change <N>`, `forge check`, and `forge drift --store` once, then stop and ask the user whether to merge locally, push/open a PR, or keep the branch.",
         MARKER_END,
     ]
     return "\n".join(lines) + "\n"
@@ -137,18 +137,19 @@ def _antigravity_rules() -> str:
     return (
         "# Forge Harness Operating Rules for Antigravity\n\n"
         "Operating rules for working in this repository with Google Antigravity.\n\n"
-        "- **Unified Entrypoint (/forge):** All changes MUST start with `/forge <goal>` or `forge`.\n"
+        "- **Unified Entrypoint (/forge):** All changes must start with `/forge <goal>` or `forge`.\n"
         "- **Batch Preparation:** When triggered with `/forge`, automatically chain intent restatement, "
         "codebase investigation, delta specification (`spec.md`), and task planning (`tasks.md`).\n"
         "- **Single Confirmation Gate:** Present a single unified Plan Artifact with task DAG, "
         "and ask the user to confirm the execution strategy: Sequential (Single Agent) vs Parallel (Multi Subagents).\n"
-        "- **Autonomous Execution:** Once approved, execute all tasks in `tasks.md` sequentially with "
-        "strict TDD (Red -> Green -> Refactor) and `@covers REQ-...` tags. Do not stop after each task; "
-        "run continuously until `forge verify --change <n>` passes or a declared stop condition is reached.\n"
-        "- **Workspace Isolation:** All changes MUST occur on a dedicated feature branch "
-        "(`forge change new \"<title>\" --track <A|B|C> --branch`). NEVER modify code directly on `main` or `master`.\n"
-        "- **Integration Gate (G5):** Do NOT merge directly into `main`. Once `forge verify` passes, "
-        "stop and ask the user whether to merge locally, create a PR, or keep the branch.\n"
+        "- **Fast Dev Loop (Per Prompt):** Execute tasks in `tasks.md` with strict TDD (Red -> Green -> Refactor) "
+        "and `@covers REQ-...` tags using fast targeted tests and `forge check --fast`. Do not run full "
+        "`forge verify` or `forge sync derived` after every prompt on feature branches.\n"
+        "- **Workspace Isolation:** All changes must occur on a dedicated feature branch "
+        "(`forge change new \"<title>\" --track <A|B|C> --branch`). Never modify code directly on `main` or `master`.\n"
+        "- **Merge Gate & Integration Gate (G5):** Run `forge sync derived`, full `forge verify --change <n>`, "
+        "`forge check`, and `forge drift --store` once when ready to integrate into `main`, then stop and ask "
+        "the user whether to merge locally, create a PR, or keep the branch.\n"
     )
 
 

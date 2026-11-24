@@ -79,12 +79,12 @@ $ forge doctor
 ```
 Expected output:
 ```text
-ok python         3.11.9
-ok git            2.44.0
-ok tree_sitter    0.23.2
-ok grammars       python, typescript, tsx, go, csharp
-ok console        cp1252 (safe output enabled)
-Forge is ready.
+kernel           0.3.0
+kernel_pin       0.3.0 (matches)
+python           3.12.x
+grammars         python, typescript, tsx, go, csharp
+git              2.44.0
+commands         none declared in .forge/config.yaml
 ```
 
 ---
@@ -116,7 +116,8 @@ forge check
 ```
 If all claims are fresh and anchors intact, it exits with code 0:
 ```text
-0 error(s), 0 warning(s). Checked: claim store, derived-tier freshness, trace integrity.
+ok - no issues. Checked: claim store (S1-S18), derived-tier freshness, trace integrity, the claim-touch account, the skill rules, candidate admissibility.
+Not yet checked: the gates, which are point-in-time: `forge gate <point>`.
 ```
 
 ---

@@ -12,6 +12,20 @@ Forge は `src/forge/_skills/` に全9種類の標準スキル（`forge`, `inves
 
 ---
 
+## 3. 高速開発ループとマージ時ガードフック
+
+フィーチャーブランチ上の開発を高速に保ちつつ `main` を保護するには:
+```bash
+# AST・ストア検証のみの高速 pre-commit フック（テストは実行しません）
+forge hooks install
+
+# またはフィーチャーブランチ上のコミットを即時完了させ、main/master へのプッシュ時のみ検査する pre-push フック
+forge hooks install --stage pre-push
+```
+開発中は対象テストと `forge check --fast` のみを実行し、`forge sync derived` とフル `forge verify --change <N> --sync` は `main` へのマージ前に1度だけ実行します。
+
+---
+
 ## 2. GitHub Actions CI連携
 `.github/workflows/forge.yml`:
 ```yaml

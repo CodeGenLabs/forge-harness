@@ -189,12 +189,12 @@ forge check
 |---|---|:---:|
 | `forge doctor` | 実行環境の検証（Python, Git, Grammars, テストランナー） | 0 / 1 |
 | `forge status` | システム、クレーム、テスト状況の1画面サマリー | 0 |
-| `forge check` | 18項目の整合性検証（S1〜S18）の実行 | 0 / 1 |
+| `forge check [--fast]` | 18項目の整合性検証（S1〜S18）の実行（`--fast` で派生層をスキップ） | 0 / 1 |
 | `forge init [--no-skills]` | `.forge/` および `docs/system/` の初期化（`--no-skills` でスキル複製を省略） | 0 |
 | `forge install [--global] [--host <host>]` | ホスト環境へのスキル配置（`--global` で1回のみグローバル導入） | 0 |
 | `forge guard [--cmd <cmd>] [--paths <p>...]` | 実行前コマンド安全性およびタスクスコープ検証ガード | 0 / 1 |
-| `forge hooks install` | コミット時のドリフト検出用Gitフックの登録 | 0 |
-| `forge hooks uninstall` | Gitフックの解除 | 0 |
+| `forge hooks install [--stage <pre-commit\|pre-push>]` | 高速 `pre-commit` またはマージ時 `pre-push` フックの登録 | 0 |
+| `forge hooks uninstall [--stage <pre-commit\|pre-push>]` | Gitフックの解除 | 0 |
 | `forge reconcile --since <ref>` | 管理外コミットの照合とドリフト台帳の記録 | 0 / 1 |
 | `forge bootstrap derive` | Pass 1: コードベースの機械的スキャン | 0 |
 | `forge bootstrap review` | Pass 3: 候補クレームの対話型レビューシート | 0 |
@@ -204,8 +204,8 @@ forge check
 | `forge change show <N>` | 変更の進捗状況と未完了成果物の表示 | 0 |
 | `forge gate <point> --change <N>` | ライフサイクルゲートの実行 | 0 / 1 |
 | `forge impact --change <N>` | 影響範囲と接触クレームの計算 | 0 |
-| `forge verify --change <N>` | 11項目の客観的条件（テスト通過、UIプローブ等）の検証 | 0 / 1 |
-| `forge archive --change <N>` | 仕様デルタを本流へ統合しアーカイブ | 0 / 1 |
+| `forge verify --change <N> [--fast\|--sync]` | 8つのDoD条件に対する12のゲート信号の検証（`--fast` でUI・派生層を保留） | 0 / 1 |
+| `forge archive --change <N> [--amend] [--force]` | 仕様デルタを本流へ統合しアーカイブ | 0 / 1 |
 | `forge drift --store` | クレームストア全体の陳腐化スキャン | 0 / 1 |
 | `forge drift --changed` | 変更差分に関わるアンカーのみをスキャン | 0 / 1 |
 | `forge claim new <kind> [--append]` | 新規クレームテンプレートの生成 | 0 |

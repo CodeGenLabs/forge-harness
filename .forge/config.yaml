@@ -9,6 +9,10 @@ kernel_version: "0.3.0"
 # Maintainer repository override: allow operating on main in the harness repository itself
 protect_main: false
 
+workflow:
+  # Defer full `forge verify` and `forge sync derived` until merging into main/master.
+  verify_on_merge_only: true
+
 derive:
   # Files whose ID-looking strings are *data*, not declarations. They still
   # count in the inventory and the test totals; only `@covers` and `forge:<ID>`
@@ -46,6 +50,7 @@ commands:
   # a leading `.venv/...`. The kernel has no notion of how to spell a path
   # for the shell it will be run under, so the config carries the host's
   # spelling and a project on two platforms needs two configs.
-  test: .venv\Scripts\python.exe scripts/test_runner.py -n auto
+  test_fast: .venv\Scripts\python.exe scripts/test_runner.py -n auto
+  test: .venv\Scripts\python.exe scripts/test_runner.py --all -n auto
   # The kernel is a CLI; there is no browser UI to check.
   ui: none

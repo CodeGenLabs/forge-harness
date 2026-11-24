@@ -37,9 +37,14 @@ from pathlib import Path
 
 from . import gitio
 
-__all__ = ["HOOK_NAME", "hook_body", "install", "installed_state", "MARKER"]
+__all__ = [
+    "HOOK_NAME", "HOOK_PRE_PUSH", "STAGES",
+    "hook_body", "install", "installed_state", "uninstall", "MARKER",
+]
 
 HOOK_NAME = "pre-commit"
+HOOK_PRE_PUSH = "pre-push"
+STAGES = (HOOK_NAME, HOOK_PRE_PUSH)
 
 #: How the hook identifies itself, so an upgrade can replace its own work and
 #: nothing else. A hook somebody wrote by hand is theirs.
@@ -49,13 +54,14 @@ _BODY = """\
 #!/bin/sh
 {marker}
 #
-# Two cheap checks on what is staged. Both exit non-zero to stop the commit;
+# Two fast checks on what is staged (AST and store only; never runs tests or
+# prompts for stdin). Both exit non-zero to stop the commit;
 # `git commit --no-verify` skips them, and that is deliberate - a hook nobody
 # can bypass is a hook people uninstall.
 #
-# What is NOT here, and why: the test suite belongs to `forge verify`, and
-# `forge sync derived` cannot run usefully before a commit because the census
-# it builds is of HEAD.
+# What is NOT here, and why: the test suite belongs to `forge verify` at merge
+# time, and `forge sync derived` cannot run usefully before a commit because
+# the census it builds is of HEAD.
 root=$(git rev-parse --show-toplevel)
 
 if ! {forge} check --scope store --repo "$root"; then
@@ -65,7 +71,7 @@ if ! {forge} check --scope store --repo "$root"; then
     exit 1
 fi
 
-if ! {forge} drift --staged --unrecorded --test --prompt-record-green --repo "$root"; then
+if ! {forge} drift --staged --unrecorded --repo "$root"; then
     echo ""
     echo "Code under a claim's anchor changed here, and nobody has written that"
     echo "down. The hook does not ask for a verdict - a verdict points at a commit"
@@ -74,9 +80,8 @@ if ! {forge} drift --staged --unrecorded --test --prompt-record-green --repo "$r
     echo "    {forge} drift record --staged"
     echo ""
     echo "That opens a ledger entry and lets the commit through. Rule on it after,"
-    echo "against the commit it is about:"
+    echo "against the commit it is about (or at merge time):"
     echo ""
-    echo "    {forge} drift confirm --green   # restamps claims with passing tests"
     echo "    {forge} drift confirm <id>      # still true; restamps the anchor"
     echo "    {forge} drift resolve <id> --verdict V1|V2|V3|V4"
     echo ""
@@ -85,10 +90,55 @@ if ! {forge} drift --staged --unrecorded --test --prompt-record-green --repo "$r
 fi
 """
 
+_PRE_PUSH_BODY = """\
+#!/bin/sh
+{marker}
+#
+# Merge-time guard for pushes targeting main or master. Feature-branch pushes
+# exit 0 immediately without running slow checks.
+root=$(git rev-parse --show-toplevel)
 
-def hook_body(command: str = "forge") -> str:
+targets_main=0
+while read local_ref local_sha remote_ref remote_sha; do
+    case "$remote_ref" in
+        refs/heads/main|refs/heads/master)
+            targets_main=1
+            ;;
+    esac
+done
+
+if [ "$targets_main" -eq 0 ]; then
+    exit 0
+fi
+
+if ! {forge} check --repo "$root"; then
+    echo ""
+    echo "Merge gate failed: forge check reported errors before pushing to main/master."
+    echo "Run '{forge} sync derived' or fix the errors above, or skip with 'git push --no-verify'."
+    exit 1
+fi
+
+if ! {forge} drift --store --repo "$root"; then
+    echo ""
+    echo "Merge gate failed: unresolved claim drift detected before pushing to main/master."
+    echo "Confirm or resolve drifted claims ('{forge} drift confirm <id>'), or skip with 'git push --no-verify'."
+    exit 1
+fi
+"""
+
+
+def _validate_stage(stage: str) -> str:
+    if stage not in STAGES:
+        raise ValueError(f"unknown hook stage {stage!r}; expected one of {', '.join(STAGES)}")
+    return stage
+
+
+def hook_body(command: str = "forge", *, stage: str = HOOK_NAME) -> str:
     """The script, with *command* as the way this machine invokes the kernel."""
-    return _BODY.format(marker=MARKER, forge=command)
+    # forge:PIT-precommit-must-not-run-tests
+    _validate_stage(stage)
+    template = _PRE_PUSH_BODY if stage == HOOK_PRE_PUSH else _BODY
+    return template.format(marker=MARKER, forge=command)
 
 
 def hooks_dir(repo: Path) -> Path:
@@ -110,27 +160,30 @@ def hooks_dir(repo: Path) -> Path:
     return root / "hooks"
 
 
-def installed_state(repo: Path) -> tuple[str, Path]:
+def installed_state(repo: Path, *, stage: str = HOOK_NAME) -> tuple[str, Path]:
     """(state, path) where state is `absent`, `ours`, or `theirs`."""
-    target = hooks_dir(repo) / HOOK_NAME
+    _validate_stage(stage)
+    target = hooks_dir(repo) / stage
     if not target.is_file():
         return "absent", target
     text = target.read_text(encoding="utf-8", errors="replace")
     return ("ours" if MARKER in text else "theirs"), target
 
 
-def install(repo: Path, *, command: str = "forge", force: bool = False) -> tuple[str, Path]:
+def install(
+    repo: Path, *, command: str = "forge", force: bool = False, stage: str = HOOK_NAME
+) -> tuple[str, Path]:
     """Write the hook. Returns (what happened, path).
 
     Refuses to overwrite a hook this tool did not write, unless forced. Silently
     replacing somebody's own pre-commit script is the kind of thing that gets a
     tool removed rather than reported.
     """
-    state, target = installed_state(repo)
+    state, target = installed_state(repo, stage=stage)
     if state == "theirs" and not force:
         return "refused", target
 
-    body = hook_body(command)
+    body = hook_body(command, stage=stage)
     if state == "ours" and target.read_text(encoding="utf-8", errors="replace") == body:
         return "unchanged", target
 
@@ -142,9 +195,9 @@ def install(repo: Path, *, command: str = "forge", force: bool = False) -> tuple
     return ("replaced" if state != "absent" else "installed"), target
 
 
-def uninstall(repo: Path) -> tuple[str, Path]:
+def uninstall(repo: Path, *, stage: str = HOOK_NAME) -> tuple[str, Path]:
     """Remove the hook, but only if this tool wrote it."""
-    state, target = installed_state(repo)
+    state, target = installed_state(repo, stage=stage)
     if state == "absent":
         return "absent", target
     if state == "theirs":

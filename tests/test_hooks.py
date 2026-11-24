@@ -301,3 +301,31 @@ def test_drift_confirm_green_no_green_entries(anchored, capsys):
     assert code == 0
     assert "no open drift entries" in capsys.readouterr().out
 
+
+def test_precommit_hook_never_runs_tests_or_prompts():
+    body = hooks.hook_body()
+    assert "--test" not in body
+    assert "--prompt-record-green" not in body
+    assert "--staged" in body and "--unrecorded" in body
+
+
+def test_pre_push_hook_install_status_uninstall_and_targets_main(anchored, capsys):
+    assert hooks.installed_state(anchored.root, stage=hooks.HOOK_PRE_PUSH)[0] == "absent"
+    assert main(["hooks", "install", "--stage", "pre-push", "--repo", str(anchored.root)]) == 0
+    out = capsys.readouterr().out
+    assert "installed" in out
+    assert hooks.installed_state(anchored.root, stage=hooks.HOOK_PRE_PUSH)[0] == "ours"
+
+    target = hooks.hooks_dir(anchored.root) / hooks.HOOK_PRE_PUSH
+    body = target.read_text(encoding="utf-8")
+    assert hooks.MARKER in body
+    assert "refs/heads/main|refs/heads/master" in body
+    assert "check --repo" in body
+    assert "drift --store --repo" in body
+
+    assert main(["hooks", "status", "--stage", "pre-push", "--repo", str(anchored.root)]) == 0
+    assert "installed" in capsys.readouterr().out
+
+    assert main(["hooks", "uninstall", "--stage", "pre-push", "--repo", str(anchored.root)]) == 0
+    assert hooks.installed_state(anchored.root, stage=hooks.HOOK_PRE_PUSH)[0] == "absent"
+
