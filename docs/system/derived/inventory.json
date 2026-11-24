@@ -8,7 +8,7 @@
       },
       "markdown": {
         "files": 149,
-        "lines": 14935
+        "lines": 14954
       },
       "other": {
         "files": 2,
@@ -20,7 +20,7 @@
       },
       "python": {
         "files": 64,
-        "lines": 25676
+        "lines": 25848
       },
       "script": {
         "files": 1,
@@ -132,7 +132,7 @@
       "tools/pressure_test.py"
     ]
   },
-  "generated_from_commit": "515029941d188e4eb6b18d2eb1d528da9b56b711",
+  "generated_from_commit": "7cecb4cddc2a287664287a9b806b3258a0dc9aa3",
   "generator": "forge sync derived",
   "tool": "forge"
 }

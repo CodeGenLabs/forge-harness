@@ -2728,49 +2728,59 @@
           {
             "covers": [],
             "line": 510,
+            "name": "test_archive_folds_inline_code_tokens_and_passes_check"
+          },
+          {
+            "covers": [],
+            "line": 532,
+            "name": "test_archive_refuses_bare_placeholder_even_with_force"
+          },
+          {
+            "covers": [],
+            "line": 549,
             "name": "test_the_archive_is_not_a_citation"
           },
           {
             "covers": [],
-            "line": 539,
+            "line": 578,
             "name": "test_the_acceptance_case"
           },
           {
             "covers": [],
-            "line": 586,
+            "line": 625,
             "name": "test_a_folded_requirement_is_not_a_dangling_reference"
           },
           {
             "covers": [],
-            "line": 599,
+            "line": 638,
             "name": "test_verify_with_amend_auto_syncs_and_amends"
           },
           {
             "covers": [],
-            "line": 617,
+            "line": 656,
             "name": "test_archive_auto_syncs_and_restamps"
           },
           {
             "covers": [],
-            "line": 629,
+            "line": 668,
             "name": "test_archive_with_amend"
           },
           {
             "covers": [
               "REQ-verify-parallel-commands"
             ],
-            "line": 645,
+            "line": 684,
             "name": "test_verify_runs_commands_and_records_duration_ms"
           },
           {
             "covers": [
               "REQ-verify-parallel-commands"
             ],
-            "line": 657,
+            "line": 696,
             "name": "test_verify_finishes_build_before_starting_tests"
           }
         ],
-        "untagged": 43
+        "untagged": 45
       },
       "tests/test_lifecycle_repairs.py": {
         "language": "python",
@@ -3760,136 +3770,151 @@
           },
           {
             "covers": [],
-            "line": 166,
+            "line": 171,
+            "name": "test_delta_placeholders_outside_code_are_rejected"
+          },
+          {
+            "covers": [],
+            "line": 178,
+            "name": "test_delta_template_tokens_inside_inline_code_are_allowed"
+          },
+          {
+            "covers": [],
+            "line": 186,
             "name": "test_an_invented_section_is_rejected_not_ignored"
           },
           {
             "covers": [],
-            "line": 173,
+            "line": 193,
             "name": "test_a_new_capability_needs_a_purpose"
           },
           {
             "covers": [],
-            "line": 180,
+            "line": 200,
             "name": "test_an_existing_capability_needs_no_purpose"
           },
           {
             "covers": [],
-            "line": 192,
+            "line": 212,
             "name": "test_a_modified_block_that_is_a_diff_fragment_is_rejected"
           },
           {
             "covers": [],
-            "line": 199,
+            "line": 219,
             "name": "test_markdown_bullets_are_not_diff_markers"
           },
           {
             "covers": [],
-            "line": 205,
+            "line": 225,
             "name": "test_a_stub_modified_block_is_rejected"
           },
           {
             "covers": [],
-            "line": 216,
+            "line": 236,
             "name": "test_zero_deltas_is_rejected"
           },
           {
             "covers": [],
-            "line": 222,
+            "line": 242,
             "name": "test_skip_spec_with_a_reason_is_accepted"
           },
           {
             "covers": [],
-            "line": 228,
+            "line": 248,
             "name": "test_skip_spec_without_a_reason_is_rejected"
           },
           {
             "covers": [],
-            "line": 235,
+            "line": 255,
             "name": "test_a_non_empty_delta_needs_no_skip"
           },
           {
             "covers": [],
-            "line": 249,
+            "line": 269,
             "name": "test_added_creates_the_permanent_spec"
           },
           {
             "covers": [],
-            "line": 256,
+            "line": 276,
             "name": "test_the_fold_is_deterministic"
           },
           {
             "covers": [],
-            "line": 262,
+            "line": 282,
             "name": "test_modified_replaces_the_whole_requirement"
           },
           {
             "covers": [],
-            "line": 272,
+            "line": 292,
             "name": "test_removed_deletes_it"
           },
           {
             "covers": [],
-            "line": 281,
+            "line": 301,
             "name": "test_renamed_keeps_the_body_and_the_position"
           },
           {
             "covers": [],
-            "line": 290,
+            "line": 310,
             "name": "test_adding_an_existing_id_refuses_rather_than_guessing"
           },
           {
             "covers": [],
-            "line": 296,
+            "line": 316,
             "name": "test_modifying_an_absent_id_refuses"
           },
           {
             "covers": [],
-            "line": 301,
+            "line": 321,
             "name": "test_removing_an_absent_id_refuses"
           },
           {
             "covers": [],
-            "line": 308,
+            "line": 328,
             "name": "test_renaming_onto_an_existing_id_refuses"
           },
           {
             "covers": [],
-            "line": 316,
+            "line": 336,
             "name": "test_folding_twice_is_a_no_op_for_the_second_run"
           },
           {
             "covers": [],
-            "line": 326,
+            "line": 346,
             "name": "test_spec_fold_writes_the_permanent_spec"
           },
           {
             "covers": [],
-            "line": 333,
+            "line": 353,
             "name": "test_spec_fold_dry_run_writes_nothing"
           },
           {
             "covers": [],
-            "line": 341,
+            "line": 361,
             "name": "test_spec_fold_refuses_on_a_grammar_error_and_writes_nothing"
           },
           {
             "covers": [],
-            "line": 348,
+            "line": 368,
             "name": "test_spec_fold_refuses_a_conflict_and_writes_nothing"
           },
           {
             "covers": [],
-            "line": 360,
+            "line": 380,
+            "name": "test_spec_fold_refuses_rebuilt_spec_with_placeholder"
+          },
+          {
+            "covers": [],
+            "line": 388,
             "name": "test_check_scope_change_runs_the_grammar"
           },
           {
             "covers": [],
-            "line": 366,
+            "line": 394,
             "name": "test_check_scope_change_does_not_demand_a_spec_that_does_not_exist_yet"
           }
         ],
-        "untagged": 40
+        "untagged": 43
       },
       "tests/test_trace.py": {
         "language": "python",
@@ -4158,156 +4183,166 @@
           {
             "covers": [],
             "line": 592,
+            "name": "test_s9_a_placeholder_inside_inline_code_is_not_one"
+          },
+          {
+            "covers": [],
+            "line": 607,
+            "name": "test_s9_unclosed_or_escaped_backticks_do_not_hide_placeholders"
+          },
+          {
+            "covers": [],
+            "line": 615,
             "name": "test_s11_a_claim_with_no_prose_is_a_label"
           },
           {
             "covers": [],
-            "line": 606,
+            "line": 629,
             "name": "test_s10_confidence_is_forbidden_outside_candidates"
           },
           {
             "covers": [],
-            "line": 612,
+            "line": 635,
             "name": "test_s10_a_candidate_must_be_proposed"
           },
           {
             "covers": [],
-            "line": 622,
+            "line": 645,
             "name": "test_s10_a_ratified_claim_may_not_govern_a_candidate"
           },
           {
             "covers": [],
-            "line": 641,
+            "line": 664,
             "name": "test_s12_a_deleted_path_is_reported"
           },
           {
             "covers": [],
-            "line": 648,
+            "line": 671,
             "name": "test_s12_a_deleted_symbol_is_reported"
           },
           {
             "covers": [],
-            "line": 655,
+            "line": 678,
             "name": "test_s12_a_malformed_anchor_is_reported"
           },
           {
             "covers": [],
-            "line": 662,
+            "line": 685,
             "name": "test_s12_a_directory_anchor_is_allowed"
           },
           {
             "covers": [],
-            "line": 668,
+            "line": 691,
             "name": "test_s12_does_not_fire_when_the_grammar_cannot_place_a_visible_name"
           },
           {
             "covers": [],
-            "line": 687,
+            "line": 710,
             "name": "test_s13_prose_that_only_restates_the_code_is_flagged"
           },
           {
             "covers": [],
-            "line": 701,
+            "line": 724,
             "name": "test_s13_a_rule_is_never_derivable"
           },
           {
             "covers": [],
-            "line": 707,
+            "line": 730,
             "name": "test_s13_can_be_acknowledged"
           },
           {
             "covers": [],
-            "line": 722,
+            "line": 745,
             "name": "test_s14_a_component_claim_that_is_a_directory_listing_is_flagged"
           },
           {
             "covers": [],
-            "line": 733,
+            "line": 756,
             "name": "test_s15_a_version_in_prose_is_flagged"
           },
           {
             "covers": [],
-            "line": 740,
+            "line": 763,
             "name": "test_the_smells_are_warnings_and_never_fail_the_gate"
           },
           {
             "covers": [],
-            "line": 758,
+            "line": 781,
             "name": "test_s16_the_always_loaded_set_has_a_budget"
           },
           {
             "covers": [],
-            "line": 767,
+            "line": 790,
             "name": "test_s16_the_budget_can_be_lowered_by_config"
           },
           {
             "covers": [],
-            "line": 773,
+            "line": 796,
             "name": "test_s16_a_garbage_budget_falls_back_to_the_default"
           },
           {
             "covers": [],
-            "line": 785,
+            "line": 808,
             "name": "test_s17_a_claim_nothing_references_is_flagged"
           },
           {
             "covers": [],
-            "line": 800,
+            "line": 823,
             "name": "test_s17_a_back_reference_is_enough"
           },
           {
             "covers": [],
-            "line": 804,
+            "line": 827,
             "name": "test_s17_a_citation_in_a_recent_change_is_enough"
           },
           {
             "covers": [],
-            "line": 824,
+            "line": 847,
             "name": "test_s18_retirement_needs_a_ground"
           },
           {
             "covers": [],
-            "line": 831,
+            "line": 854,
             "name": "test_s18_a_ground_without_evidence_is_an_assertion"
           },
           {
             "covers": [],
-            "line": 838,
+            "line": 861,
             "name": "test_s18_a_ground_outside_one_to_four_is_an_error"
           },
           {
             "covers": [],
-            "line": 845,
+            "line": 868,
             "name": "test_s18_a_properly_retired_claim_passes_and_leaves_the_other_checks"
           },
           {
             "covers": [],
-            "line": 854,
+            "line": 877,
             "name": "test_a_retirement_ground_on_a_live_claim_is_an_error"
           },
           {
             "covers": [],
-            "line": 866,
+            "line": 889,
             "name": "test_check_scope_limits_what_runs"
           },
           {
             "covers": [],
-            "line": 872,
+            "line": 895,
             "name": "test_check_json_carries_the_documented_issue_shape"
           },
           {
             "covers": [],
-            "line": 884,
+            "line": 907,
             "name": "test_every_store_code_is_reachable"
           }
         ],
-        "untagged": 64
+        "untagged": 66
       }
     },
     "tagged_tests": 27,
-    "total_tests": 798
+    "total_tests": 805
   },
-  "generated_from_commit": "515029941d188e4eb6b18d2eb1d528da9b56b711",
+  "generated_from_commit": "7cecb4cddc2a287664287a9b806b3258a0dc9aa3",
   "generator": "forge sync derived",
   "tool": "forge"
 }
