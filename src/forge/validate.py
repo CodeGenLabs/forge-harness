@@ -29,7 +29,10 @@ from .anchor import AnchorError, parse_anchor
 from .config import Config, load_config
 from .fingerprint import find_symbol, language_for_path, symbol_appears_textually
 
-__all__ = ["Issue", "check_store", "ALWAYS_LOADED", "STORE_CODES"]
+__all__ = [
+    "Issue", "check_store", "ALWAYS_LOADED", "STORE_CODES",
+    "blank_inline_code", "find_placeholders",
+]
 
 # ---------------------------------------------------------------------------
 # Vocabulary the checks enforce. Every value here is from SYSTEM_KNOWLEDGE.md
@@ -184,6 +187,77 @@ def blank_fences(text: str) -> str:
             continue
         out.append("" if inside else line)
     return "\n".join(out)
+
+
+def blank_inline_code(text: str) -> str:
+    """Replace CommonMark inline code spans with spaces on each line.
+
+    Keeps line breaks and character positions intact so line numbers reported
+    after blanking still match the original file. Unclosed or backslash-escaped
+    opening backticks are left untouched so they cannot hide trailing text.
+    """
+    out: list[str] = []
+    for line in text.split("\n"):
+        if "`" not in line:
+            out.append(line)
+            continue
+        chars = list(line)
+        n = len(chars)
+        i = 0
+        while i < n:
+            if chars[i] != "`":
+                i += 1
+                continue
+            # Odd count of preceding backslashes means this opening backtick is escaped.
+            slashes = 0
+            k = i - 1
+            while k >= 0 and chars[k] == "\\":
+                slashes += 1
+                k -= 1
+            if slashes % 2 == 1:
+                i += 1
+                continue
+            j = i
+            while j < n and chars[j] == "`":
+                j += 1
+            ticks = j - i
+            pos = j
+            close = -1
+            while pos < n:
+                if chars[pos] == "`":
+                    end = pos
+                    while end < n and chars[end] == "`":
+                        end += 1
+                    if end - pos == ticks:
+                        close = end
+                        break
+                    pos = end
+                else:
+                    pos += 1
+            if close != -1:
+                for idx in range(i, close):
+                    chars[idx] = " "
+                i = close
+            else:
+                i = j
+        out.append("".join(chars))
+    return "\n".join(out)
+
+
+def find_placeholders(text: str) -> list[tuple[int, str]]:
+    """Find S9 placeholders outside fenced code blocks and inline code spans.
+
+    Returns `(line_number, label)` pairs (1-based) so `store.placeholder`,
+    `spec:post`, and spec folding enforce identical placeholder rules.
+    """
+    hits: list[tuple[int, str]] = []
+    blanked = blank_inline_code(blank_fences(text)).split("\n")
+    for index, line in enumerate(blanked):
+        number = index + 1
+        for pattern, label in _PLACEHOLDERS:
+            if pattern.search(line):
+                hits.append((number, label))
+    return hits
 
 
 # ---------------------------------------------------------------------------
@@ -629,27 +703,21 @@ def _find_cycles(edges: dict[str, list[str]]) -> list[list[str]]:
 def _check_prose(claims: list[store.Claim], texts: dict[str, str]) -> list[Issue]:
     issues: list[Issue] = []
 
-    # S9. Scanned over the whole file with fences blanked, then attributed to
-    # whichever claim's section the line falls in - a placeholder in the claim
-    # fence is as much a placeholder as one in the prose.
+    # S9. Scanned over the whole file with fences and inline code blanked, then
+    # attributed to whichever claim's section the line falls in - a placeholder
+    # in the claim fence is as much a placeholder as one in the prose.
     for path, text in texts.items():
         in_file = sorted((c for c in claims if c.file == path), key=lambda c: c.line)
-        blanked = blank_fences(text).split("\n")
-        owners = _owners_by_line(in_file, len(blanked))
-        for index, line in enumerate(blanked):
-            number = index + 1
-            for pattern, label in _PLACEHOLDERS:
-                match = pattern.search(line)
-                if not match:
-                    continue
-                owner = owners[index]
-                issues.append(Issue(
-                    "ERROR", "store.placeholder", path,
-                    f"{label} at line {number}: a placeholder is a claim that has not "
-                    f"been made",
-                    "write what it should say, or delete the claim until you know",
-                    line=number, claim=owner.id if owner else None,
-                ))
+        owners = _owners_by_line(in_file, text.count("\n") + 1)
+        for number, label in find_placeholders(text):
+            owner = owners[number - 1]
+            issues.append(Issue(
+                "ERROR", "store.placeholder", path,
+                f"{label} at line {number}: a placeholder is a claim that has not "
+                f"been made",
+                "write what it should say, or delete the claim until you know",
+                line=number, claim=owner.id if owner else None,
+            ))
 
     # S11
     for claim in claims:

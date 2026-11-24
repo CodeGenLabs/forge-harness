@@ -4,6 +4,17 @@
     "cycles": [
       [
         "src/forge/derive.py",
+        "src/forge/trace.py",
+        "src/forge/spec.py",
+        "src/forge/validate.py"
+      ],
+      [
+        "src/forge/derive.py",
+        "src/forge/trace.py"
+      ],
+      [
+        "src/forge/spec.py",
+        "src/forge/validate.py",
         "src/forge/trace.py"
       ]
     ],
@@ -123,6 +134,9 @@
         "src/forge/schema.py",
         "src/forge/skills.py",
         "src/forge/store.py"
+      ],
+      "src/forge/spec.py": [
+        "src/forge/validate.py"
       ],
       "src/forge/trace.py": [
         "src/forge/__init__.py",
@@ -364,7 +378,7 @@
         "src/forge/skills.py"
       ]
     },
-    "files_with_imports": 54,
+    "files_with_imports": 55,
     "reverse": {
       "src/forge/__init__.py": [
         "src/forge/anchor.py",
@@ -651,6 +665,7 @@
       "src/forge/validate.py": [
         "src/forge/cli.py",
         "src/forge/gates.py",
+        "src/forge/spec.py",
         "src/forge/verify.py",
         "tests/test_bootstrap.py",
         "tests/test_config.py",
@@ -671,7 +686,7 @@
     "tool": "forge",
     "unresolved_imports": 0
   },
-  "generated_from_commit": "63be8556b181d3fb1de654cbfac79392fdbca7e7",
+  "generated_from_commit": "7cecb4cddc2a287664287a9b806b3258a0dc9aa3",
   "generator": "forge sync derived",
   "tool": "forge"
 }

@@ -1207,20 +1207,26 @@ def _fold_change(repo: Path, item: change.Change, *, dry_run: bool) -> tuple[int
 
 def _rebuilt_issues(delta: spec.Delta, rebuilt: str, target: Path, repo: Path) -> list[str]:
     requirements = spec.parse_permanent(rebuilt)
+    rel = target.relative_to(repo).as_posix()
     problems = []
     seen: set[str] = set()
     for requirement in requirements:
         if requirement.id in seen:
             problems.append(
-                f"{target.relative_to(repo).as_posix()} would define "
+                f"{rel} would define "
                 f"{requirement.id} twice after folding {delta.path}"
             )
         seen.add(requirement.id)
         if not requirement.scenarios():
             problems.append(
-                f"{target.relative_to(repo).as_posix()}: {requirement.id} would have "
+                f"{rel}: {requirement.id} would have "
                 f"no scenario after the fold"
             )
+    for line_no, label in validate.find_placeholders(rebuilt):
+        problems.append(
+            f"{rel}:{line_no} would contain {label} after folding "
+            f"{delta.path} (store.placeholder)"
+        )
     return problems
 
 

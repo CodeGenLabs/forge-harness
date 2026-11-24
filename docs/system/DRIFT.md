@@ -81,3 +81,22 @@ verdict: confirmed
 resolved: '2026-10-14'
 evidence: re-confirmed at 1611053ed7; anchors restamped, prose unchanged
 ```
+
+## D-005 - PIT-markdown-bullet-is-not-a-diff stale
+
+```drift
+claim: PIT-markdown-bullet-is-not-a-diff
+detected: '2026-11-24'
+detected_by: forge drift
+signal: stale
+anchors_changed:
+- src/forge/spec.py@8e06e5ca51 (stale)
+proposed_verdict: V1
+proposed_reasoning: The signature changed, so the code this claim describes is not in the
+  shape a human confirmed. Proposed V1 because that is the only reading the fingerprint supports
+  on its own; the other three are judgements.
+status: resolved
+verdict: confirmed
+resolved: '2026-11-24'
+evidence: re-confirmed at 60d0693e5b; anchors restamped, prose unchanged
+```
