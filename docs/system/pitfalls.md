@@ -84,7 +84,7 @@ written again three days later in a different file.
 kind:     pitfall
 status:   asserted
 truth-source: code
-anchors:  ["src/forge/validate.py#find_placeholders"]
+anchors:  ["src/forge/validate.py#find_placeholders@641e154efc"]
 evidence:
   - test: tests/test_lifecycle.py::test_archive_refuses_bare_placeholder_even_with_force
 reviewed: 2026-11-24
@@ -102,7 +102,7 @@ duplicating patterns.
 kind:     pitfall
 status:   asserted
 truth-source: code
-anchors:  ["src/forge/verify.py#verify"]
+anchors:  ["src/forge/verify.py#verify@641e154efc"]
 evidence:
   - test: tests/test_lifecycle.py::test_verify_finishes_build_before_starting_tests
 reviewed: 2026-11-24
@@ -119,7 +119,7 @@ must finish before parallel verification fan-out begins.
 kind:     pitfall
 status:   asserted
 truth-source: code
-anchors:  ["src/forge/hooks.py#hook_body"]
+anchors:  ["src/forge/hooks.py#hook_body@641e154efc"]
 evidence:
   - test: tests/test_hooks.py::test_precommit_hook_never_runs_tests_or_prompts
 reviewed: 2026-11-24
