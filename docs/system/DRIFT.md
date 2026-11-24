@@ -95,5 +95,8 @@ proposed_verdict: V1
 proposed_reasoning: The signature changed, so the code this claim describes is not in the
   shape a human confirmed. Proposed V1 because that is the only reading the fingerprint supports
   on its own; the other three are judgements.
-status: open
+status: resolved
+verdict: confirmed
+resolved: '2026-11-24'
+evidence: re-confirmed at 60d0693e5b; anchors restamped, prose unchanged
 ```

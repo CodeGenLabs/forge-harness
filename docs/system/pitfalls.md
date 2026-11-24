@@ -41,10 +41,10 @@ evidence-from: the bug found by the claim-touch reason test.
 kind:     pitfall
 status:   asserted
 truth-source: decision
-anchors:  ["src/forge/spec.py@8e06e5ca51"]
+anchors:  ["src/forge/spec.py@60d0693e5b"]
 evidence:
   - test: tests/test_spec.py::test_markdown_bullets_are_not_diff_markers
-reviewed: 2026-09-11
+reviewed: 2026-11-24
 ```
 
 Every scenario line in the spec delta grammar is a `- ` bullet, so keying a
