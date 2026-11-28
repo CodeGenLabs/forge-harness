@@ -145,13 +145,17 @@ remaining tasks in `tasks.md` without pausing between tasks:
 2. Execute the disciplined cycle (declare scope, write failing test, pass it, refactor).
 3. Tick the task checkbox and verify scope with `forge check --fast --change <n>`.
 4. Proceed immediately to the next task.
-5. Once all tasks are checked and the user asks to integrate/merge, run full
-   `forge verify --change <n> --sync` once at the Merge Gate and stop at Gate G5.
+5. After all tasks pass, run `capture-evidence` (confirm case scope with the
+   user before capturing screenshots, recordings, or output, and optionally
+   publish a living guide under `docs/guides/`).
+6. Once ready to integrate/merge, run full `forge verify --change <n> --sync`
+   once at the Merge Gate and stop at Gate G5.
 
 If a stop condition fires, pause immediately and report the finding.
 
 ## Exit
 
 One task done (or all tasks in autonomous mode), tests green, checkboxes ticked,
-and verified. Hand off to Gate G5 when the change is complete.
+functional evidence confirmed via `capture-evidence`, and verified. Hand off to
+Gate G5 when the change is complete.
 

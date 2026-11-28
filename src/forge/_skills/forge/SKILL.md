@@ -21,13 +21,19 @@ Every request that will change the repository starts here. Three things happen
 and nothing else: the intent is restated in your words, a track is chosen, and
 the change directory is opened. Implementation does not start in this skill.
 
-## 1. Restate the intent
+## 1. Restate the intent and scan ambiguities
 
-One paragraph, in the user's terms, covering:
+Inspect the repository first (`forge status` and existing files/claims), then
+restate the request in your own words:
 
-- what they want to be true afterwards, as an outcome rather than an edit;
+- what should be true afterwards as an outcome, plus **In-Scope / Out-of-Scope**;
 - what you are assuming, each assumption on its own line;
-- what you do not know yet.
+- results of an **Ambiguity Scan** across 5 axes:
+  1. `Scope & Non-Goals` - what is explicitly excluded or deferred;
+  2. `Flows & Boundaries` - edge cases, empty/error states, backward compatibility;
+  3. `State & Data` - migrations, persistence, concurrency, existing records;
+  4. `Permissions & Constraints` - auth, limits, platform or dependency budgets;
+  5. `Design Trade-offs` - when 2-3 valid architectures exist with different costs.
 
 Getting this wrong is cheap here and expensive everywhere downstream, which is
 why it is written before anything is chosen.
@@ -55,14 +61,21 @@ the lighter one.** What scales down with simplicity is the size of each
 artifact, never whether it exists. A one-line spec delta is a normal thing; a
 missing one is how a change arrives with nobody able to say what it promised.
 
-## 3. Gate G1 - intent and track
+## 3. Gate G1 and Adaptive Clarify Gate
 
-Show the user: the restated intent, the chosen track, the signals that forced
-it if any, and what is still unknown. Wait for their answer before opening the
-change.
+Before opening a change or drafting `spec.md` / `tasks.md`:
 
-This gate is never skipped and never automated. Product intent is not in the
-repository, and the track sets every obligation that follows.
+- **If any axis in the Ambiguity Scan has unresolved questions:** pause here and
+  ask up to 3-5 targeted multiple-choice questions, each with a
+  `(Recommended)` default option, plus your proposed **In-Scope / Out-of-Scope**
+  and track. Wait for the user's answer before writing specs or plans.
+- **If requirements, boundaries, and track are already concrete and clear:**
+  present the restated intent, **In-Scope / Out-of-Scope**, and track, wait for
+  confirmation when starting from chat, or proceed cleanly into preparation
+  when continuing an already-clarified plan.
+
+This gate is never skipped on ambiguous requests. Product intent is not in the
+repository, and guessing widens diffs past what was asked.
 
 ## 4. Open the change
 
@@ -96,21 +109,20 @@ close the change and open a smaller one.
 
 ## 6. Batch preparation and decision gate
 
-When operating in an autonomous loop, the router coordinates the preparation
-phase without stopping at each intermediate step:
+Once G1 / Adaptive Clarify Gate is resolved (no open ambiguities), coordinate
+the preparation phase without pausing between internal drafts:
 
 1. **Investigate:** Probe codebase reality and existing claims (`investigate`).
-2. **Clarify:** If edge cases or constraints are ambiguous, ask targeted
-   clarifying questions before writing requirements.
-3. **Specify:** Draft the delta specification in `changes/<n>/spec.md` (`specify`).
-4. **Plan:** Break down requirements into checkable tasks in `tasks.md` (`plan-tasks`).
-5. **Decision gate:** Present the unified plan artifact to the user. Request one
-   decision before execution opens:
+2. **Design trade-offs (when non-obvious):** Record 2-3 approaches with costs.
+3. **Specify:** Draft the delta specification in `changes/<n>/spec/` (`specify`).
+4. **Plan:** Map file structure, interfaces, and checkable tasks in `tasks.md` (`plan-tasks`).
+5. **Decision gate:** Present the unified plan artifact (including Out-of-Scope
+   and files touched) to the user. Request one decision before execution opens:
    - **Sequential:** Execute tasks one by one with disciplined test-first cycles.
    - **Parallel:** Dispatch independent tasks across isolated workers, then merge.
 
-Upon user confirmation, hand off directly to `implement` to execute until the
-change is verified.
+Upon user confirmation, hand off to `implement`, then `capture-evidence` before
+wrapping up at Merge Gate / G5.
 
 ## Handing off
 
@@ -120,6 +132,7 @@ change is verified.
 | Write the delta requirements | `specify` |
 | Turn the spec into ordered work | `plan-tasks` |
 | Do tasks to completion | `implement` |
+| Capture functional proof & guides | `capture-evidence` |
 | Write what was learned into the store | `curate-knowledge` |
 
 On track A, stop after `investigate`. A probe has no artifacts, and the code

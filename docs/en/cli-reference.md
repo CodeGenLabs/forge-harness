@@ -26,6 +26,7 @@ Comprehensive documentation for all subcommands available in the `forge` command
 | `forge impact` | Compute blast radius and claim-touch set | `--change <id>`, `--base <rev>` |
 | `forge guard` | Pre-execution command safety and task file-scope guard | `--cmd <cmd>`, `--paths <path>...`, `--change <id>` |
 | `forge verify` | Execute tests, UI probe, and claim-touch accounting | `--change <id>`, `--fast`, `--sync`, `--amend`, `--no-run`, `--timeout`, `--waive <cond>` |
+| `forge evidence` | Plan, initialize, check, and publish functional walkthrough proof | `plan`, `init [--mode <critical\|full\|skip>]`, `check`, `publish` |
 | `forge archive` | Fold spec deltas, restamp claims, and archive change | `--change <id>`, `--amend`, `--dry-run`, `--force`, `--date` |
 | `forge drift` | Detect AST anchor staleness and manage drift ledger | `--store`, `--changed`, `--staged`, `--unrecorded`, `record`, `list`, `confirm [--green]`, `resolve`, `waive` |
 | `forge fingerprint` | Print normalized AST fingerprint of a file/symbol | `<path>...` |
@@ -48,7 +49,7 @@ forge init [--repo <path>] [--no-skills]
 * `--no-skills`: Skip copying `.forge/skills/` into the repository (uses packaged or global skills instead).
 
 ### `forge install`
-Installs all 9 packaged skills (`forge`, `investigate`, `specify`, `plan-tasks`, `implement`, `curate-knowledge`, `bootstrap`, `interface`, `ui-ux` + companion references and `scripts/probe.mjs`) for AI coding agents:
+Installs all 10 packaged skills (`forge`, `investigate`, `specify`, `plan-tasks`, `implement`, `capture-evidence`, `curate-knowledge`, `bootstrap`, `interface`, `ui-ux` + companion references and `scripts/probe.mjs`) for AI coding agents:
 ```bash
 # Install ONCE globally into ~/.gemini/config/skills, ~/.claude/skills, ~/.codex/AGENTS.md:
 forge install --global
@@ -135,6 +136,17 @@ forge verify --change 1 [--fast] [--sync] [--amend] [--no-run] [--timeout 900]
 ```
 * `--fast`: Fast dev-loop run (uses `commands.test_fast` when set, skips `ui` and `derived_fresh`); `forge archive` requires a full non-`--fast` pass.
 * `--sync` / `--amend`: Auto-sync derived tier before full verification (and fold `derived/` + `verification.json` into `HEAD` with `--amend`).
+
+### `forge evidence`
+Plans prioritized test cases (`P0`/`P1`/`P2`), confirms scope with the user, verifies captured screenshots/recordings/command output, and turns verified walkthroughs into functional guides:
+```bash
+forge evidence plan --change 1
+forge evidence init --change 1 --mode critical
+forge evidence check --change 1
+forge evidence publish --change 1
+```
+* `--mode`: `critical` (`P0` only), `full` (all prioritized cases), or `skip` (requires `--reason`).
+* `publish`: Copies referenced local assets to `docs/guides/assets/<capability>/`, writes `docs/guides/<capability>.md`, and updates `docs/guides/README.md`.
 
 ---
 

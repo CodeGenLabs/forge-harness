@@ -69,7 +69,7 @@ graph TD
     end
 
     subgraph SkillsLayer["推論層 (SKILLS)"]
-        Skills["Markdown手順書 (*.md)<br>• forge ルーター<br>• investigate (調査)<br>• specify (仕様定義)<br>• plan-tasks (計画)<br>• implement (TDD実装)<br>• curate-knowledge (知識同期)<br>• bootstrap / interface / ui-ux"]
+        Skills["Markdown手順書 (*.md)<br>• forge ルーター<br>• investigate (調査)<br>• specify (仕様定義)<br>• plan-tasks (計画)<br>• implement (TDD実装)<br>• capture-evidence (証跡/ガイド)<br>• curate-knowledge (知識同期)<br>• bootstrap / interface / ui-ux"]
     end
 
     subgraph KernelLayer["機構層 (KERNEL CLI)"]

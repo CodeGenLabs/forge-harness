@@ -446,6 +446,10 @@ KERNEL_SIGNALS = frozenset({
     # derived and verification
     "derived.dirty", "derived.not_built", "derived.freshness",
     "verify.definition_of_done", "repo.clean",
+    # functional evidence
+    "evidence.missing", "evidence.template_unfilled",
+    "evidence.missing_asset", "evidence.placeholder",
+    "evidence.no_proof", "evidence.skip_reason_missing",
     # skills
     "skill.too_long", "skill.compulsion", "skill.no_announce",
     "skill.host_specific", "skill.missing_reference",

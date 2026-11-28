@@ -31,9 +31,16 @@ The impact set matters here because a task that touches a claimed file owes
 that claim an account, and it is cheaper to see that while ordering the work
 than while doing it.
 
-## 2. The format
+## 2. File Structure and Format
+
+Before listing tasks, map out the files to create or modify and the interfaces
+between components so each task stays inside clear boundaries:
 
 ```markdown
+## File Structure
+- Create: `src/...` - responsibility
+- Modify: `src/...` - narrow edit scope
+
 ## 1. Refund domain logic
 
 - [ ] Add the remaining-balance calculation to the refund domain (REQ-refunds-1)
@@ -49,7 +56,8 @@ Every task line carries either a `REQ-` id or the word `chore`. That is
 checked, and both directions are checked: a requirement with no task is a
 promise nobody planned to keep, and a task with no requirement is work nobody
 agreed to - which is the most common way a change grows past what was
-approved.
+approved. Also tag core scenarios that will need post-implementation visual or
+command proof so `capture-evidence` can prioritize `P0` checks.
 
 ## 3. Ordering
 
@@ -85,7 +93,13 @@ If a task genuinely depends on something only discoverable while doing it,
 say what the decision is and what the options are, so the person doing it
 recognises the moment.
 
-## 6. Check it
+## 6. Self-Review and Check
+
+Before calling the gate, check the plan yourself against four questions:
+1. Spec coverage - every `REQ-` in `spec.md` maps to at least one task.
+2. Placeholder scan - zero incomplete steps or missing test descriptions.
+3. Interface consistency - names and signatures match across tasks.
+4. Scope discipline - nothing outside the agreed `## Not in this change` scope.
 
 ```bash
 forge gate analyze:post --change <n>

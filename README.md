@@ -28,7 +28,7 @@
 > **Skip the theory and start using Forge in your project right away with these 5 steps:**
 
 ### Step 1: Install Forge CLI & Global Agent Skills (1-Time Setup)
-Install `forge` globally and activate all 9 Forge skills (`forge`, `investigate`, `specify`, `plan-tasks`, `implement`, `curate-knowledge`, `bootstrap`, `interface`, `ui-ux`) **once at the user level** so you never have to copy skill files into each project folder:
+Install `forge` globally and activate all 10 Forge skills (`forge`, `investigate`, `specify`, `plan-tasks`, `implement`, `capture-evidence`, `curate-knowledge`, `bootstrap`, `interface`, `ui-ux`) **once at the user level** so you never have to copy skill files into each project folder:
 ```bash
 # Option A: Using uv or pipx (Recommended)
 uv tool install git+https://github.com/CodeGenLabs/forge-harness.git
@@ -302,7 +302,7 @@ forge install --global
   bash ./scripts/install.sh
   ```
 
-Automatically creates an isolated user venv at `~/.forge-harness/venv`, installs shims into `~/.local/bin`, permanently registers it in your User `PATH`, and runs `forge install --global` to install all 9 Forge skills once into `~/.gemini/config/skills`, `~/.claude/skills`, and `~/.codex/AGENTS.md`.
+Automatically creates an isolated user venv at `~/.forge-harness/venv`, installs shims into `~/.local/bin`, permanently registers it in your User `PATH`, and runs `forge install --global` to install all 10 Forge skills once into `~/.gemini/config/skills`, `~/.claude/skills`, and `~/.codex/AGENTS.md`.
 
 ---
 
@@ -429,7 +429,8 @@ In your project rules (`AGENTS.md` or `CLAUDE.md`), add:
 | `forge drift --changed` | Scan only anchors touched by current git diff | 0 / 1 |
 | `forge claim new <kind> [--append]` | Scaffold claim template (invariant, concept, architecture,...) | 0 |
 | `forge trace <ID>` | Bidirectional traceability lookup for claim ID | 0 |
-| `forge skill list` | List packaged AI agent skills (`forge`, `investigate`, `specify`, `plan-tasks`, `implement`, `curate-knowledge`, `bootstrap`, `interface`, `ui-ux`) | 0 |
+| `forge skill list` | List packaged AI agent skills (`forge`, `investigate`, `specify`, `plan-tasks`, `implement`, `capture-evidence`, `curate-knowledge`, `bootstrap`, `interface`, `ui-ux`) | 0 |
+| `forge evidence plan --change <N>` | Prioritize `P0`/`P1`/`P2` proof scenarios and confirm scope before capturing (`init`, `check`, `publish` to `docs/guides/`) | 0 / 1 |
 
 ---
 

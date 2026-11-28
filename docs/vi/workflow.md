@@ -158,4 +158,11 @@ commands:
   test_fast: "pytest -q tests/unit"
   test: "pytest -q"
 ```
+
+---
+
+## 6. Adaptive Clarify Gate & Bằng chứng Chức năng (`forge evidence`)
+
+- **Adaptive Clarify Gate (`forge`):** Đọc hiện trạng mã nguồn trước (`forge status`) và quét 5 trục mơ hồ (Phạm vi/Non-Goals, Luồng & Biên, Trạng thái & Dữ liệu, Phân quyền, Đánh đổi thiết kế). Nếu còn điểm chưa rõ, dừng hỏi tối đa 3–5 câu trắc nghiệm kèm đề xuất và chốt **In-Scope / Out-of-Scope** trước khi viết `spec/` và `tasks.md`.
+- **Tạo bằng chứng & Tài liệu hướng dẫn (`capture-evidence`):** Sau khi hoàn thành task, chạy `forge evidence plan --change <N>` để nhận diện loại dự án (`web`, `hybrid`, `api`, `cli`, `library`) và gom danh sách case (`P0`/`P1`/`P2`). Xác nhận với người dùng chạy `critical`, `full` hay `skip`, chụp hình/quay màn hình hoặc lưu output thực tế qua `forge evidence init`, kiểm chứng bằng `forge evidence check --change <N>`, và tùy chọn xuất thành tài liệu hướng dẫn sống tại `docs/guides/<capability>.md` bằng `forge evidence publish --change <N>`.
 *Khi code lặp trên nhánh feature, chỉ chạy targeted test hoặc `forge check --fast` / `forge verify --fast`. Khi chốt merge vào `main`, chạy một lần `forge verify --change <N> --sync` + `forge check` + `forge drift --store` (hoặc cài `forge hooks install --stage pre-push`).*

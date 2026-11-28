@@ -27,7 +27,7 @@ from pathlib import Path
 
 from . import (anchor, bootstrap, change, config, derive, gates, gitio, guard, hooks, hosts, impact,
                instructions, ledger, reconcile as reconcile_mod, report, scaffold,
-               schema, skills, spec, store, trace, validate, verify)
+               schema, skills, spec, store, trace, validate, verify, walkthrough)
 from .anchor import (AnchorError, Status, classify, classify_store,
                      parse_anchor)
 from .fingerprint import available_languages, fingerprint_source
@@ -2443,7 +2443,129 @@ def build_parser() -> argparse.ArgumentParser:
     grd.add_argument("--json", action="store_true")
     grd.set_defaults(func=_cmd_guard)
 
+    ev = sub.add_parser(
+        "evidence",
+        help="plan, initialize, verify, and publish functional walkthrough evidence",
+        description="Plans prioritized scenarios from spec deltas, scaffolds "
+                    "evidence walkthroughs after user scope confirmation, verifies "
+                    "captured assets and command outputs, and publishes living "
+                    "functional guides under docs/guides/.",
+    )
+    ev_sub = ev.add_subparsers(dest="action", required=True)
+
+    ev_plan = ev_sub.add_parser("plan", help="detect surface and prioritize evidence cases")
+    ev_plan.add_argument("--change", required=True)
+    ev_plan.add_argument("--repo", type=Path, default=Path.cwd())
+    ev_plan.add_argument("--json", action="store_true")
+    ev_plan.set_defaults(func=_cmd_evidence, action="plan")
+
+    ev_init = ev_sub.add_parser("init", help="scaffold walkthrough.md or record skip_evidence")
+    ev_init.add_argument("--change", required=True)
+    ev_init.add_argument("--mode", default="critical", choices=list(walkthrough.MODES),
+                         help="critical (P0 only), full (all cases), or skip (requires --reason)")
+    ev_init.add_argument("--reason", default="", help="why evidence capture was skipped")
+    ev_init.add_argument("--force", action="store_true", help="overwrite existing walkthrough.md")
+    ev_init.add_argument("--repo", type=Path, default=Path.cwd())
+    ev_init.add_argument("--json", action="store_true")
+    ev_init.set_defaults(func=_cmd_evidence, action="init")
+
+    ev_check = ev_sub.add_parser("check", help="verify walkthrough assets, links, and placeholders")
+    ev_check.add_argument("--change", required=True)
+    ev_check.add_argument("--repo", type=Path, default=Path.cwd())
+    ev_check.add_argument("--json", action="store_true")
+    ev_check.set_defaults(func=_cmd_evidence, action="check")
+
+    ev_pub = ev_sub.add_parser("publish", help="turn verified walkthrough evidence into docs/guides/")
+    ev_pub.add_argument("--change", required=True)
+    ev_pub.add_argument("--capability", default=None,
+                        help="target guide slug (defaults to first spec capability)")
+    ev_pub.add_argument("--output", type=Path, default=None, help="override output markdown path")
+    ev_pub.add_argument("--repo", type=Path, default=Path.cwd())
+    ev_pub.add_argument("--json", action="store_true")
+    ev_pub.set_defaults(func=_cmd_evidence, action="publish")
+
     return parser
+
+
+def _cmd_evidence(args: argparse.Namespace) -> int:
+    repo = args.repo.resolve()
+    if not gitio.is_repo(repo):
+        print(f"forge: {repo} is not a git repository", file=sys.stderr)
+        return _EXIT_USAGE
+    item = _resolve_change(repo, args.change)
+    if isinstance(item, int) or item is None:
+        return item if isinstance(item, int) else _EXIT_USAGE
+
+    action = args.action
+    if action == "plan":
+        payload = walkthrough.plan_evidence(repo, item)
+        if args.json:
+            print(json.dumps(payload, indent=2))
+            return _EXIT_OK
+        counts = payload["counts"]
+        methods = ", ".join(payload["capture_methods"])
+        print(f"change     {payload['change']}")
+        print(f"surface    {payload['surface']} ({methods})")
+        print(f"cases      {counts['total']} total (P0={counts['p0']}, P1={counts['p1']}, P2={counts['p2']})")
+        print(f"recommend  {payload['recommended_mode']}")
+        print(f"guide      {payload['guide_target']}")
+        for case in payload["cases"]:
+            print(f"  {case['case_id']} [{case['priority']}] ({case['requirement']}) {case['title']}")
+        return _EXIT_OK
+
+    if action == "init":
+        try:
+            payload = walkthrough.init_evidence(
+                repo, item, mode=args.mode, reason=args.reason, force=args.force,
+            )
+        except (ValueError, FileExistsError) as exc:
+            print(f"forge: {exc}", file=sys.stderr)
+            return _EXIT_USAGE
+        if args.json:
+            print(json.dumps(payload, indent=2))
+            return _EXIT_OK
+        if payload["mode"] == "skip":
+            print(f"skipped    {payload['path']} ({payload['reason']})")
+        else:
+            print(f"created    {payload['path']} ({payload['selected_cases']}/{payload['total_cases']} cases, mode={payload['mode']})")
+            print(f"assets     {payload['assets_dir']}")
+        return _EXIT_OK
+
+    if action == "check":
+        issues = walkthrough.check_evidence(repo, item)
+        errors = [i for i in issues if i.level == "ERROR"]
+        if args.json:
+            print(json.dumps({
+                "ok": not errors,
+                "change": item.name,
+                "issues": [i.to_dict() for i in issues],
+            }, indent=2))
+            return _EXIT_CHANGED if errors else _EXIT_OK
+        for issue in issues:
+            where = issue.path + (f":{issue.line}" if issue.line else "")
+            print(f"{issue.level:7} {issue.code:28} {where}\n"
+                  f"        {issue.message}\n        fix: {issue.fix}")
+        if not errors:
+            print("ok - evidence check passed.")
+        return _EXIT_CHANGED if errors else _EXIT_OK
+
+    if action == "publish":
+        try:
+            payload = walkthrough.publish_guide(
+                repo, item, capability=args.capability, output=args.output,
+            )
+        except ValueError as exc:
+            print(f"forge: {exc}", file=sys.stderr)
+            return _EXIT_CHANGED
+        if args.json:
+            print(json.dumps(payload, indent=2))
+            return _EXIT_OK
+        print(f"published  {payload['guide']}")
+        print(f"index      {payload['index']}")
+        print(f"assets     {len(payload['assets_copied'])} copied")
+        return _EXIT_OK
+
+    return _EXIT_USAGE
 
 
 def _cmd_guard(args: argparse.Namespace) -> int:

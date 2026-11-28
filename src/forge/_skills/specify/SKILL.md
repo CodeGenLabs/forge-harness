@@ -82,10 +82,24 @@ Read each one and ask: could a test fail this, as written?
 - **Say what it is quantified over.** "A refund never exceeds the capture" is
   ambiguous between each refund and their sum, and the two are different
   systems.
+- **Explicit non-goals & uncertainty.** Record `## Not in this change` in
+  `proposal.md` so boundaries hold. If an edge case remains undecided while
+  drafting, insert a clarification marker instead of guessing silently, and
+  resolve it with the user before `forge gate spec:post`:
+
+```markdown
+- [NEEDS CLARIFICATION: timeout behaviour on slow upstream]
+```
 
 Each requirement needs at least one scenario, and the scenarios should cover
 the boundary as well as the happy path. A requirement with one cheerful
 scenario is a requirement nobody has thought about.
+
+Before checking the gate, run a quick **Spec Self-Review**:
+1. Placeholder scan (no unfinished markers or vague requirements).
+2. Internal consistency (sections agree; `## Not in this change` matches delta).
+3. Scope check (focused enough for one change, no extra unapproved features).
+4. Ambiguity check (each requirement has only one testable interpretation).
 
 ## 4. Reference parity, when there is a reference
 

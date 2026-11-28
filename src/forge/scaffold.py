@@ -556,6 +556,35 @@ The dead end, the back button, the half-finished action. Name the ones this
 change introduces.
 """
 
+_T_EVIDENCE = """\
+{marker}
+# Functional Evidence - {title}
+
+Run `forge evidence plan --change <n>` and confirm case scope (`critical`,
+`full`, or `skip`) before populating this walkthrough with real screenshots,
+recordings, or command output.
+
+## Case Matrix
+
+| Case | Priority | Requirement | Title | Status |
+| --- | --- | --- | --- | --- |
+| CASE-01 | P0 | REQ-... | Main workflow | [PENDING] |
+
+## Captured Walkthrough
+
+### CASE-01 - Main workflow
+
+- **Priority:** `P0`
+- **Requirement:** `REQ-...`
+- **Steps:**
+  1. Run the user flow or command end-to-end.
+- **Captured Proof:**
+  ```text
+  [PASTE REAL COMMAND OUTPUT OR LINK assets/case-01.png]
+  ```
+- **Result:** [PASS / FAIL]
+"""
+
 CHANGE_TEMPLATES = {
     "reproduce": _T_REPRODUCE,
     "proposal": _T_PROPOSAL,
@@ -564,6 +593,7 @@ CHANGE_TEMPLATES = {
     "impact": _T_IMPACT,
     "design": _T_DESIGN,
     "tasks": _T_TASKS,
+    "evidence": _T_EVIDENCE,
 }
 
 

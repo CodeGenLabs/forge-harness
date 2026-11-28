@@ -88,8 +88,8 @@ def test_the_shipped_skills_obey_every_rule():
 
 
 SHIPPED = [
-    "bootstrap", "curate-knowledge", "forge", "implement", "interface",
-    "investigate", "plan-tasks", "specify", "ui-ux",
+    "bootstrap", "capture-evidence", "curate-knowledge", "forge", "implement",
+    "interface", "investigate", "plan-tasks", "specify", "ui-ux",
 ]
 
 
@@ -243,13 +243,19 @@ def test_ui_ux_theme_i18n_mobile_gates():
 
 # @covers REQ-skill-router-batch
 def test_forge_router_batch_preparation_section():
-    """Verify forge router skill contains batch preparation and decision gate."""
+    """Verify forge router skill contains clarify gate, batch preparation, and decision gate."""
     found = skills.load_skills(REPO)
     forge_skill = next(s for s in found if s.name == "forge")
+    assert "Adaptive Clarify Gate" in forge_skill.body
+    assert "Ambiguity Scan" in forge_skill.body
     assert "Batch preparation" in forge_skill.body
     assert "Decision gate" in forge_skill.body
     assert "Sequential" in forge_skill.body
     assert "Parallel" in forge_skill.body
+
+    ev_skill = next(s for s in found if s.name == "capture-evidence")
+    assert "Confirm scope" in ev_skill.body
+    assert "forge evidence publish" in ev_skill.body
 
 
 # @covers REQ-skill-implement-autonomous
@@ -297,7 +303,7 @@ def test_every_declared_signal_is_one_the_kernel_emits():
     source = "\n".join(
         (REPO / "src/forge" / name).read_text(encoding="utf-8")
         for name in ("validate.py", "impact.py", "spec.py", "gates.py", "cli.py",
-                     "skills.py", "verify.py")
+                     "skills.py", "verify.py", "walkthrough.py")
     )
     for scenario in skills.load_scenarios(REPO):
         signal = scenario.caught_by

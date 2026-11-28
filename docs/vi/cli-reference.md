@@ -12,7 +12,7 @@ Danh mục hướng dẫn đầy đủ cho toàn bộ các câu lệnh của For
 | Lệnh | Ý nghĩa | Tham số chính |
 | :--- | :--- | :--- |
 | `forge init` | Khởi tạo cấu trúc Forge trong dự án | `--repo <path>`, `--no-skills` |
-| `forge install` | Cài đặt bộ 9 kỹ năng cho AI Coding Agent (toàn cục hoặc theo dự án) | `--global`, `--host <claude\|antigravity\|codex\|all>` |
+| `forge install` | Cài đặt bộ 10 kỹ năng cho AI Coding Agent (toàn cục hoặc theo dự án) | `--global`, `--host <claude\|antigravity\|codex\|all>` |
 | `forge doctor` | Chẩn đoán môi trường Python, Git, Tree-sitter và lệnh test/build | `--repo <path>` |
 | `forge status` | Tóm tắt 1 màn hình: trạng thái kho tri thức, drift và change đang mở | `--repo <path>`, `--json` |
 | `forge check` | Kiểm tra toàn diện claim (S1–S18), neo AST, trace và luật skills | `--repo <path>`, `--scope <store\|derived\|trace\|change\|skills\|candidates>`, `--fast` |
@@ -26,6 +26,7 @@ Danh mục hướng dẫn đầy đủ cho toàn bộ các câu lệnh của For
 | `forge impact` | Tính toán bán kính ảnh hưởng (blast radius) và tập claim bị chạm | `--change <id>`, `--base <rev>` |
 | `forge guard` | Chặn lệnh nguy hiểm trước khi chạy và kiểm tra phạm vi file (`scope`) theo task | `--cmd <cmd>`, `--paths <path>...`, `--change <id>` |
 | `forge verify` | Chạy bộ test, UI probe và kiểm tra giải trình claim-touch | `--change <id>`, `--fast`, `--sync`, `--amend`, `--no-run`, `--timeout`, `--waive <cond>` |
+| `forge evidence` | Lập danh sách case, xác nhận phạm vi, kiểm tra bằng chứng và xuất hướng dẫn | `plan`, `init [--mode <critical\|full\|skip>]`, `check`, `publish` |
 | `forge archive` | Gập spec delta, restamp claim và lưu trữ change hoàn tất | `--change <id>`, `--amend`, `--dry-run`, `--force`, `--date` |
 | `forge drift` | Phát hiện neo AST lỗi thời và quản lý sổ cái drift | `--store`, `--changed`, `--staged`, `--unrecorded`, `record`, `list`, `confirm [--green]`, `resolve`, `waive` |
 | `forge fingerprint` | In dấu vân tay AST chuẩn hóa của file/symbol | `<path>...` |

@@ -52,3 +52,9 @@ Before archiving or merging into `main`, `forge verify` evaluates twelve recorde
 
 ### Fast Dev Loop vs. Merge Gate
 With `workflow.verify_on_merge_only: true` (the default), feature-branch iteration runs targeted tests and `forge check --fast` (or `forge verify --fast`, which skips `ui` and `derived_fresh`). Full `forge verify --sync` and `forge sync derived` run once at the Merge Gate before merging or archiving (`forge archive` rejects `--fast` reports).
+
+---
+
+## 5. Adaptive Clarify Gate & Functional Evidence Guides
+- **Adaptive Clarify Gate (`forge` skill):** Before drafting specs or tasks, inspect repository context (`forge status`) and run a 5-axis Ambiguity Scan. When requirements or boundaries remain open, pause and ask 3-5 targeted multiple-choice questions with defaults and lock **In-Scope / Out-of-Scope**.
+- **Post-Implementation Evidence (`forge evidence`):** After tasks pass, run `forge evidence plan --change <N>` to detect surface (`web`, `hybrid`, `api`, `cli`, `library`) and prioritize cases (`P0`/`P1`/`P2`). Confirm scope (`critical`, `full`, or `skip` with `--reason`) with the user before capturing real screenshots/recordings or command output, verify with `forge evidence check --change <N>`, and optionally publish living user guides under `docs/guides/` via `forge evidence publish --change <N>`.

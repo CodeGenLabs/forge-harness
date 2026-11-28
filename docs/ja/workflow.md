@@ -29,3 +29,9 @@ Forgeにおける変更開発サイクルと機械的ゲートの完全な定義
 デフォルト (`workflow.verify_on_merge_only: true`) では、フィーチャーブランチ上の各プロンプト後は対象テストと `forge check --fast`（または `forge verify --fast`）のみを実行し、フル検証と `forge sync derived` は `main` へのマージ前（Merge Gate）に1度だけ実行します。
 
 フル検証では以下の12個のゲート信号（`build`, `typecheck`, `lint`, `tests`, `ui`, `requirement_cover`, `claim_evidence`, `claim_touch`, `drift`, `debt`, `derived_fresh`, `no_new_skips`）を評価し、`forge archive` は `--fast` ではない完全な検証通過を要求します。
+
+---
+
+## 5. Adaptive Clarify Gate と機能証跡ガイド (`forge evidence`)
+- **Adaptive Clarify Gate:** 仕様やタスクを書く前に `forge status` と5軸の曖昧性スキャンを行い、不明点があれば最大3〜5問の選択肢で確認してスコープ内外を確定します。
+- **証跡取得と生きた機能ガイド:** 実装完了後に `forge evidence plan --change <N>` で対象面と重要度（`P0`/`P1`/`P2`）を抽出し、ユーザー確認のうえ `forge evidence init` / `forge evidence check` でスクリーンショット・録画・コマンド出力を検証し、`forge evidence publish --change <N>` で `docs/guides/<capability>.md` に公開できます。

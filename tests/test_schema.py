@@ -44,7 +44,7 @@ def test_the_builtin_feature_workflow_is_valid():
     loaded = parse(schema.builtin_schema_text("feature"))
     assert loaded.name == "feature"
     assert loaded.ids == ["proposal", "spec", "flow", "impact", "design", "tasks",
-                          "verification"]
+                          "verification", "evidence"]
 
 
 def test_the_builtin_bugfix_workflow_is_valid():
@@ -54,11 +54,13 @@ def test_the_builtin_bugfix_workflow_is_valid():
     # No `flow`: a fix restores behaviour a flow already specified. A change
     # that introduces movement between screens is a feature, and needing one
     # here is a signal the work was filed under the wrong workflow.
-    assert loaded.ids == ["reproduce", "proposal", "spec", "impact", "design", "tasks", "verification"]
+    assert loaded.ids == ["reproduce", "proposal", "spec", "impact", "design", "tasks",
+                          "verification", "evidence"]
     on_b = [a.id for a in loaded.for_track("B")]
-    assert on_b == ["reproduce", "proposal", "spec", "tasks", "verification"]
+    assert on_b == ["reproduce", "proposal", "spec", "tasks", "verification", "evidence"]
     on_c = [a.id for a in loaded.for_track("C")]
-    assert on_c == ["reproduce", "proposal", "spec", "impact", "design", "tasks", "verification"]
+    assert on_c == ["reproduce", "proposal", "spec", "impact", "design", "tasks",
+                    "verification", "evidence"]
     reproduce = next(a for a in loaded.artifacts if a.id == "reproduce")
     assert reproduce.requirement_for("B") == schema.REQUIRED
     assert reproduce.requirement_for("C") == schema.REQUIRED
@@ -78,9 +80,9 @@ def test_the_tracks_match_the_workflow_document():
     on_b = [a.id for a in loaded.for_track("B")]
     on_c = [a.id for a in loaded.for_track("C")]
     # WORKFLOW.md section 1: B is proposal + spec-if-behaviour-changes + tasks.
-    assert on_b == ["proposal", "spec", "tasks", "verification"]
+    assert on_b == ["proposal", "spec", "tasks", "verification", "evidence"]
     assert on_c == ["proposal", "spec", "flow", "impact", "design", "tasks",
-                    "verification"]
+                    "verification", "evidence"]
     # Track A is a question, not a deliverable.
     assert parse(schema.builtin_schema_text("feature")).for_track("A") == []
 

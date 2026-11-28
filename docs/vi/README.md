@@ -28,7 +28,7 @@
 > **Bỏ qua lý thuyết dông dài — làm theo 5 bước thực chiến dưới đây để tải về, khởi tạo dự án và ra lệnh cho AI Agent của bạn ngay lập tức:**
 
 ### Bước 1: Cài đặt Forge CLI & Kỹ năng Agent toàn cục (Chỉ cài 1 lần cho mọi dự án)
-Cài đặt `forge` vào máy tính và kích hoạt toàn bộ 9 kỹ năng (`forge`, `investigate`, `specify`, `plan-tasks`, `implement`, `curate-knowledge`, `bootstrap`, `interface`, `ui-ux`) **1 lần duy nhất ở cấp người dùng (Global)** để không bao giờ phải chép file skill vào từng thư mục dự án:
+Cài đặt `forge` vào máy tính và kích hoạt toàn bộ 10 kỹ năng (`forge`, `investigate`, `specify`, `plan-tasks`, `implement`, `capture-evidence`, `curate-knowledge`, `bootstrap`, `interface`, `ui-ux`) **1 lần duy nhất ở cấp người dùng (Global)** để không bao giờ phải chép file skill vào từng thư mục dự án:
 ```bash
 # Cách A: Dùng uv hoặc pipx (Khuyến nghị)
 uv tool install git+https://github.com/CodeGenLabs/forge-harness.git
@@ -301,7 +301,7 @@ pipx install .
 # Hoặc dùng uv:
 uv tool install .
 
-# Cài đặt toàn bộ 9 skills 1 lần vào thư mục global của AI Agent:
+# Cài đặt toàn bộ 10 skills 1 lần vào thư mục global của AI Agent:
 forge install --global
 ```
 *(Sau khi cài xong, bạn có thể mở bất kỳ terminal hay dự án nào và sử dụng lệnh `forge` cùng bộ skills ngay lập tức mà không cần chép file vào từng folder).*
@@ -333,7 +333,7 @@ Giải pháp "chạy 1 lần là xong" tự động cài cả `forge` CLI lẫn 
 1. Tự động kiểm tra phiên bản Python >= 3.11.
 2. Thiết lập môi trường ảo riêng biệt tại `%USERPROFILE%\.forge-harness\venv` (không bao giờ bị mất khi bạn đổi folder).
 3. Tạo file thực thi shim (`forge.cmd`, `forge.ps1` hoặc `forge`) đặt vào thư mục `~/.local/bin` và thêm vào **User PATH** vĩnh viễn.
-4. Tự động chạy `forge install --global` để cài toàn bộ 9 skills (`forge`, `investigate`, `specify`, `plan-tasks`, `implement`, `curate-knowledge`, `bootstrap`, `interface`, `ui-ux`) vào thư mục global của AI Agent (`~/.gemini/config/skills`, `~/.claude/skills`, `~/.codex/AGENTS.md`) — không cần chép file skill vào từng dự án.
+4. Tự động chạy `forge install --global` để cài toàn bộ 10 skills (`forge`, `investigate`, `specify`, `plan-tasks`, `implement`, `capture-evidence`, `curate-knowledge`, `bootstrap`, `interface`, `ui-ux`) vào thư mục global của AI Agent (`~/.gemini/config/skills`, `~/.claude/skills`, `~/.codex/AGENTS.md`) — không cần chép file skill vào từng dự án.
 5. Chạy kiểm chứng `forge doctor` xác nhận thành công ngay tại chỗ.
 
 ---
@@ -549,7 +549,8 @@ forge archive --change 2
 | `forge drift --changed` | Quét độ lệch cho các file đang nằm trong git diff hiện tại | 0 / 1 |
 | `forge claim new <kind> [--append]` | Tạo khung mẫu claim mới (invariant, concept, architecture,...) | 0 |
 | `forge trace <ID>` | Truy vết hai chiều cho một mã Claim (code, test, ADR, change) | 0 |
-| `forge skill list` | Liệt kê 9 kỹ năng tích hợp sẵn cho AI Agent (`forge`, `investigate`, `specify`, `plan-tasks`, `implement`, `curate-knowledge`, `bootstrap`, `interface`, `ui-ux`) | 0 |
+| `forge skill list` | Liệt kê 10 kỹ năng tích hợp sẵn cho AI Agent (`forge`, `investigate`, `specify`, `plan-tasks`, `implement`, `capture-evidence`, `curate-knowledge`, `bootstrap`, `interface`, `ui-ux`) | 0 |
+| `forge evidence plan --change <N>` | Phân loại case `P0`/`P1`/`P2`, xác nhận phạm vi chụp/quay và xuất hướng dẫn (`docs/guides/`) | 0 / 1 |
 
 ---
 

@@ -187,6 +187,8 @@ def test_antigravity_host_writes_rules(project):
     text = rule_file.read_text(encoding="utf-8")
     assert "/forge" in text
     assert "Operating Rules" in text
+    assert "Adaptive Clarify Gate" in text
+    assert "forge evidence" in text
 
 
 def test_codex_host_is_alias_for_agents_md(project):

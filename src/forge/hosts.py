@@ -124,9 +124,11 @@ def _section(found: list[skills.Skill], root: Path, repo: Path) -> str:
         "### Operating Rules",
         "",
         "- **Workspace Isolation:** All spec and code changes must occur on a dedicated feature branch or worktree. Never modify code or open changes directly on `main` or `master`.",
+        "- **Adaptive Clarify Gate:** Read repo context first (`forge status`). If requirements, scope, or trade-offs are ambiguous, pause and ask 3-5 targeted multiple-choice questions with recommended defaults and lock In-Scope / Out-of-Scope before writing `spec/` or `tasks.md`.",
         "- **Open Changes:** Always run `forge change new \"<title>\" --track <A|B|C> --branch` to ensure an isolated branch is created.",
         "- **TDD Discipline:** Write failing tests first before modifying implementation code (`@covers REQ-...`).",
         "- **Fast Dev Loop (per prompt):** Run only targeted tests for touched files (or `forge check --fast` / `forge verify --fast`) while iterating. Defer `forge sync derived` and full `forge verify` until merging.",
+        "- **Post-Implementation Evidence & Guide:** After tasks pass, run `forge evidence plan --change <N>` and confirm scope (`P0 Critical` / `Full Matrix` / `Skip`) plus optional `forge evidence publish` (`docs/guides/<capability>.md`).",
         "- **Merge Gate & G5:** Before merging into `main`, run `forge sync derived`, full `forge verify --change <N>`, `forge check`, and `forge drift --store` once, then stop and ask the user whether to merge locally, push/open a PR, or keep the branch.",
         MARKER_END,
     ]
@@ -138,13 +140,18 @@ def _antigravity_rules() -> str:
         "# Forge Harness Operating Rules for Antigravity\n\n"
         "Operating rules for working in this repository with Google Antigravity.\n\n"
         "- **Unified Entrypoint (/forge):** All changes must start with `/forge <goal>` or `forge`.\n"
-        "- **Batch Preparation:** When triggered with `/forge`, automatically chain intent restatement, "
-        "codebase investigation, delta specification (`spec.md`), and task planning (`tasks.md`).\n"
-        "- **Single Confirmation Gate:** Present a single unified Plan Artifact with task DAG, "
-        "and ask the user to confirm the execution strategy: Sequential (Single Agent) vs Parallel (Multi Subagents).\n"
+        "- **Adaptive Clarify Gate:** Read codebase context first (`forge status`). If requirements, boundaries, "
+        "or trade-offs are ambiguous, pause and ask 3-5 targeted multiple-choice questions with recommended defaults "
+        "and lock In-Scope / Out-of-Scope before writing `spec/` and `tasks.md`.\n"
+        "- **Clarified Preparation & Single Decision Gate:** Once intent is clear, chain `investigate`, "
+        "`spec/`, and `tasks.md` (with File Map and Out-of-Scope), present one unified plan, and ask for execution "
+        "strategy: Sequential (Single Agent) vs Parallel (Multi Subagents).\n"
         "- **Fast Dev Loop (Per Prompt):** Execute tasks in `tasks.md` with strict TDD (Red -> Green -> Refactor) "
-        "and `@covers REQ-...` tags using fast targeted tests and `forge check --fast`. Do not run full "
+        "`@covers REQ-...` tags using targeted tests and `forge check --fast`. Do not run full "
         "`forge verify` or `forge sync derived` after every prompt on feature branches.\n"
+        "- **Post-Implementation Evidence & Living Guide:** After tasks pass, run `forge evidence plan --change <n>`, "
+        "confirm case scope with the user (`P0 Critical` / `Full Matrix` / `Skip`), capture real screenshots/recordings "
+        "or command output (`forge evidence check`), and optionally publish `docs/guides/<capability>.md` (`forge evidence publish`).\n"
         "- **Workspace Isolation:** All changes must occur on a dedicated feature branch "
         "(`forge change new \"<title>\" --track <A|B|C> --branch`). Never modify code directly on `main` or `master`.\n"
         "- **Merge Gate & Integration Gate (G5):** Run `forge sync derived`, full `forge verify --change <n>`, "

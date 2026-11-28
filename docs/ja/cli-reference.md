@@ -22,6 +22,7 @@ Forge が提供する全サブコマンドのリファレンスです。
 | `forge impact` | 影響範囲（ブラスト半径）と接触クレームの計算 | `--change <id>`, `--base <rev>` |
 | `forge guard` | 実行前コマンド安全性およびタスクスコープ検証ガード | `--cmd <cmd>`, `--paths <path>...`, `--change <id>` |
 | `forge verify` | テスト実行・UIプローブ・クレーム影響範囲の照合 | `--change <id>`, `--fast`, `--sync`, `--amend`, `--no-run`, `--timeout`, `--waive <cond>` |
+| `forge evidence` | 証跡ケース計画・範囲確認・検証・機能ガイド公開 | `plan`, `init [--mode <critical\|full\|skip>]`, `check`, `publish` |
 | `forge archive` | 仕様デルタ統合・クレーム再スタンプ・変更のアーカイブ | `--change <id>`, `--amend`, `--dry-run`, `--force`, `--date` |
 | `forge drift` | ASTアンカー陳腐化検出とドリフト台帳管理 | `--store`, `--changed`, `--staged`, `--unrecorded`, `record`, `list`, `confirm [--green]`, `resolve`, `waive` |
 | `forge fingerprint` | 正規化ASTフィンガープリントの出力 | `<path>...` |
