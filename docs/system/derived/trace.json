@@ -839,10 +839,10 @@
       "ids_indexed": 31,
       "invariants_without_tests": [],
       "tests_tagged": 27,
-      "tests_total": 818
+      "tests_total": 824
     }
   },
-  "generated_from_commit": "02011c04658b19f03e4d4512ef52e7fbc06d05f7",
+  "generated_from_commit": "2be2a788f7ccc7df21a9f6a7efa899f7ad61385f",
   "generator": "forge sync derived",
   "tool": "forge"
 }

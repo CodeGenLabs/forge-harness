@@ -7,8 +7,8 @@
         "lines": 896
       },
       "markdown": {
-        "files": 148,
-        "lines": 14730
+        "files": 153,
+        "lines": 15106
       },
       "other": {
         "files": 2,
@@ -19,8 +19,8 @@
         "lines": 118
       },
       "python": {
-        "files": 65,
-        "lines": 26420
+        "files": 67,
+        "lines": 27557
       },
       "script": {
         "files": 1,
@@ -46,8 +46,8 @@
     "entry_points": [
       "src/forge/cli.py"
     ],
-    "files_considered": 238,
-    "files_tracked": 238,
+    "files_considered": 245,
+    "files_tracked": 245,
     "stack": {
       "python": {
         "lockfile": null,
@@ -73,11 +73,14 @@
       "tests/skills/bootstrap/invented-rationale.md",
       "tests/skills/bootstrap/review-argues-for-candidates.md",
       "tests/skills/bootstrap/unprovable-invariant.md",
+      "tests/skills/capture-evidence/missing-evidence-asset.md",
+      "tests/skills/capture-evidence/skips-confirmation-on-many-cases.md",
       "tests/skills/curate-knowledge/confident-drift-verdict.md",
       "tests/skills/curate-knowledge/edited-claim-filed-unaffected.md",
       "tests/skills/curate-knowledge/retires-for-brevity.md",
       "tests/skills/curate-knowledge/unaffected-without-a-reason.md",
       "tests/skills/forge/downgrade-after-discovery.md",
+      "tests/skills/forge/guesses-vague-scope-without-clarifying.md",
       "tests/skills/forge/hidden-migration.md",
       "tests/skills/forge/too-simple-for-a-spec.md",
       "tests/skills/implement/green-test-that-never-failed.md",
@@ -130,10 +133,11 @@
       "tests/test_spec.py",
       "tests/test_trace.py",
       "tests/test_validate.py",
+      "tests/test_walkthrough.py",
       "tools/pressure_test.py"
     ]
   },
-  "generated_from_commit": "02011c04658b19f03e4d4512ef52e7fbc06d05f7",
+  "generated_from_commit": "2be2a788f7ccc7df21a9f6a7efa899f7ad61385f",
   "generator": "forge sync derived",
   "tool": "forge"
 }

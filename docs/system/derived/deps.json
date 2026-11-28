@@ -167,6 +167,12 @@
         "src/forge/spec.py",
         "src/forge/validate.py"
       ],
+      "src/forge/walkthrough.py": [
+        "src/forge/__init__.py",
+        "src/forge/change.py",
+        "src/forge/spec.py",
+        "src/forge/validate.py"
+      ],
       "tests/test_anchor_classify.py": [
         "src/forge/__init__.py",
         "src/forge/anchor.py",
@@ -376,6 +382,13 @@
         "src/forge/store.py",
         "src/forge/validate.py"
       ],
+      "tests/test_walkthrough.py": [
+        "src/forge/__init__.py",
+        "src/forge/change.py",
+        "src/forge/cli.py",
+        "src/forge/schema.py",
+        "src/forge/walkthrough.py"
+      ],
       "tools/perturb_anchors.py": [
         "src/forge/__init__.py",
         "src/forge/anchor.py",
@@ -387,7 +400,7 @@
         "src/forge/skills.py"
       ]
     },
-    "files_with_imports": 56,
+    "files_with_imports": 58,
     "reverse": {
       "src/forge/__init__.py": [
         "src/forge/anchor.py",
@@ -407,6 +420,7 @@
         "src/forge/trace.py",
         "src/forge/validate.py",
         "src/forge/verify.py",
+        "src/forge/walkthrough.py",
         "tests/test_anchor_classify.py",
         "tests/test_anchor_store.py",
         "tests/test_bootstrap.py",
@@ -436,6 +450,7 @@
         "tests/test_spec.py",
         "tests/test_trace.py",
         "tests/test_validate.py",
+        "tests/test_walkthrough.py",
         "tools/perturb_anchors.py",
         "tools/pressure_test.py"
       ],
@@ -467,6 +482,7 @@
         "src/forge/scaffold.py",
         "src/forge/trace.py",
         "src/forge/verify.py",
+        "src/forge/walkthrough.py",
         "tests/test_change.py",
         "tests/test_claim_granularity.py",
         "tests/test_guard.py",
@@ -476,7 +492,8 @@
         "tests/test_instructions.py",
         "tests/test_lifecycle.py",
         "tests/test_lifecycle_repairs.py",
-        "tests/test_spec.py"
+        "tests/test_spec.py",
+        "tests/test_walkthrough.py"
       ],
       "src/forge/cli.py": [
         "src/forge/__main__.py",
@@ -501,7 +518,8 @@
         "tests/test_skill_companions.py",
         "tests/test_skills.py",
         "tests/test_spec.py",
-        "tests/test_validate.py"
+        "tests/test_validate.py",
+        "tests/test_walkthrough.py"
       ],
       "src/forge/config.py": [
         "src/forge/bootstrap.py",
@@ -634,7 +652,8 @@
         "tests/test_docs_conformance.py",
         "tests/test_instructions.py",
         "tests/test_lifecycle_repairs.py",
-        "tests/test_schema.py"
+        "tests/test_schema.py",
+        "tests/test_walkthrough.py"
       ],
       "src/forge/skills.py": [
         "src/forge/hosts.py",
@@ -649,6 +668,7 @@
         "src/forge/gates.py",
         "src/forge/trace.py",
         "src/forge/verify.py",
+        "src/forge/walkthrough.py",
         "tests/test_lifecycle.py",
         "tests/test_lifecycle_repairs.py",
         "tests/test_spec.py"
@@ -682,6 +702,7 @@
         "src/forge/gates.py",
         "src/forge/spec.py",
         "src/forge/verify.py",
+        "src/forge/walkthrough.py",
         "tests/test_bootstrap.py",
         "tests/test_config.py",
         "tests/test_impact.py",
@@ -697,12 +718,15 @@
         "tests/test_impact.py",
         "tests/test_lifecycle.py",
         "tests/test_lifecycle_repairs.py"
+      ],
+      "src/forge/walkthrough.py": [
+        "tests/test_walkthrough.py"
       ]
     },
     "tool": "forge",
     "unresolved_imports": 0
   },
-  "generated_from_commit": "02011c04658b19f03e4d4512ef52e7fbc06d05f7",
+  "generated_from_commit": "2be2a788f7ccc7df21a9f6a7efa899f7ad61385f",
   "generator": "forge sync derived",
   "tool": "forge"
 }
